@@ -10,11 +10,12 @@ class Shader
 {
 private:
 	GLuint handle;
-	std::string vertexShader, fragmentShader;
+	std::string vertexShader, fragmentShader, computeShader, geometryShader;
 	std::unordered_map<std::string, GLint> locations;
 
 	void handleError(std::string name, GLuint shaderId);
-	GLuint loadShaders();
+	GLuint loadStandardProgram();
+	GLuint loadComputeProgram();
 	bool loadShader(std::string source, GLenum shaderType, GLuint& shaderHandle);
 
 	GLint getUniformLocation(std::string location);
@@ -29,6 +30,8 @@ private:
 public:
 	Shader();
 	Shader(std::string vertexShader, std::string fragmentShader);
+	Shader(std::string computeShader);
+
 
 	void setUniform(std::string uniform, const glm::vec3& value);
 	void setUnifrom(GLint location, const glm::vec3& value);

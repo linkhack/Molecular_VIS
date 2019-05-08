@@ -1,11 +1,12 @@
 // Copyright 2017 Global Phasing Ltd.
 //
-// 3d grid used by CCP4 maps and cell-method search.
+// 3d grid used by CCP4 maps, cell-method search and hkl data.
 
 #ifndef GEMMI_GRID_HPP_
 #define GEMMI_GRID_HPP_
 
 #include <cassert>
+#include <complex>  // for std::conj
 #include <functional> // for function
 #include <vector>
 #include "unitcell.hpp"
@@ -128,6 +129,8 @@ struct Grid {
     calculate_spacing();
   }
 
+  double get_voxel_size() const { return unit_cell.volume / (nu * nv * nw); }
+
   // Quick but unsafe. assumes (for efficiency) that 0 <= u < nu, etc.
   int index_q(int u, int v, int w) const { return w * nu * nv + v * nu + u; }
 
@@ -185,8 +188,7 @@ struct Grid {
       d = d > threshold ? 1 : 0;
   }
 
-  void symmetrize_using_ops(std::vector<Op> ops,
-                            std::function<T(T, T)> func) {
+  void symmetrize_using_ops(std::vector<Op> ops, std::function<T(T, T)> func) {
     auto id = std::find(ops.begin(), ops.end(), Op::identity());
     if (id != ops.end())
       ops.erase(id);
@@ -225,7 +227,7 @@ struct Grid {
   }
 
   // Use provided function to reduce values of all symmetry mates of each
-  // grid points, then assign the result to all the points.
+  // grid point, then assign the result to all the points.
   void symmetrize(std::function<T(T, T)> func) {
     if (!space_group || space_group->number == 1 || !full_canonical)
       return;
@@ -238,6 +240,25 @@ struct Grid {
   }
   void symmetrize_max() {
     symmetrize([](T a, T b) { return (a > b || !(b == b)) ? a : b; });
+  }
+
+  // makes sense only for hkl data
+  void add_friedel_mates() {
+    const T default_val{};
+    for (int u = 0; u != nu; ++u) {
+      int u_ = u == 0 ? 0 : nu - u;
+      for (int v = 0; v != nv; ++v) {
+        int v_ = v == 0 ? 0 : nv - v;
+        for (int w = 0; w != nw; ++w) {
+          int idx = index_q(u, v, w);
+          if (data[idx] == default_val) {
+            int w_ = w == 0 ? 0 : nw - w;
+            int inv_idx = index_q(u_, v_, w_);
+            data[idx] = std::conj(data[inv_idx]);
+          }
+        }
+      }
+    }
   }
 };
 

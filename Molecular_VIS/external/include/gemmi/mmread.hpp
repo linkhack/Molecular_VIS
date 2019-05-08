@@ -33,7 +33,7 @@ Structure read_structure(T&& input, CoorFormat format=CoorFormat::Unknown) {
     format = coordinate_format_from_extension(input.path());
   switch (format) {
     case CoorFormat::Pdb:
-      return read_pdb(input);
+      //return read_pdb(input);
     case CoorFormat::Mmcif:
       if (any) {
         cif::Document doc = cif::read(input);

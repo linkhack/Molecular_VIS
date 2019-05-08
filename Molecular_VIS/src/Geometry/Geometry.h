@@ -1,4 +1,4 @@
-#pragma 
+#pragma once
 #include <vector>
 #include <memory>
 #include <glm/ext.hpp>
@@ -41,9 +41,12 @@ public:
 
 	virtual void draw(glm::mat4 matrix = glm::mat4(1.0f));
 
+
+
 	//Construction helper
 	static GeometryData createCubeGeometry(float width, float height, float depth);
 	static GeometryData createSphereGeometry(float radius, unsigned int longitudeSegments, unsigned int latitudeSegments);
+	static void createSphereGeometry(float radius, unsigned int longitudeSegments, unsigned int latitudeSegments, glm::vec3 position, GeometryData& geometry);
 	static GeometryData createCylinderGeometry(float radius, float height, unsigned int segments);
 	static GeometryData createFullScreenQuad();
 
@@ -67,3 +70,4 @@ private:
 	std::shared_ptr<Material> material;
 	glm::vec3 color;
 };
+

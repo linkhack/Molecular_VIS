@@ -519,6 +519,7 @@ inline Structure read_pdb_string(const std::string& str,
 }
 
 // A function for transparent reading of stdin and/or gzipped files.
+/*
 template<typename T>
 inline Structure read_pdb(T&& input) {
   if (input.is_stdin())
@@ -527,7 +528,7 @@ inline Structure read_pdb(T&& input) {
     return pdb_impl::read_pdb_from_line_input(stream, input.path());
   return read_pdb_file(input.path());
 }
-
+*/
 } // namespace gemmi
 #endif
 // vim:sw=2:ts=2:et

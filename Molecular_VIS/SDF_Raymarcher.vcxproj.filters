@@ -60,6 +60,21 @@
     <ClCompile Include="src\Molecular_VIS.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="src\PDB_Loader\PDB_Tests.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Material\LambertMaterial.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Geometry\MoleculeModel.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Texture\VolumetricTexture.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Shader\Shader.h">
@@ -101,6 +116,24 @@
     <ClInclude Include="src\Light\SpotLight.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="src\PDB_Loader\PDB_Tests.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Material\LambertMaterial.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Geometry\MoleculeModel.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Texture\Texture.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Texture\VolumetricTexture.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shader\base.vert" />
@@ -108,5 +141,8 @@
     <None Include="assets\shader\ray_generation_test.frag" />
     <None Include="assets\shader\sdf_sphere.frag" />
     <None Include="assets\shader\sdf_functions.func" />
+    <None Include="assets\shader\Phong.frag" />
+    <None Include="assets\shader\Phong.vert" />
+    <None Include="assets\shader\compute_grid.glsl" />
   </ItemGroup>
 </Project>

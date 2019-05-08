@@ -1,7 +1,7 @@
 #include "Geometry.h"
 
 ProceduralGeometry::ProceduralGeometry(glm::mat4 modelMatrix, GeometryData & geometryData, std::shared_ptr<Material> material)
-	:material(material), nrOfVertices(geometryData.indices.size())
+	:modelMatrix(modelMatrix),material(material), nrOfVertices(geometryData.indices.size())
 {
 	//Create Vertex Array Object
 	glGenVertexArrays(1, &vao);
@@ -74,7 +74,7 @@ void ProceduralGeometry::draw(glm::mat4 matrix)
 	shader->use();
 	shader->setUniform("modelMatrix", totalMatrix);
 	shader->setUniform("normalMatrix", glm::mat3(glm::inverse(glm::transpose(totalMatrix))));
-	shader->setUniform("materialColor", color);
+	//shader->setUniform("materialColor", color);
 	//Bind Buffers
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES, nrOfVertices, GL_UNSIGNED_INT, 0);
@@ -289,6 +289,63 @@ GeometryData ProceduralGeometry::createSphereGeometry(float radius, unsigned int
 	}
 
 	return std::move(data);
+}
+
+void ProceduralGeometry::createSphereGeometry(float radius, unsigned int longitudeSegments, unsigned int latitudeSegments, glm::vec3 position, GeometryData& geometry)
+{
+	//top pole
+	int indexOffset = geometry.uv.size();
+	for (unsigned int i = 0; i < longitudeSegments + 1; ++i)
+	{
+		geometry.positions.push_back(position + glm::vec3(0, +radius, 0));
+		geometry.normals.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+		geometry.uv.push_back(glm::vec2(float(i) / (longitudeSegments), 1.0f));
+		geometry.positions.push_back(position + glm::vec3(0.0f, -radius, 0.0f));
+		geometry.normals.push_back(glm::vec3(0.0f, -1.0f, 0.0f));
+		geometry.uv.push_back(glm::vec2(float(i) / (longitudeSegments), 0.0f));
+		//first ring indices
+	}
+	for (unsigned int i = 0; i < longitudeSegments; ++i)
+	{
+		geometry.indices.push_back(indexOffset+2 * i);
+		geometry.indices.push_back(indexOffset+2 * (longitudeSegments + 1) + 1 + i);
+		geometry.indices.push_back(indexOffset+2 * (longitudeSegments + 1) + 0 + i);
+
+		geometry.indices.push_back(indexOffset+2 * i + 1);
+		geometry.indices.push_back(indexOffset+(latitudeSegments)*((longitudeSegments + 1)) + i);
+		geometry.indices.push_back(indexOffset+(latitudeSegments)*((longitudeSegments + 1)) + i + 1);
+	}
+
+	//construct rings and vertices
+	for (unsigned int latIndex = 1; latIndex < latitudeSegments; ++latIndex) {
+		float verticalAngle = float(latIndex) * glm::pi<float>() / float(latitudeSegments);
+		for (unsigned int longIndex = 0; longIndex < longitudeSegments + 1; ++longIndex) {
+			float horizontalAngle = 2 * float(longIndex) * glm::pi<float>() / float(longitudeSegments);
+			geometry.positions.push_back(position + glm::vec3(
+				radius * glm::sin(verticalAngle) * glm::cos(horizontalAngle),
+				radius * glm::cos(verticalAngle),
+				radius * glm::sin(verticalAngle) * glm::sin(horizontalAngle)
+			));
+			//normal is in direcction of vertex but with unit length
+			geometry.normals.push_back(glm::vec3(
+				glm::sin(verticalAngle) * glm::cos(horizontalAngle),
+				glm::cos(verticalAngle),
+				glm::sin(verticalAngle) * glm::sin(horizontalAngle)
+			));
+			geometry.uv.push_back(glm::vec2(static_cast<float>(longIndex) / longitudeSegments, static_cast<float>(latitudeSegments - latIndex) / (latitudeSegments)));
+			if (latIndex == 1 || longIndex == longitudeSegments) continue;
+
+			geometry.indices.push_back(indexOffset + (latIndex - 1)*(longitudeSegments + 1) + longIndex + 2 * (longitudeSegments + 1));
+			geometry.indices.push_back(indexOffset + (latIndex - 2)*(longitudeSegments + 1) + longIndex + 2 * (longitudeSegments + 1));
+			geometry.indices.push_back(indexOffset + (latIndex - 2)*(longitudeSegments + 1) + longIndex + 1 + 2 * (longitudeSegments + 1));
+
+
+			geometry.indices.push_back(indexOffset + (latIndex - 1)*(longitudeSegments + 1) + longIndex + 2 * (longitudeSegments + 1));
+			geometry.indices.push_back(indexOffset + (latIndex - 2)*(longitudeSegments + 1) + longIndex + 1 + 2 * (longitudeSegments + 1));
+			geometry.indices.push_back(indexOffset + (latIndex - 1)*(longitudeSegments + 1) + longIndex + 1 + 2 * (longitudeSegments + 1));
+
+		}
+	}
 }
 
 GeometryData ProceduralGeometry::createCylinderGeometry(float radius, float height, unsigned int segments)

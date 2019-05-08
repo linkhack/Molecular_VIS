@@ -1,8 +1,8 @@
 #include "LightManager.h"
 
-const int LightManager::maxDirectionalLights = 64;
-const int LightManager::maxPointLights = 64;
-const int LightManager::maxSpotLights = 64;
+const int LightManager::maxDirectionalLights = 1;
+const int LightManager::maxPointLights = 1;
+const int LightManager::maxSpotLights = 1;
 
 LightManager::LightManager()
 {

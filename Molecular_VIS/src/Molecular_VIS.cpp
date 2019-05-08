@@ -13,6 +13,9 @@
 #include "Geometry/Geometry.h"
 #include "Camera/Camera.h"
 #include "Light/LightManager.h"
+#include "PDB_Loader/PDB_Tests.h"
+#include "Material/LambertMaterial.h"
+#include "Geometry/MoleculeModel.h"
 
 #define EXIT_WITH_ERROR(err) \
 	std::cout << "ERROR: " << err << std::endl; \
@@ -135,7 +138,24 @@ int main(int argc, char** argv)
 		//Lights
 		LightManager* lightManager = new LightManager();
 		lightManager->createPointLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.8f*glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.1f, 0.4f, 1.0f));
-		//lightManager->createDirectionalLight(glm::vec3(0.8f), glm::vec3(0.0f, -1.0f, -1.0f));
+		lightManager->createDirectionalLight(glm::vec3(0.8f), glm::vec3(0.0f, -1.0f, -1.0f));
+
+
+
+		double loadTime = glfwGetTime();
+		PDB_Tests test("data/6mbd.cif");
+		//std::vector<std::unique_ptr<Geometry>> atoms = test.doStuff();
+		loadTime = glfwGetTime() - loadTime;
+		std::cout << "time to load" << loadTime << '\n';
+		std::vector<glm::vec3> positions = test.doStuff();
+		std::cout << positions.size() << '\n';
+		std::shared_ptr<Shader> shader = std::make_shared<Shader>("Phong.vert", "Phong.frag");
+		GeometryData ball = ProceduralGeometry::createSphereGeometry(0.1f, 16u, 8u);
+		std::shared_ptr<LambertMaterial> material = std::make_shared<LambertMaterial>(shader);
+		material->setColor(glm::vec3(1.0f, 0.0f, 0.0f));
+		std::unique_ptr<Geometry> ballGeometry = std::make_unique<ProceduralGeometry>(glm::mat4(1.0f), ball, material);
+		std::unique_ptr<MoleculeModel> atomModel = std::make_unique<MoleculeModel>(glm::mat4(1.0f), material, positions);
+		shaders.push_back(shader);
 
 		//Variables
 		double mouseX, mouseY;
@@ -158,15 +178,21 @@ int main(int argc, char** argv)
 			//update camera
 			camera->update(mouseX, mouseY, _zoom, _dragging, _strafing);
 			//update uniforms
+			/*
 			mainShader->use();
 			mainShader->setUniform("time", (float)(thisFrameTime - startTime));
 			mainShader->setUniform("inversePVMatrix", camera->getInverseProjectionViewMatrix());
 			mainShader->setUniform("cameraPosition", camera->getPosition());
 			mainShader->setUniform("mouse_x", (float)mouseX/200.0f);
 			mainShader->setUniform("mouse_y", (float)mouseY/200.0f);
+			*/
 			lightManager->setUniforms(shaders);
+			shader->use();
+			shader->setUniform("cameraPosition", camera->getPosition());
+			shader->setUniform("viewProjectionMatrix", camera->getProjectionViewMatrix());
 
-			quad->draw();
+			atomModel->draw();
+			//quad->draw();
 
 
 			//Swap Buffers

@@ -22,7 +22,7 @@ void Shader::handleError(std::string name,GLuint shaderId)
 	}
 }
 
-GLuint Shader::loadShaders()
+GLuint Shader::loadStandardProgram()
 {
 	GLuint vertexShader;
 	GLuint fragmentShader;
@@ -85,6 +85,58 @@ GLuint Shader::loadShaders()
 	return program;
 }
 
+GLuint Shader::loadComputeProgram()
+{
+	GLuint computeShader;
+	GLuint program;
+	if (!loadShader(this->computeShader, GL_VERTEX_SHADER, computeShader)) {
+		handleError(this->vertexShader, computeShader);
+		glDeleteShader(computeShader);
+		system("PAUSE");
+		exit(1);
+	}
+
+	//Create Program
+	program = glCreateProgram();
+
+	// Attach our shaders to our program
+	glAttachShader(program, computeShader);
+
+	// Link our program
+	glLinkProgram(program);
+
+	// Note the different functions here: glGetProgram* instead of glGetShader*.
+	GLint isLinked = 0;
+	glGetProgramiv(program, GL_LINK_STATUS, (int *)&isLinked);
+	if (isLinked == GL_FALSE)
+	{
+		GLint maxLength = 0;
+		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &maxLength);
+
+		// The maxLength includes the NULL character
+		std::vector<GLchar> infoLog(maxLength);
+		glGetProgramInfoLog(program, maxLength, &maxLength, &infoLog[0]);
+
+		// We don't need the program anymore.
+		glDeleteProgram(program);
+		// Don't leak shaders either.
+		glDeleteShader(computeShader);
+
+		// Use the infoLog as you see fit.
+		std::cout << "Failed to link shader " << this->vertexShader << " and " << this->fragmentShader << std::endl;
+		for (GLchar c : infoLog) {
+			std::cout << c;
+		}
+		// In this simple program, we'll just leave
+		system("PAUSE");
+		exit(1);
+	}
+	// Always detach shaders after a successful link.
+	glDetachShader(program, computeShader);
+
+	return program;
+}
+
 
 bool Shader::loadShader(std::string filePath, GLenum shaderType, GLuint & shaderHandle)
 {
@@ -103,9 +155,9 @@ bool Shader::loadShader(std::string filePath, GLenum shaderType, GLuint & shader
 GLint Shader::getUniformLocation(std::string location)
 {
 	auto search = locations.find(location);
-	GLint locationId = glGetUniformLocation(handle, location.c_str());
-	locations.insert(std::make_pair(location, locationId));
-	return locationId;
+	//GLint locationId = glGetUniformLocation(handle, location.c_str());
+	//locations.insert(std::make_pair(location, locationId));
+	//return locationId;
 	if (search != locations.end()) 
 	{
 		return search->second;
@@ -137,7 +189,6 @@ std::string Shader::readFile(std::string filePath)
 	}
 	shaderFile.close();
 	processDirectives(shaderCode);
-	std::cout << shaderCode << std::endl;
 	return shaderCode;
 }
 /**
@@ -187,7 +238,13 @@ Shader::Shader(std::string vertexShader, std::string fragmentShader)
 {
 	this->vertexShader = vertexShader;
 	this->fragmentShader = fragmentShader;
-	this->handle = loadShaders();
+	this->handle = loadStandardProgram();
+}
+
+Shader::Shader(std::string computeShader)
+{
+	this->computeShader = computeShader;
+	this->handle = loadComputeProgram();
 }
 
 void Shader::setUniform(std::string uniform, const glm::vec3& value)
