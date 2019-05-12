@@ -129,6 +129,7 @@ int main(int argc, char** argv)
 		std::shared_ptr<Shader> mainShader = std::make_shared<Shader>("base.vert","sdf_sphere.frag");
 		shaders.push_back(mainShader);
 		std::shared_ptr<Geometry> fullScreenQuad;
+		std::shared_ptr<Shader> gridBuilder = std::make_shared<Shader>("compute_grid.glsl");
 		GeometryData quadGeom = ProceduralGeometry::createFullScreenQuad();
 		Geometry* quad = new ProceduralGeometry(glm::mat4(1.0f), quadGeom, mainShader);
 
@@ -146,9 +147,12 @@ int main(int argc, char** argv)
 		PDB_Tests test("data/6mbd.cif");
 		//std::vector<std::unique_ptr<Geometry>> atoms = test.doStuff();
 		loadTime = glfwGetTime() - loadTime;
-		std::cout << "time to load" << loadTime << '\n';
+		std::cout << "time to load: " << loadTime << '\n';
+		loadTime = glfwGetTime();
 		std::vector<glm::vec3> positions = test.doStuff();
-		std::cout << positions.size() << '\n';
+		loadTime = glfwGetTime() - loadTime;
+		std::cout << "Nr of Atoms: "<< positions.size() << '\n';
+		std::cout << "time to do stuff: " << loadTime << '\n';
 		std::shared_ptr<Shader> shader = std::make_shared<Shader>("Phong.vert", "Phong.frag");
 		GeometryData ball = ProceduralGeometry::createSphereGeometry(0.1f, 16u, 8u);
 		std::shared_ptr<LambertMaterial> material = std::make_shared<LambertMaterial>(shader);

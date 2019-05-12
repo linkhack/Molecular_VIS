@@ -89,7 +89,7 @@ GLuint Shader::loadComputeProgram()
 {
 	GLuint computeShader;
 	GLuint program;
-	if (!loadShader(this->computeShader, GL_VERTEX_SHADER, computeShader)) {
+	if (!loadShader(this->computeShader, GL_COMPUTE_SHADER, computeShader)) {
 		handleError(this->vertexShader, computeShader);
 		glDeleteShader(computeShader);
 		system("PAUSE");

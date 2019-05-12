@@ -8,7 +8,7 @@ MoleculeModel::MoleculeModel(glm::mat4 modelMatrix, std::shared_ptr<Material> ma
 	GeometryData geometryData;
 	for (auto& pos : positions)
 	{
-		ProceduralGeometry::createSphereGeometry(0.5f, 16u, 8u, pos, geometryData);
+		ProceduralGeometry::createSphereGeometry(0.01f, 16u, 8u, pos, geometryData);
 	}
 
 	//Create Vertex Array Object

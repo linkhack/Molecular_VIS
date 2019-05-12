@@ -25,6 +25,8 @@ std::vector<glm::vec3> PDB_Tests::doStuff()
 {
 	std::vector<glm::vec3> matrices;
 	glm::vec3 sum;
+	glm::vec3 max=-glm::vec3(10000,10000,10000);
+	glm::vec3 min=-max;
 	for (const gemmi::Model& model : molStructure.models) {
 		for (const gemmi::Chain& chain : model.chains) {
 			for (const gemmi::Residue& res : chain.residues) {
@@ -32,14 +34,13 @@ std::vector<glm::vec3> PDB_Tests::doStuff()
 					glm::vec3 pos = glm::vec3(atom.pos.x, atom.pos.y, atom.pos.z);
 					sum += pos;
 					matrices.push_back(std::move(pos));
+					max = glm::max(max, pos);
+					min = glm::min(min, pos);
 				}
 			}
 		}
 	}
-	sum /= matrices.size();
-	std::for_each(matrices.begin(),matrices.end(),[sum](glm::vec3 &pos){
-		pos -= sum;
-	});
+	std::transform(matrices.begin(), matrices.end(), matrices.begin(), [min, max](auto pos) {return (pos - max) / (max - min); });
 	return std::move(matrices);
 }
 

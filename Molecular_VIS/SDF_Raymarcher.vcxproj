@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="src\Molecule.cpp" />
     <ClCompile Include="src\Geometry\MoleculeModel.cpp" />
     <ClCompile Include="src\Material\LambertMaterial.cpp" />
     <ClCompile Include="src\PDB_Loader\PDB_Tests.cpp" />
@@ -39,9 +40,11 @@
     <ClCompile Include="src\Molecular_VIS.cpp" />
     <ClCompile Include="src\Shader\Shader.cpp" />
     <ClCompile Include="src\Texture\VolumetricTexture.cpp" />
+    <ClCompile Include="src\Shader\SSBO.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="src\Molecule.h" />
     <ClInclude Include="src\Geometry\MoleculeModel.h" />
     <ClInclude Include="src\Material\LambertMaterial.h" />
     <ClInclude Include="src\PDB_Loader\PDB_Tests.h" />
@@ -60,13 +63,16 @@
     <ClInclude Include="src\Shader\Shader.h" />
     <ClInclude Include="src\Texture\Texture.h" />
     <ClInclude Include="src\Texture\VolumetricTexture.h" />
+    <ClInclude Include="src\Shader\SSBO.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shader\base.vert" />
     <None Include="assets\shader\checker_board.frag" />
     <None Include="assets\shader\compute_grid.glsl" />
+    <None Include="assets\shader\df_refinement.glsl" />
     <None Include="assets\shader\Phong.frag" />
     <None Include="assets\shader\Phong.vert" />
+    <None Include="assets\shader\probe_intersection.glsl" />
     <None Include="assets\shader\ray_generation_test.frag" />
     <None Include="assets\shader\sdf_functions.func" />
     <None Include="assets\shader\sdf_sphere.frag" />

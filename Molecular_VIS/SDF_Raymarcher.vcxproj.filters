@@ -75,6 +75,12 @@
     <ClCompile Include="Grid.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="src\Shader\SSBO.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Molecule.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Shader\Shader.h">
@@ -134,6 +140,12 @@
     <ClInclude Include="Grid.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="src\Shader\SSBO.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Molecule.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shader\base.vert" />
@@ -144,5 +156,7 @@
     <None Include="assets\shader\Phong.frag" />
     <None Include="assets\shader\Phong.vert" />
     <None Include="assets\shader\compute_grid.glsl" />
+    <None Include="assets\shader\probe_intersection.glsl" />
+    <None Include="assets\shader\df_refinement.glsl" />
   </ItemGroup>
 </Project>

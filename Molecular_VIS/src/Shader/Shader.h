@@ -46,6 +46,5 @@ public:
 	void use();
 	void unuse();
 	~Shader();
-
 };
 
