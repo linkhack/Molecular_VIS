@@ -40,7 +40,7 @@ std::vector<glm::vec3> PDB_Tests::doStuff()
 			}
 		}
 	}
-	std::transform(matrices.begin(), matrices.end(), matrices.begin(), [min, max](auto pos) {return (pos - max) / (max - min); });
+	std::transform(matrices.begin(), matrices.end(), matrices.begin(), [min, max](auto pos) {return (pos - min) / (max - min); });
 	return std::move(matrices);
 }
 
