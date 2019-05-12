@@ -27,7 +27,6 @@ std::vector<glm::vec3> PDB_Tests::doStuff()
 	glm::vec3 sum;
 	glm::vec3 max=-glm::vec3(10000,10000,10000);
 	glm::vec3 min=-max;
-	gemmi::add
 	for (const gemmi::Model& model : molStructure.models) {
 		for (const gemmi::Chain& chain : model.chains) {
 			for (const gemmi::Residue& res : chain.residues) {
