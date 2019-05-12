@@ -144,7 +144,7 @@ int main(int argc, char** argv)
 
 
 		double loadTime = glfwGetTime();
-		PDB_Tests test("data/6mbd.cif");
+		PDB_Tests test("data/1k4r.cif");
 		//std::vector<std::unique_ptr<Geometry>> atoms = test.doStuff();
 		loadTime = glfwGetTime() - loadTime;
 		std::cout << "time to load: " << loadTime << '\n';
