@@ -5,6 +5,8 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <algorithm>
+
 
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
@@ -16,6 +18,9 @@
 #include "PDB_Loader/PDB_Tests.h"
 #include "Material/LambertMaterial.h"
 #include "Geometry/MoleculeModel.h"
+
+#include "Shader/SSBO.h"
+#include "Molecule.h"
 
 #define EXIT_WITH_ERROR(err) \
 	std::cout << "ERROR: " << err << std::endl; \
@@ -41,6 +46,15 @@ bool _dragging = false;
 bool _strafing = false;
 bool _wireframe = false;
 bool _backFaceCulling = true;
+
+/* --------------------------------------------- */
+// Structs
+/* --------------------------------------------- */
+struct GridCell
+{
+	unsigned int count;
+	unsigned int ids[31];
+};
 
 /* --------------------------------------------- */
 // Main
@@ -106,6 +120,12 @@ int main(int argc, char** argv)
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 #endif
 
+	// Check needed extensions
+	//if(GL_ARB_shader_group_vote)
+	//{
+	//	EXIT_WITH_ERROR("Need extensions: GL_ARB_shader_group_vote")
+	//}
+
 	//Set input callbacks
 	glfwSetKeyCallback(window, keyCallback);
 	glfwSetScrollCallback(window, scrollCallback);
@@ -144,23 +164,44 @@ int main(int argc, char** argv)
 
 
 		double loadTime = glfwGetTime();
-		PDB_Tests test("data/1s3s.cif");
+		PDB_Tests test("data/5xyu.cif");
 		//std::vector<std::unique_ptr<Geometry>> atoms = test.doStuff();
 		loadTime = glfwGetTime() - loadTime;
 		std::cout << "time to load: " << loadTime << '\n';
 		loadTime = glfwGetTime();
-		std::vector<glm::vec3> positions = test.doStuff();
+		Molecule molecule = test.doStuff();
 		loadTime = glfwGetTime() - loadTime;
-		std::cout << "Nr of Atoms: "<< positions.size() << '\n';
+		std::cout << "Nr of Atoms: "<< molecule.atoms.size() << '\n';
 		std::cout << "time to do stuff: " << loadTime << '\n';
 		std::shared_ptr<Shader> shader = std::make_shared<Shader>("Phong.vert", "Phong.frag");
-		GeometryData ball = ProceduralGeometry::createSphereGeometry(0.1f, 16u, 8u);
+		GeometryData ball = ProceduralGeometry::createSphereGeometry(1.1f, 16u, 8u);
 		std::shared_ptr<LambertMaterial> material = std::make_shared<LambertMaterial>(shader);
 		material->setColor(glm::vec3(1.0f, 0.0f, 0.0f));
 		std::unique_ptr<Geometry> ballGeometry = std::make_unique<ProceduralGeometry>(glm::mat4(1.0f), ball, material);
-		std::unique_ptr<MoleculeModel> atomModel = std::make_unique<MoleculeModel>(glm::mat4(1.0f), material, positions);
+		std::unique_ptr<MoleculeModel> atomModel = std::make_unique<MoleculeModel>(glm::scale(glm::mat4(1.0f),glm::vec3(0.5f,0.5f,0.5f)), material, molecule);
 		shaders.push_back(shader);
 
+		//SES calculations
+		float probeRadius = 2.f;
+		glm::uvec3 dimensions = glm::uvec3((molecule.max_pos - molecule.min_pos) / (molecule.max_radius + probeRadius));
+		SSBO<Atom> atomSSBO(100000);
+		loadTime = glfwGetTime();
+		atomSSBO.uploadData(molecule.atoms);
+		atomSSBO.bindToTarget(0);
+		SSBO<GridCell> grid((dimensions.x + 1)*(dimensions.y + 1)*(dimensions.z + 1));
+		grid.bindToTarget(1);
+		gridBuilder->use();
+		gridBuilder->setUniform("nrAtoms", (int)molecule.atoms.size());
+		gridBuilder->setUniform("nr_cells", dimensions);
+		gridBuilder->setUniform("max", molecule.max_pos+glm::vec3(probeRadius/2));
+		gridBuilder->setUniform("min", molecule.min_pos- glm::vec3(probeRadius / 2));
+		int number = (int)(molecule.atoms.size() / (1024)) + 1;
+		glDispatchCompute(number, 1, 1);
+		loadTime = glfwGetTime() - loadTime;
+		std::cout << "Compute shader time: " << loadTime << '\n';
+		std::cout << number << '\n';
+		std::cout << dimensions.x << " \ " << dimensions.y << " \ " << dimensions.z << " \n";
+		
 		//Variables
 		double mouseX, mouseY;
 		double thisFrameTime = 0, oldFrameTime = 0, deltaT = 0;

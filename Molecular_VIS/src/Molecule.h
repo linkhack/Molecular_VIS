@@ -1,41 +1,19 @@
 #pragma once
-#include <memory>
 #include <glm/glm.hpp>
-#include <string>
-#include "gemmi/model.hpp"
+#include <vector>;
 
 
-
-struct Atom
-{
-	glm::vec4 position_radius;
-};
-
-class Molecule
-{
-private:
-	/*
-		Has position between 0 1, VdW radius is scaled accordingly
-	*/
-	std::unique_ptr<std::vector<Atom>> atoms;
-
-	float scaleFactor;
-public:
-	Molecule();
+struct Atom {
+	glm::vec3 position;
+	float radius;
 	
-	/**
-	* Builds molecule from file, should be pdb/mmCIF format
-	**/
-	Molecule(const std::string file);
-
-	/**
-	* Builds molecule from gemmi structure
-	**/
-	Molecule(const gemmi::Structure gemmi_structure);
-
-	/**
-	* Builds Molecule from Array, and old Scale_factor
-	**/
-	~Molecule();
+	Atom(glm::vec3 position, float radius) :
+		position(position), radius(radius) {}
 };
 
+struct Molecule {
+	std::vector<Atom> atoms;
+	glm::vec3 max_pos;
+	glm::vec3 min_pos;
+	float max_radius;
+};

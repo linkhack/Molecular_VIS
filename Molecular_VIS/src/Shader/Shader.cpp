@@ -258,6 +258,17 @@ void Shader::setUnifrom(GLint location, const glm::vec3& value)
 	glUniform3f(location, value.x, value.y, value.z);
 }
 
+void Shader::setUniform(std::string uniform, const glm::uvec3& value)
+{
+	GLint location = getUniformLocation(uniform);
+	setUnifrom(location, value);
+}
+
+void Shader::setUnifrom(GLint location, const glm::uvec3& value)
+{
+	glUniform3ui(location, value.x, value.y, value.z);
+}
+
 void Shader::setUniform(std::string uniform, const int value)
 {
 	GLint location = getUniformLocation(uniform);

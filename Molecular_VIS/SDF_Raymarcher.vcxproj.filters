@@ -75,12 +75,6 @@
     <ClCompile Include="Grid.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="src\Shader\SSBO.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Molecule.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Shader\Shader.h">
@@ -158,5 +152,11 @@
     <None Include="assets\shader\compute_grid.glsl" />
     <None Include="assets\shader\probe_intersection.glsl" />
     <None Include="assets\shader\df_refinement.glsl" />
+    <None Include="data\1jjj.cif" />
+    <None Include="data\1k4r.cif" />
+    <None Include="data\1s3s.cif" />
+    <None Include="data\5xyu.cif" />
+    <None Include="data\6ivx.pdb" />
+    <None Include="data\6mbd.cif" />
   </ItemGroup>
 </Project>

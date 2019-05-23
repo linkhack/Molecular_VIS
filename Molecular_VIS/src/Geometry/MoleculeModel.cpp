@@ -2,13 +2,13 @@
 #include <glm/glm.hpp>
 
 
-MoleculeModel::MoleculeModel(glm::mat4 modelMatrix, std::shared_ptr<Material> material, std::vector<glm::vec3>& positions)
+MoleculeModel::MoleculeModel(glm::mat4 modelMatrix, std::shared_ptr<Material> material, Molecule& molecule)
 	:modelMatrix(modelMatrix), material(material)
 {	
 	GeometryData geometryData;
-	for (auto& pos : positions)
+	for (const auto& atom : molecule.atoms)
 	{
-		ProceduralGeometry::createSphereGeometry(0.01f, 16u, 8u, pos, geometryData);
+		ProceduralGeometry::createSphereGeometry(0.8f*atom.radius, 8u, 8u, atom.position, geometryData);
 	}
 
 	//Create Vertex Array Object

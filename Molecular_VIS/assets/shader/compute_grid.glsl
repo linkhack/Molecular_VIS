@@ -1,14 +1,15 @@
-#version 430 core
-#define MAX_ATOMS_PER_GRID 32
+#version 460 core
+#define MAX_ATOMS_PER_GRID 31
 
-layout(local_size_x = 8, local_size_y = 8, local_size_z = 8) in;
+layout(local_size_x = 1024, local_size_y = 1, local_size_z = 1) in;
 
 const uint id = uint(dot(gl_GlobalInvocationID,
 	vec3(1, gl_NumWorkGroups.x, gl_NumWorkGroups.y * gl_NumWorkGroups.x)));
 
 struct AtomStruct 
 {
-	vec4 position_radius;
+	vec3 position;
+	float radius;
 };
 
 struct GridCell
@@ -30,37 +31,36 @@ layout(std430, binding = 1) buffer Grid
 uniform int nrAtoms;
 
 // Size of grid, i.e how many cells per dimension
-uniform uvec3 cell_nr;
+uniform uvec3 nr_cells;
 uniform vec3 min;
 uniform vec3 max;
 
 //function prototypes
 
 uint calculateGirdIndex(vec3 pos);
-uvec3 normalize(vec3 pos);
+vec3 scale_unit(vec3 pos);
 void constructGrid();
 
 //Calculate grid index from position 
 uint calculateGridIndex(vec3 pos)
 {
-	uvec3 u_pos = normalize(pos);
-	return cell_nr.x * u_pos.x
-		+ cell_nr.x * (cell_nr.y * u_pos.y)
-		+ cell_nr.x * cell_nr.y * (u_pos.z * cell_nr.z);
+	vec3 u_pos = scale_unit(pos);
+	return uint(nr_cells.x * u_pos.x)
+		+ nr_cells.x * uint(nr_cells.y * u_pos.y)
+		+ nr_cells.x * nr_cells.y * uint(u_pos.z * nr_cells.z);
 }
 
-uvec3 normalize(vec3 pos) 
+vec3 scale_unit(vec3 pos) 
 {
-	return uvec3((pos - min) / (max - min));
+	return (pos - min) / (max - min);
 }
 
 void constructGrid()
 {
 	if (id >= nrAtoms) return;
 	AtomStruct atom = atoms[id];
-	uint gridId = calculateGridIndex(atom.position_radius.xyz);
-	GridCell cell = cells[gridId];
-	uint id_pos = atomicAdd(cells[gridId].count,1);
+	uint gridId = calculateGridIndex(atom.position);
+	uint id_pos = atomicAdd(cells[gridId].count,1u);
 	if (id_pos >= MAX_ATOMS_PER_GRID) return;
 	cells[gridId].ids[id_pos] = id;
 }

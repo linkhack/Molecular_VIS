@@ -103,6 +103,50 @@ inline double molecular_weight(El el) {
   return weights[static_cast<int>(el)];
 }
 
+/**
+* Returns the Van der Waals radius of an Element. Data taken from pubchem.
+* Elements with unknown value return 0.0f.
+* Author: Patrick Link
+**/
+inline double VdW_radius(El el) {
+	static constexpr double VdWradii[] = {
+		/*X*/ 0.0f,
+		/*H*/ 1.2f, /*He*/ 1.4f,
+		/*Li*/ 1.82f, /*Be*/ 1.53f, /*B*/ 1.92f, /*C*/ 1.70f,
+		/*N*/ 1.55f, /*O*/ 1.53f, /*F*/ 1.47f, /*Ne*/ 1.54f,
+		/*Na*/ 2.27f, /*Mg*/ 1.73f, /*Al*/ 1.84f, /*Si*/ 2.10f,
+		/*P*/ 1.80f, /*S*/ 1.80f, /*Cl*/ 1.75f, /*Ar*/ 1.88f,
+		/*K*/ 2.75f, /*Ca*/ 2.32f, /*Sc*/ 2.11f, /*Ti*/ 1.87f,
+		/*V*/ 1.79f, /*Cr*/ 1.89f, /*Mn*/ 1.97f, /*Fe*/ 1.94f,
+		/*Co*/ 1.92f, /*Ni*/ 1.63f, /*Cu*/ 1.40f, /*Zn*/ 1.39f,
+		/*Ga*/ 1.87f, /*Ge*/ 2.11f, /*As*/ 1.85f, /*Se*/ 1.90f,
+		/*Br*/ 1.85f, /*Kr*/ 2.02f, /*Rb*/ 3.03f, /*Sr*/ 2.49f,
+		/*Y*/ 2.19f, /*Zr*/ 1.87f, /*Nb*/ 2.07f,
+		/*Mo*/ 2.09f, /*Tc*/ 2.09f, /*Ru*/ 2.07f, /*Rh*/ 1.95f, /*Pd*/ 2.02f,
+		/*Ag*/ 1.72f, /*Cd*/ 1.58f, /*In*/ 1.93f, /*Sn*/ 2.17f,
+		/*Sb*/ 2.06f, /*Te*/ 2.06f, /*I*/ 1.98f, /*Xe*/ 2.16f,
+		/*Cs*/ 3.43f, /*Ba*/ 2.15f, /*La*/ 2.40f, /*Ce*/ 2.35f,
+		/*Pr*/ 2.39f, /*Nd*/ 2.29f, /*Pm*/ 2.36f, /*Sm*/ 2.29f,
+		/*Eu*/ 2.33f, /*Gd*/ 2.37f, /*Tb*/ 2.21f, /*Dy*/ 2.29f,
+		/*Ho*/ 2.16f, /*Er*/ 2.35f, /*Tm*/ 2.27f, /*Yb*/ 2.42f,
+		/*Lu*/ 2.21f, /*Hf*/ 2.12f, /*Ta*/ 2.17f, /*W*/ 2.10f,
+		/*Re*/ 2.17f, /*Os*/ 2.16f, /*Ir*/ 2.02f, /*Pt*/ 2.0f,
+		/*Au*/ 1.66f, /*Hg*/ 2.09f, /*Tl*/ 1.96f,
+		/*Pb*/ 2.02f, /*Bi*/ 2.07f, /*Po*/ 1.97f, /*At*/ 2.02f, /*Rn*/ 2.20f,
+		/*Fr*/ 3.48f, /*Ra*/ 2.83f, /*Ac*/ 2.60f, /*Th*/ 2.37f, /*Pa*/ 2.43f,
+		/*U*/ 2.40f, /*Np*/ 2.21f, /*Pu*/ 2.43f, /*Am*/ 2.44f, /*Cm*/ 2.45f,
+		/*Bk*/ 2.44f, /*Cf*/ 2.45f, /*Es*/ 2.45f, /*Fm*/ 0.0f, /*Md*/ 0.0f,
+		/*No*/ 0.0f, /*Lr*/ 0.0f, /*Rf*/ 0.0f, /*Db*/ 0.0f, /*Sg*/ 0.0f,
+		/*Bh*/ 0.0f, /*Hs*/ 0.0f, /*Mt*/ 0.0f, /*Ds*/ 0.0f, /*Rg*/ 0.0f, /*Cn*/ 0.0f,
+		/*Nh*/ 0.0f, /*Fl*/ 0.0f, /*Mc*/ 0.0f, /*Lv*/ 0.0f, /*Ts*/ 0.0f, /*Og*/ 0.0f,
+		/*D*/ 1.20f, /*END*/ 0.0f
+	};
+	static_assert(VdWradii[static_cast<int>(El::D)] == 1.20f, "Hmm");
+	static_assert(sizeof(VdWradii) / sizeof(VdWradii[0]) ==
+		static_cast<int>(El::END) + 1, "Hmm");
+	return VdWradii[static_cast<int>(el)];
+}
+
 typedef const char elname_t[3];
 
 inline const char* element_name(El el) {
@@ -217,8 +261,11 @@ struct Element {
   const char* name() const { return element_name(elem); }
   // return uppercase name such as MG
   const char* uname() const { return element_uppercase_name(elem); }
+  // return VdW - radius of Element
+  float VdW_r() const { return VdW_radius(elem); }
+
 };
 
-} // namespace gemmi
+} // namespace 
 #endif
 // vim:sw=2:ts=2:et

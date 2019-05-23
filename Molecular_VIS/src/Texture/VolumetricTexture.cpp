@@ -6,7 +6,7 @@ VolumetricTexture::VolumetricTexture(int width, int height, int depth)
 {
 	glCreateTextures(GL_TEXTURE_3D, 1, &handle);
 	glBindTexture(GL_TEXTURE_3D, handle);
-	glTexImage3D(GL_TEXTURE_3D, 0, GL_R32F, width, height, depth, 0, GL_R32F, GL_FLOAT, NULL);
+	glTexImage3D(GL_TEXTURE_3D, 0, GL_R16F, width, height, depth, 0, GL_R32F, GL_FLOAT, NULL);
 	// TODO: texture params
 	glBindTexture(GL_TEXTURE_3D, 0);
 }
@@ -23,7 +23,7 @@ void VolumetricTexture::bindAsTexture(int unit)
 
 void VolumetricTexture::bindAsImage(int unit)
 {
-
+	glBindImageTexture(unit, handle, 0, GL_FALSE, 0, GL_READ_WRITE, GL_R16F);
 }
 
 

@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Grid.cpp" />
-    <ClCompile Include="src\Molecule.cpp" />
     <ClCompile Include="src\Geometry\MoleculeModel.cpp" />
     <ClCompile Include="src\Material\LambertMaterial.cpp" />
     <ClCompile Include="src\PDB_Loader\PDB_Tests.cpp" />
@@ -40,13 +39,12 @@
     <ClCompile Include="src\Molecular_VIS.cpp" />
     <ClCompile Include="src\Shader\Shader.cpp" />
     <ClCompile Include="src\Texture\VolumetricTexture.cpp" />
-    <ClCompile Include="src\Shader\SSBO.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Grid.h" />
-    <ClInclude Include="src\Molecule.h" />
     <ClInclude Include="src\Geometry\MoleculeModel.h" />
     <ClInclude Include="src\Material\LambertMaterial.h" />
+    <ClInclude Include="src\Molecule.h" />
     <ClInclude Include="src\PDB_Loader\PDB_Tests.h" />
     <ClInclude Include="src\Camera\Camera.h" />
     <ClInclude Include="src\Geometry\Geometry.h" />
@@ -76,6 +74,12 @@
     <None Include="assets\shader\ray_generation_test.frag" />
     <None Include="assets\shader\sdf_functions.func" />
     <None Include="assets\shader\sdf_sphere.frag" />
+    <None Include="data\1jjj.cif" />
+    <None Include="data\1k4r.cif" />
+    <None Include="data\1s3s.cif" />
+    <None Include="data\5xyu.cif" />
+    <None Include="data\6ivx.pdb" />
+    <None Include="data\6mbd.cif" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
