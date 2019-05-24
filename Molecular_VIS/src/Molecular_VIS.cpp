@@ -121,10 +121,10 @@ int main(int argc, char** argv)
 #endif
 
 	// Check needed extensions
-	//if(GL_ARB_shader_group_vote)
-	//{
-	//	EXIT_WITH_ERROR("Need extensions: GL_ARB_shader_group_vote")
-	//}
+	if(!GL_ARB_shader_group_vote)
+	{
+		EXIT_WITH_ERROR("Need extensions: GL_ARB_shader_group_vote")
+	}
 
 	//Set input callbacks
 	glfwSetKeyCallback(window, keyCallback);
@@ -150,6 +150,7 @@ int main(int argc, char** argv)
 		shaders.push_back(mainShader);
 		std::shared_ptr<Geometry> fullScreenQuad;
 		std::shared_ptr<Shader> gridBuilder = std::make_shared<Shader>("compute_grid.glsl");
+		std::shared_ptr<Shader> probeInterscetion = std::make_shared<Shader>("probe_intersection.glsl");
 		GeometryData quadGeom = ProceduralGeometry::createFullScreenQuad();
 		Geometry* quad = new ProceduralGeometry(glm::mat4(1.0f), quadGeom, mainShader);
 
@@ -164,7 +165,7 @@ int main(int argc, char** argv)
 
 
 		double loadTime = glfwGetTime();
-		PDB_Tests test("data/5xyu.cif");
+		PDB_Tests test("data/6mbd.cif");
 		//std::vector<std::unique_ptr<Geometry>> atoms = test.doStuff();
 		loadTime = glfwGetTime() - loadTime;
 		std::cout << "time to load: " << loadTime << '\n';
