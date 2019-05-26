@@ -148,7 +148,7 @@ void main()
 	}
 	if (isInside)
 	{
-		imageStore(SESTexture, ivec3(texPos), vec4(-texRadius,0,0,1));
+		imageStore(SESTexture, ivec3(texPos), vec4(-1000.0f,0,0,1));
 	}
 	if (isBorder)
 	{

@@ -67,6 +67,7 @@
     <None Include="assets\shader\base.vert" />
     <None Include="assets\shader\checker_board.frag" />
     <None Include="assets\shader\compute_grid.glsl" />
+    <None Include="assets\shader\df_inner.glsl" />
     <None Include="assets\shader\df_refinement.glsl" />
     <None Include="assets\shader\fullScreenQuad.vert" />
     <None Include="assets\shader\Phong.frag" />

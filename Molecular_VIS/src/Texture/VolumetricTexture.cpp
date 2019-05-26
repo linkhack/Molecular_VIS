@@ -14,7 +14,7 @@ VolumetricTexture::VolumetricTexture(int width, int height, int depth, GLenum in
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_BORDER);
-	float color[] = { 2.0f,0.0f,0.0f,0.0f };
+	float color[] = { 0.5f,0.0f,0.0f,0.0f };
 	glTexParameterfv(GL_TEXTURE_3D, GL_TEXTURE_BORDER_COLOR, color);
 	glBindTexture(GL_TEXTURE_3D, 0);
 }

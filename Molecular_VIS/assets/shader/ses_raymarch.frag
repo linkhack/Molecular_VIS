@@ -1,8 +1,10 @@
 #version 430 core
 
-#define EPSILON 0.2
+#define EPSILON 0.001
+#define EPSILON_GRAD 0.000001
 #define BLACK vec4(0.0f,0.0f,0.0f,1.0f);
-#define MAX_STEPS 128
+#define WHITE vec4(1.0f,1.0f,1.0f,1.0f);
+#define MAX_STEPS 256
 #define MAX_DISTANCE 250.0f
 
 #define _DIRECTIONAL_LIGHTS_COUNT 1
@@ -37,6 +39,7 @@ struct Ray {
 };
 
 struct Hit {
+	int steps;
 	float distance;
 	vec3 viewDirection;
 	vec3 position;
@@ -71,9 +74,10 @@ uniform vec3 cameraPosition;
 uniform sampler3D SESTexture;
 uniform vec3 grid_min;
 uniform vec3 grid_max;
+uniform float subsurfaceDepth;
 
 //Matrial constant
-const Material mat = {vec3(0.83137f,0.68627f,0.21568),vec3(0.1f),vec3(0.8f),vec3(0.1f),15.0f};
+const Material mat = {vec3(0.0f,0.0f,1.f),vec3(0.1f),vec3(0.8f),vec3(0.1f),15.0f};
 
 vec3 scale_unit(vec3 pos)
 {
@@ -85,12 +89,17 @@ float sceneSDF(vec3 pos)
 	return texture(SESTexture,scale_unit(pos)).r;
 }
 
-vec3 calculateNormal(vec3 p){
-	return normalize(vec3(
-        sceneSDF(vec3(p.x + EPSILON, p.y, p.z)) - sceneSDF(vec3(p.x - EPSILON, p.y, p.z)),
-        sceneSDF(vec3(p.x, p.y + EPSILON, p.z)) - sceneSDF(vec3(p.x, p.y - EPSILON, p.z)),
-        sceneSDF(vec3(p.x, p.y, p.z  + EPSILON)) - sceneSDF(vec3(p.x, p.y, p.z - EPSILON))
-    ));
+vec3 calculateNormal(vec3 pos){
+	const float eps=0.1;
+    const vec3 v1 = vec3( 1.0,-1.0,-1.0);
+    const vec3 v2 = vec3(-1.0,-1.0, 1.0);
+    const vec3 v3 = vec3(-1.0, 1.0,-1.0);
+    const vec3 v4 = vec3( 1.0, 1.0, 1.0);
+
+    return normalize( v1 * sceneSDF( pos + v1*eps ).x +
+                    v2 * sceneSDF( pos + v2*eps ).x +
+                    v3 * sceneSDF( pos + v3*eps ).x +
+                    v4 * sceneSDF( pos + v4*eps ).x );
 }
 
 
@@ -105,105 +114,62 @@ Hit rayMarching(vec3 start, vec3 direction){
 			result.position = start+depth*direction;
 			result.normal = calculateNormal(result.position);
 			result.viewDirection = direction;
+			result.steps = i;
 			return result;
 		}
 		depth += dist;
 		if(depth > MAX_DISTANCE){
 			result.distance = MAX_DISTANCE + EPSILON;
+			result.steps = i;
 			return result;
 		}
 	}
 	result.distance = MAX_DISTANCE + EPSILON;
+	result.steps = MAX_STEPS;
 	return result;
 }
 
-// Calculations for shading / light
-float diffuse(vec3 normal, vec3 lightDir){
-	return max(0,dot(normal,lightDir));
-}
-
-float specular(vec3 normal, vec3 lightDir, vec3 viewingDir){
-	vec3 r = reflect(-lightDir, normal);
-	
-	return max(0,pow(dot(r,viewingDir),mat.specularCoefficient));
-}
-
-vec3 addPointLight(vec3 normal, vec3 viewingDir, vec3 lightDir,  PointLight light){
-	vec3 color = vec3(0.0f);
-	//TODO: shadow ray
-	color += mat.diffuse * mat.color * light.color * diffuse(normal,lightDir);
-	color += mat.specular * mat.color * light.color *specular(normal,lightDir,viewingDir);
-	//TODO reflection
-	return color;
-}
-
-vec3 addDirectionalLight(vec3 normal, vec3 viewingDir,  DirectionalLight light){
-	vec3 color = vec3(0.0f);
-	
-	color += mat.diffuse * mat.color * light.color * diffuse(normal,-light.direction);
-	color += mat.specular * mat.color * light.color * specular(normal,-light.direction,viewingDir);
-	
-	return color;
-}
-
-vec3 addSpotLight(vec3 normal, vec3 viewingDir, vec3 lightDir, SpotLight light){
-	vec3 color = vec3(0.0f);
-	float outerCos = cos(light.outerOpeningAngle);
-	float innerCos = cos(light.innerOpeningAngle);
-	float directionCos = dot(-lightDir,light.direction);
-	float interpolationT = 1.0f-smoothstep(innerCos,outerCos,directionCos);
-	color += interpolationT * mat.diffuse * mat.color * light.color * diffuse(normal,lightDir);
-	color += interpolationT * mat.specular * mat.color * light.color * light.color * specular(normal,lightDir,viewingDir);
-
-	return color;
+float calculateCheapOutline(Hit hit)
+{
+	return vec3(1.f-float(closestHit.steps)/float(MAX_STEPS);
 }
 
 //Calculates Shading of Hit w.r.t all lights
 vec4 calculateShading(Hit hit){
-	vec4 color = vec4(mat.ambient*mat.color,1);
-	
-	vec3 worldPosition = hit.position;
-	
-	vec3 v = -hit.viewDirection;
-	
-	vec3 normalWorld = hit.normal;
-	
-	for(int i = 0; i<_POINT_LIGHTS_COUNT; ++i){
-		PointLight light = pointLights[i];
-		vec3 l = light.position - worldPosition.xyz;
-		float d = length(l);
-		l = l/d;
-		float attenuation = 1/(light.attenuation.x*d*d+light.attenuation.y*d+light.attenuation.z);
-		if(attenuation < EPSILON) continue;
-		color+=vec4(addPointLight(normalWorld, v, l, light)*attenuation,0.0f);
-	}
-	
-	for(int i = 0; i< _DIRECTIONAL_LIGHTS_COUNT; ++i){
-		DirectionalLight light = directionalLights[i];
-		color += vec4(addDirectionalLight(normalWorld,v,light),0.0f);
-	}
-	/*
-	for(int i = 0; i<nrSpotLight; ++i){
-		SpotLight light = spotLights[i];
-		vec3 l = light.position - worldPosition.xyz;
-		float d = length(l);
-		l = l/d;
-		float attenuation = 1/(light.attenuation.x*d*d+light.attenuation.y*d+light.attenuation.z);
-		color+=vec4(addSpotLight(normalWorld, v, l, light)*attenuation,0.0f);
-	}
-	*/
-	return color;
+	//
+	vec3 color;
+	float ao = 0.0;
+	const int nbIte = 16;
+	const float maxDist = 16.f;
+	float falloff=1.0;
+    for( int i=0; i<nbIte; i++ )
+    {
+        float l = (0.01+float(i)/float(nbIte))*maxDist;
+        vec3 rd = hit.normal*l;
+        ao += (l - max(sceneSDF( hit.position + rd ),0.f))/maxDist*falloff;
+		falloff*=0.9;
+    }
+
+	float light =1.f - 2.f*ao/float(nbIte);
+	//Subsurface
+	vec3 innerPosition = hit.position + subsurfaceDepth*hit.viewDirection;
+	float innerSDF = sceneSDF(innerPosition);
+	float scalingFactor = (subsurfaceDepth - innerSDF)/(2*subsurfaceDepth);
+
+	color = mat.color*mat.diffuse*light + .5f*vec3(1-scalingFactor);
+	return vec4(vec3(color),1.f);
+
 }
 
 void main() {
 	vec3 rayDirection = normalize(ray.direction);
 	Hit closestHit = rayMarching(ray.origin, rayDirection);
 	if(closestHit.distance > MAX_DISTANCE){
-		FragColor = BLACK;
+		FragColor = WHITE;
 		return;
 	}else{
-		FragColor = calculateShading(closestHit);
-		//FragColor = vec4(closestHit.normal, 1.0f);
+		//FragColor = calculateShading(closestHit);
+		FragColor = vec4(vec3(1.f-float(closestHit.steps)/float(MAX_STEPS)), 1.0f);
 		return;
 	}
 }
