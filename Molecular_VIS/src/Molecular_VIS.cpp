@@ -18,9 +18,11 @@
 #include "PDB_Loader/PDB_Tests.h"
 #include "Material/LambertMaterial.h"
 #include "Geometry/MoleculeModel.h"
+#include "Texture/VolumetricTexture.h"
 
 #include "Shader/SSBO.h"
 #include "Molecule.h"
+
 
 #define EXIT_WITH_ERROR(err) \
 	std::cout << "ERROR: " << err << std::endl; \
@@ -46,6 +48,7 @@ bool _dragging = false;
 bool _strafing = false;
 bool _wireframe = false;
 bool _backFaceCulling = true;
+float _slice = 0.5f;
 
 /* --------------------------------------------- */
 // Structs
@@ -71,7 +74,7 @@ int main(int argc, char** argv)
 	int window_height = 1080;
 	float fov = 60.0f;
 	float nearZ = 0.1f;
-	float farZ = 100.0f;
+	float farZ = 200.0f;
 	int refreshRate = 120;
 	std::string windowTitle = "SDF - Raymarcher";
 
@@ -146,11 +149,13 @@ int main(int argc, char** argv)
 
 		//Shaders
 		std::vector<std::shared_ptr<Shader>> shaders;
-		std::shared_ptr<Shader> mainShader = std::make_shared<Shader>("base.vert","sdf_sphere.frag");
+		std::shared_ptr<Shader> mainShader = std::make_shared<Shader>("base.vert","ses_raymarch.frag");
 		shaders.push_back(mainShader);
 		std::shared_ptr<Geometry> fullScreenQuad;
 		std::shared_ptr<Shader> gridBuilder = std::make_shared<Shader>("compute_grid.glsl");
 		std::shared_ptr<Shader> probeInterscetion = std::make_shared<Shader>("probe_intersection.glsl");
+		std::shared_ptr<Shader> df_refinement = std::make_shared<Shader>("df_refinement.glsl");
+		std::shared_ptr<Shader> texVis = std::make_shared<Shader>("fullScreenQuad.vert", "volTexInspector.frag");
 		GeometryData quadGeom = ProceduralGeometry::createFullScreenQuad();
 		Geometry* quad = new ProceduralGeometry(glm::mat4(1.0f), quadGeom, mainShader);
 
@@ -160,12 +165,12 @@ int main(int argc, char** argv)
 		//Lights
 		LightManager* lightManager = new LightManager();
 		lightManager->createPointLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.8f*glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.1f, 0.4f, 1.0f));
-		lightManager->createDirectionalLight(glm::vec3(0.8f), glm::vec3(0.0f, -1.0f, -1.0f));
+		lightManager->createDirectionalLight(glm::vec3(1.8f), glm::vec3(0.0f, -1.0f, -1.0f));
 
 
 
 		double loadTime = glfwGetTime();
-		PDB_Tests test("data/6mbd.cif");
+		PDB_Tests test("data/5xyu.cif");
 		//std::vector<std::unique_ptr<Geometry>> atoms = test.doStuff();
 		loadTime = glfwGetTime() - loadTime;
 		std::cout << "time to load: " << loadTime << '\n';
@@ -176,6 +181,7 @@ int main(int argc, char** argv)
 		std::cout << "time to do stuff: " << loadTime << '\n';
 		std::shared_ptr<Shader> shader = std::make_shared<Shader>("Phong.vert", "Phong.frag");
 		GeometryData ball = ProceduralGeometry::createSphereGeometry(1.1f, 16u, 8u);
+	
 		std::shared_ptr<LambertMaterial> material = std::make_shared<LambertMaterial>(shader);
 		material->setColor(glm::vec3(1.0f, 0.0f, 0.0f));
 		std::unique_ptr<Geometry> ballGeometry = std::make_unique<ProceduralGeometry>(glm::mat4(1.0f), ball, material);
@@ -184,7 +190,7 @@ int main(int argc, char** argv)
 
 		//SES calculations
 		float probeRadius = 2.f;
-		glm::uvec3 dimensions = glm::uvec3((molecule.max_pos - molecule.min_pos) / (molecule.max_radius + probeRadius));
+		glm::uvec3 dimensions = glm::uvec3((molecule.max_pos - molecule.min_pos+glm::vec3(probeRadius)) / (molecule.max_radius + probeRadius));
 		SSBO<Atom> atomSSBO(100000);
 		loadTime = glfwGetTime();
 		atomSSBO.uploadData(molecule.atoms);
@@ -194,15 +200,46 @@ int main(int argc, char** argv)
 		gridBuilder->use();
 		gridBuilder->setUniform("nrAtoms", (int)molecule.atoms.size());
 		gridBuilder->setUniform("nr_cells", dimensions);
-		gridBuilder->setUniform("max", molecule.max_pos+glm::vec3(probeRadius/2));
-		gridBuilder->setUniform("min", molecule.min_pos- glm::vec3(probeRadius / 2));
+		gridBuilder->setUniform("max", molecule.max_pos + glm::vec3(probeRadius/2));
+		gridBuilder->setUniform("min", molecule.min_pos - glm::vec3(probeRadius / 2));
 		int number = (int)(molecule.atoms.size() / (1024)) + 1;
 		glDispatchCompute(number, 1, 1);
-		loadTime = glfwGetTime() - loadTime;
-		std::cout << "Compute shader time: " << loadTime << '\n';
+		glMemoryBarrier(GL_ALL_BARRIER_BITS);
+		probeInterscetion->use();
+		probeInterscetion->setUniform("grid_max", molecule.max_pos + glm::vec3(probeRadius / 2));
+		probeInterscetion->setUniform("grid_min", molecule.min_pos - glm::vec3(probeRadius / 2));
+		probeInterscetion->setUniform("nr_cells", dimensions);
+		probeInterscetion->setUniform("probeRadius", probeRadius);
+		//Construct Texture
+		glm::vec3 moleculeDimension = molecule.max_pos - molecule.min_pos + glm::vec3(probeRadius);
+		float idealRadius = 0.5;
+		glm::ivec3 idealTexSize = glm::ivec3(moleculeDimension / idealRadius);
+		glm::vec3 resolutions = moleculeDimension / glm::vec3(idealTexSize);
+		float maxResolution = std::max(resolutions.x, std::max(resolutions.y, resolutions.z));
+		std::cout << "idealTexSize: " << idealTexSize.x << " \ " << idealTexSize.y << " \ " << idealTexSize.z << '\n';
+		std::cout << "resolutions: " << resolutions.x << " \ " << resolutions.y << " \ " << resolutions.z << '\n';
 		std::cout << number << '\n';
 		std::cout << dimensions.x << " \ " << dimensions.y << " \ " << dimensions.z << " \n";
-		
+
+		glm::ivec3 dispatchSize = idealTexSize / glm::ivec3(8) + glm::ivec3(1);
+		std::cout << "dispatch " <<dispatchSize.x << " \ " << dispatchSize.y << " \ " << dispatchSize.z << " \n";
+		probeInterscetion->setUniform("texRadius", maxResolution);
+		VolumetricTexture SESTexture(idealTexSize.x, idealTexSize.y, idealTexSize.z, GL_R32F, GL_RED,  GL_FLOAT);
+		VolumetricTexture classification(idealTexSize.x, idealTexSize.y, idealTexSize.z, GL_R32F, GL_RED, GL_FLOAT);
+		SESTexture.bindAsImage(0);
+		classification.bindAsImage(1);
+		glDispatchCompute(dispatchSize.x, dispatchSize.y, dispatchSize.z);
+		glMemoryBarrier(GL_ALL_BARRIER_BITS);
+
+
+		df_refinement->use();
+		df_refinement->setUniform("probeRadius", probeRadius);
+		df_refinement->setUniform("texRadius", maxResolution);
+		glDispatchCompute(dispatchSize.x, dispatchSize.y, dispatchSize.z);
+		glMemoryBarrier(GL_ALL_BARRIER_BITS);
+		loadTime = glfwGetTime() - loadTime;
+		std::cout << "Compute shader time: " << loadTime << '\n';
+
 		//Variables
 		double mouseX, mouseY;
 		double thisFrameTime = 0, oldFrameTime = 0, deltaT = 0;
@@ -224,22 +261,34 @@ int main(int argc, char** argv)
 			//update camera
 			camera->update(mouseX, mouseY, _zoom, _dragging, _strafing);
 			//update uniforms
-			/*
+			lightManager->setUniforms(shaders);
 			mainShader->use();
-			mainShader->setUniform("time", (float)(thisFrameTime - startTime));
 			mainShader->setUniform("inversePVMatrix", camera->getInverseProjectionViewMatrix());
 			mainShader->setUniform("cameraPosition", camera->getPosition());
-			mainShader->setUniform("mouse_x", (float)mouseX/200.0f);
-			mainShader->setUniform("mouse_y", (float)mouseY/200.0f);
-			*/
-			lightManager->setUniforms(shaders);
-			shader->use();
-			shader->setUniform("cameraPosition", camera->getPosition());
-			shader->setUniform("viewProjectionMatrix", camera->getProjectionViewMatrix());
+			mainShader->setUniform("grid_min", molecule.min_pos - glm::vec3(probeRadius / 2));
+			mainShader->setUniform("grid_max", molecule.max_pos + glm::vec3(probeRadius / 2));
+			SESTexture.bindAsTexture(0);
+			mainShader->setUniform("SESTexture", 0);
+			quad->draw();
+			//lightManager->setUniforms(shaders);
+			//shader->use();
+			//shader->setUniform("cameraPosition", camera->getPosition());
+			//shader->setUniform("viewProjectionMatrix", camera->getProjectionViewMatrix());
 
-			atomModel->draw();
+			//atomModel->draw();
 			//quad->draw();
 
+
+			//Texture inspection
+			//texVis->use();
+			//SESTexture.bindAsTexture(0);
+			//texVis->setUniform("slice", _slice);
+			//texVis->setUniform("SESTexture", 0);
+			//texVis->setUniform("probeRadius", probeRadius);
+			//texVis->setUniform("texRadius", maxResolution);
+
+			//quad->draw();
+			//
 
 			//Swap Buffers
 			glfwSwapBuffers(window);
@@ -296,6 +345,14 @@ static void keyCallback(GLFWwindow* window, int key, int scancode, int action, i
 		{
 			glDisable(GL_CULL_FACE);
 		}
+	}
+	if (key == GLFW_KEY_L)
+	{
+		_slice = std::min(_slice + 0.01f, 1.0f);
+	}
+	if (key == GLFW_KEY_J)
+	{
+		_slice = std::max(_slice - 0.01f, 0.0f);
 	}
 }
 

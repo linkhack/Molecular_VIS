@@ -68,12 +68,15 @@
     <None Include="assets\shader\checker_board.frag" />
     <None Include="assets\shader\compute_grid.glsl" />
     <None Include="assets\shader\df_refinement.glsl" />
+    <None Include="assets\shader\fullScreenQuad.vert" />
     <None Include="assets\shader\Phong.frag" />
     <None Include="assets\shader\Phong.vert" />
     <None Include="assets\shader\probe_intersection.glsl" />
     <None Include="assets\shader\ray_generation_test.frag" />
     <None Include="assets\shader\sdf_functions.func" />
     <None Include="assets\shader\sdf_sphere.frag" />
+    <None Include="assets\shader\ses_raymarch.frag" />
+    <None Include="assets\shader\volTexInspector.frag" />
     <None Include="data\1jjj.cif" />
     <None Include="data\1k4r.cif" />
     <None Include="data\1s3s.cif" />

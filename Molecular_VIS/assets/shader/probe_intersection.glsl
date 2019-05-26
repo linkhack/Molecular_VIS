@@ -1,5 +1,6 @@
 #version 460 core
 #define MAX_ATOMS_PER_GRID 31
+#extension GL_ARB_shader_group_vote : enable
 
 layout(local_size_x = 8, local_size_y = 8, local_size_z = 8) in;
 
@@ -30,7 +31,8 @@ layout(std430, binding = 1) readonly buffer Grid
 	GridCell cells[];
 };
 
-uniform layout(r16f, binding = 0) coherent restrict image3D SESTexture;
+layout(r32f, binding = 0) uniform coherent image3D SESTexture;
+layout(r32f, binding = 1) uniform coherent image3D borderClassification;
 
 uniform vec3 grid_min;
 uniform vec3 grid_max;
@@ -62,9 +64,9 @@ vec3 atomGridPosition(uint id)
 	float y = float(mod(id/nr_cells.x, nr_cells.y));
 	float z = float(id / (nr_cells.x*nr_cells.y));
 	// x,y,z in unit (should we add 0.5?)
-	x = x / nr_cells.x;
-	y = y / nr_cells.y;
-	z = z / nr_cells.y;
+	x = x / float(nr_cells.x);
+	y = y / float(nr_cells.y);
+	z = z / float(nr_cells.z);
 	// scale to min/max
 	return scale_original(vec3(x, y, z));
 }
@@ -87,13 +89,15 @@ vec3 scale_original(vec3 pos)
 void main()
 {
 	bool isBorder = false;
-	bool isInside = true;
+	bool isInside = false;
 	bool isOutside = false;
 	int insideOutClassification = 1; //-1 inside, 0 border, +1 outside
 	ivec3 texSize = imageSize(SESTexture);
-	if (any(greaterThan(texPos, texSize))) return;
+	if (!all(lessThan(texPos, texSize))) return;
 	vec3 worldPos = textureToWorld(texPos);
 	uint atomGridId = calculateGridIndex(worldPos);
+	int nr_atoms = atoms.length();
+	int count = 0;
 	// Check for intersections
 	for (int i = -1; i <= 1; ++i) // x
 	{
@@ -102,20 +106,22 @@ void main()
 			for (int k = -1; k <= 1; ++k) // z
 			{
 				int checkIndex = int(atomGridId) + i + int(nr_cells.x)*j + int(nr_cells.x)*int(nr_cells.y)*k;
-				if (checkIndex >= 0) // valid index (still in grid)
+				if (checkIndex >= 0 && checkIndex < nr_atoms) // valid index (still in grid)
 				{
 					GridCell currentCell = cells[checkIndex];
 					if (currentCell.count > 0) // has atom in grid
 					{
-						for (int atomIndex = 0; atomIndex < currentCell.count; ++atomIndex)
+						for (int atomIndex = 0; atomIndex < MAX_ATOMS_PER_GRID; ++atomIndex)
 						{
-							AtomStruct currentAtom = atoms[atomIndex];
+							if (atomIndex >= currentCell.count) break;
+							uint ssboIndex = currentCell.ids[atomIndex];
+							AtomStruct currentAtom = atoms[ssboIndex];
 							float dist2 = dot(worldPos - currentAtom.position, worldPos - currentAtom.position);
-							if (dist2 < currentAtom.radius*currentAtom.radius)
+							if (dist2 < (currentAtom.radius-texRadius)*(currentAtom.radius-texRadius))
 							{
 								//Inside
 								insideOutClassification = min(insideOutClassification, -1);
-								break;
+								//break;
 							}
 							else if (dist2 > (currentAtom.radius + probeRadius)*(currentAtom.radius + probeRadius))
 							{
@@ -124,6 +130,7 @@ void main()
 							}
 							else
 							{
+								//Border
 								insideOutClassification = min(insideOutClassification, 0);
 							}
 						}
@@ -137,12 +144,15 @@ void main()
 	isOutside = (insideOutClassification == 1);
 	if (isOutside)
 	{
-		imageStore(SESTexture, ivec3(texPos), vec4(probeRadius));
+		imageStore(SESTexture, ivec3(texPos), vec4(probeRadius,0,0,1));
 	}
 	if (isInside)
 	{
-		imageStore(SESTexture, ivec3(texPos), vec4(-texRadius));
+		imageStore(SESTexture, ivec3(texPos), vec4(-texRadius,0,0,1));
 	}
-	memoryBarrier();
-	
+	if (isBorder)
+	{
+		imageStore(SESTexture, ivec3(texPos), vec4(-texRadius, 0, 0, 1));
+	}
+	imageStore(borderClassification, ivec3(texPos), vec4(insideOutClassification,0,0,1));
 }

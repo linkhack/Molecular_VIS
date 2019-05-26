@@ -158,5 +158,8 @@
     <None Include="data\5xyu.cif" />
     <None Include="data\6ivx.pdb" />
     <None Include="data\6mbd.cif" />
+    <None Include="assets\shader\fullScreenQuad.vert" />
+    <None Include="assets\shader\volTexInspector.frag" />
+    <None Include="assets\shader\ses_raymarch.frag" />
   </ItemGroup>
 </Project>
