@@ -129,11 +129,6 @@ Hit rayMarching(vec3 start, vec3 direction){
 	return result;
 }
 
-float calculateCheapOutline(Hit hit)
-{
-	return vec3(1.f-float(closestHit.steps)/float(MAX_STEPS);
-}
-
 //Calculates Shading of Hit w.r.t all lights
 vec4 calculateShading(Hit hit){
 	//
@@ -168,8 +163,7 @@ void main() {
 		FragColor = WHITE;
 		return;
 	}else{
-		//FragColor = calculateShading(closestHit);
-		FragColor = vec4(vec3(1.f-float(closestHit.steps)/float(MAX_STEPS)), 1.0f);
+		FragColor = calculateShading(closestHit);
 		return;
 	}
 }
