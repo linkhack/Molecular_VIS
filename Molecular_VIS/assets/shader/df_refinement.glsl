@@ -7,8 +7,8 @@ const uvec3 texPos = gl_GlobalInvocationID;
 uniform float probeRadius;
 uniform float texRadius;
 
-layout(r32f, binding = 0) uniform coherent image3D SESTexture;
-layout(r32f, binding = 1) uniform coherent readonly image3D borderClassification;
+layout(r32f, binding = 0) uniform restrict image3D SESTexture;
+layout(r16f, binding = 1) uniform restrict readonly image3D borderClassification;
 
 void main()
 {
@@ -21,7 +21,7 @@ void main()
 		int voxelRadius = int(nbhdRadius / texRadius) + 1;
 		int voxelRadius2 = voxelRadius * voxelRadius;
 		bool hasNeighbor = false;
-		float minDistance=10000.0f;
+		float minDistance2=10000.0f;
 
 		// TODO: check if sqrt makes it smaller (maybe cube is better)
 		for (int i = -voxelRadius; i <= voxelRadius; ++i)
@@ -39,10 +39,10 @@ void main()
 						if (otherClassification>0) 
 						{
 							hasNeighbor = true;
-							float distance = texRadius * sqrt(i*i + j * j + k * k);
-							if (distance < minDistance)
+							float distance2 = i * i + j * j + k * k;
+							if (distance2 < minDistance2)
 							{
-								minDistance = distance;
+								minDistance2 = distance2;
 								
 							}
 						}
@@ -53,7 +53,8 @@ void main()
 		}
 		if (hasNeighbor)
 		{
-			imageStore(SESTexture, ivec3(texPos), vec4(probeRadius - minDistance));
+			imageStore(SESTexture, ivec3(texPos), vec4(probeRadius - texRadius*sqrt(minDistance2)));
 		}
+
 	}
 }

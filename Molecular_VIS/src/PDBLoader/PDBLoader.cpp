@@ -1,4 +1,4 @@
-#include "PDB_Tests.h"
+#include "PDBLoader.h"
 #include <iostream>
 #include <random>
 #include <gemmi/cif.hpp>
@@ -12,18 +12,18 @@
 
 
 
-PDB_Tests::PDB_Tests(const std::string& dir)
+PDBLoader::PDBLoader(const std::string& dir)
 {
 	//gemmi::cif::Document bla = gemmi::cif::read_file(dir);
 	molStructure = gemmi::read_structure_file(dir, gemmi::CoorFormat::Mmcif);
 }
 
 
-PDB_Tests::~PDB_Tests()
+PDBLoader::~PDBLoader()
 {
 }
 
-Molecule PDB_Tests::doStuff()
+Molecule PDBLoader::getMolecule()
 {
 	Molecule result;
 	glm::vec3 sum = glm::vec3(0.f);
@@ -52,14 +52,4 @@ Molecule PDB_Tests::doStuff()
 	result.min_pos = min-sum;
 	result.max_radius = max_radius;
 	return std::move(result);
-}
-
-std::shared_ptr<Shader> PDB_Tests::getShader()
-{
-	return shader;
-}
-
-void PDB_Tests::buildAtomTable()
-{
-	
 }

@@ -3,7 +3,7 @@
 
 
 VolumetricTexture::VolumetricTexture(int width, int height, int depth, GLenum internalFormat, GLenum format, GLenum type)
-	:width(width), height(height), depth(depth)
+	:width(width), height(height), depth(depth), internalFormat(internalFormat)
 {
 	glCreateTextures(GL_TEXTURE_3D, 1, &handle);
 	glBindTexture(GL_TEXTURE_3D, handle);
@@ -33,7 +33,7 @@ void VolumetricTexture::bindAsTexture(int unit)
 void VolumetricTexture::bindAsImage(int unit)
 {
 	glBindTexture(GL_TEXTURE_3D, handle);
-	glBindImageTexture(unit, handle, 0, GL_TRUE, 0, GL_READ_WRITE, GL_R32F);
+	glBindImageTexture(unit, handle, 0, GL_TRUE, 0, GL_READ_WRITE, internalFormat);
 }
 
 

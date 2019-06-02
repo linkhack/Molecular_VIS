@@ -14,8 +14,9 @@ private:
 	GLuint handle;
 	unsigned int size;
 	unsigned int target;
-
+	bool isInit = false;
 public:
+	SSBO();
 	SSBO(unsigned int size);
 	~SSBO();
 
@@ -28,7 +29,7 @@ public:
 	* Uploads data to Buffer.
 	* data.size()*sizeof(T) has to be less than capacity
 	**/
-	void uploadData(const std::vector<T> data);
+	void uploadData(const std::vector<T>& data);
 
 	/**
 	* Binds buffer to indexed buffer target (number in shader layout(..,target))
@@ -45,12 +46,19 @@ public:
 /********************************************
 * IMPLEMENTATION
 *********************************************/
+
+template<class T>
+SSBO<T>::SSBO()
+	:size(0), target(-1)
+{}
+
 template<class T>
 SSBO<T>::SSBO(unsigned int size)
-	:size(size), target(-1)
+	:size(size), target(-1), isInit(true)
 {
 	glGenBuffers(1, &handle);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, handle);
+	std::cout << handle << '\n';
 	glBufferData(GL_SHADER_STORAGE_BUFFER, size*sizeof(T), NULL, GL_DYNAMIC_DRAW);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 }
@@ -58,7 +66,11 @@ SSBO<T>::SSBO(unsigned int size)
 template<class T>
 SSBO<T>::~SSBO()
 {
-	glDeleteBuffers(1, &handle);
+	if (isInit)
+	{
+		std::cout << "Deleted SSBO with handle: " << handle << '\n';
+		glDeleteBuffers(1, &handle);
+	}
 }
 template<class T>
 unsigned int SSBO<T>::getCapacity()
@@ -67,11 +79,10 @@ unsigned int SSBO<T>::getCapacity()
 }
 
 template<class T>
-void SSBO<T>::uploadData(const std::vector<T> data)
+void SSBO<T>::uploadData(const std::vector<T>& data)
 {
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, handle);
-	std::cout << sizeof(data[0]);
-	glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, data.size() * sizeof(data[0]), data.data());
+	glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, data.size() * sizeof(T), data.data());
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 }
 

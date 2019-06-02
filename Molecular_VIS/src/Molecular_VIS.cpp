@@ -15,13 +15,14 @@
 #include "Geometry/Geometry.h"
 #include "Camera/Camera.h"
 #include "Light/LightManager.h"
-#include "PDB_Loader/PDB_Tests.h"
+#include "PDBLoader/PDBLoader.h"
 #include "Material/LambertMaterial.h"
 #include "Geometry/MoleculeModel.h"
 #include "Texture/VolumetricTexture.h"
+#include "Molecule/SESSurface.h"
 
 #include "Shader/SSBO.h"
-#include "Molecule.h"
+#include "Molecule/Molecule.h"
 
 
 #define EXIT_WITH_ERROR(err) \
@@ -53,11 +54,6 @@ float _slice = 0.5f;
 /* --------------------------------------------- */
 // Structs
 /* --------------------------------------------- */
-struct GridCell
-{
-	unsigned int count;
-	unsigned int ids[31];
-};
 
 /* --------------------------------------------- */
 // Main
@@ -152,10 +148,6 @@ int main(int argc, char** argv)
 		std::shared_ptr<Shader> mainShader = std::make_shared<Shader>("base.vert","ses_raymarch.frag");
 		shaders.push_back(mainShader);
 		std::shared_ptr<Geometry> fullScreenQuad;
-		std::shared_ptr<Shader> gridBuilder = std::make_shared<Shader>("compute_grid.glsl");
-		std::shared_ptr<Shader> probeInterscetion = std::make_shared<Shader>("probe_intersection.glsl");
-		std::shared_ptr<Shader> df_refinement = std::make_shared<Shader>("df_refinement.glsl");
-		std::shared_ptr<Shader> inner_refinement = std::make_shared<Shader>("df_inner.glsl");
 		std::shared_ptr<Shader> texVis = std::make_shared<Shader>("fullScreenQuad.vert", "volTexInspector.frag");
 		GeometryData quadGeom = ProceduralGeometry::createFullScreenQuad();
 		Geometry* quad = new ProceduralGeometry(glm::mat4(1.0f), quadGeom, mainShader);
@@ -171,12 +163,12 @@ int main(int argc, char** argv)
 
 
 		double loadTime = glfwGetTime();
-		PDB_Tests test("data/1jjj.cif");
+		PDBLoader test("data/6mbd.cif");
 		//std::vector<std::unique_ptr<Geometry>> atoms = test.doStuff();
 		loadTime = glfwGetTime() - loadTime;
 		std::cout << "time to load: " << loadTime << '\n';
 		loadTime = glfwGetTime();
-		Molecule molecule = test.doStuff();
+		Molecule molecule = test.getMolecule();
 		loadTime = glfwGetTime() - loadTime;
 		std::cout << "Nr of Atoms: "<< molecule.atoms.size() << '\n';
 		std::cout << "time to do stuff: " << loadTime << '\n';
@@ -191,63 +183,9 @@ int main(int argc, char** argv)
 
 		//SES calculations
 		float probeRadius = 1.5f;
-		glm::uvec3 dimensions = glm::uvec3((molecule.max_pos - molecule.min_pos+glm::vec3(probeRadius)) / (molecule.max_radius + probeRadius));
-		SSBO<Atom> atomSSBO(100000);
 		loadTime = glfwGetTime();
-		atomSSBO.uploadData(molecule.atoms);
-		atomSSBO.bindToTarget(0);
-		SSBO<GridCell> grid((dimensions.x + 1)*(dimensions.y + 1)*(dimensions.z + 1));
-		grid.bindToTarget(1);
-		gridBuilder->use();
-		gridBuilder->setUniform("nrAtoms", (int)molecule.atoms.size());
-		gridBuilder->setUniform("nr_cells", dimensions);
-		gridBuilder->setUniform("max", molecule.max_pos + glm::vec3(probeRadius/2));
-		gridBuilder->setUniform("min", molecule.min_pos - glm::vec3(probeRadius / 2));
-		int number = (int)(molecule.atoms.size() / (1024)) + 1;
-		glDispatchCompute(number, 1, 1);
-		glMemoryBarrier(GL_ALL_BARRIER_BITS);
-		probeInterscetion->use();
-		probeInterscetion->setUniform("grid_max", molecule.max_pos + glm::vec3(probeRadius / 2));
-		probeInterscetion->setUniform("grid_min", molecule.min_pos - glm::vec3(probeRadius / 2));
-		probeInterscetion->setUniform("nr_cells", dimensions);
-		probeInterscetion->setUniform("probeRadius", probeRadius);
-		//Construct Texture
-		glm::vec3 moleculeDimension = molecule.max_pos - molecule.min_pos + glm::vec3(probeRadius);
-		float idealRadius = 0.8f;
-		glm::ivec3 idealTexSize = glm::ivec3(moleculeDimension / idealRadius);
-		glm::vec3 resolutions = moleculeDimension / glm::vec3(idealTexSize);
-		float maxResolution = std::max(resolutions.x, std::max(resolutions.y, resolutions.z));
-		std::cout << "idealTexSize: " << idealTexSize.x << " \ " << idealTexSize.y << " \ " << idealTexSize.z << '\n';
-		std::cout << "resolutions: " << resolutions.x << " \ " << resolutions.y << " \ " << resolutions.z << '\n';
-		std::cout << number << '\n';
-		std::cout << dimensions.x << " \ " << dimensions.y << " \ " << dimensions.z << " \n";
-
-		glm::ivec3 dispatchSize = idealTexSize / glm::ivec3(8) + glm::ivec3(1);
-		std::cout << "dispatch " <<dispatchSize.x << " \ " << dispatchSize.y << " \ " << dispatchSize.z << " \n";
-		probeInterscetion->setUniform("texRadius", maxResolution);
-		VolumetricTexture SESTexture(idealTexSize.x, idealTexSize.y, idealTexSize.z, GL_R32F, GL_RED,  GL_FLOAT);
-		VolumetricTexture classification(idealTexSize.x, idealTexSize.y, idealTexSize.z, GL_R32F, GL_RED, GL_FLOAT);
-		SESTexture.bindAsImage(0);
-		classification.bindAsImage(1);
-		glDispatchCompute(dispatchSize.x, dispatchSize.y, dispatchSize.z);
-		glMemoryBarrier(GL_ALL_BARRIER_BITS);
-
-
-		df_refinement->use();
-		df_refinement->setUniform("probeRadius", probeRadius);
-		df_refinement->setUniform("texRadius", maxResolution);
-		glDispatchCompute(dispatchSize.x, dispatchSize.y, dispatchSize.z);
-		glMemoryBarrier(GL_ALL_BARRIER_BITS);
+		SESSurface surfaceRepresentation(molecule, probeRadius);
 		loadTime = glfwGetTime() - loadTime;
-
-		inner_refinement->use();
-		inner_refinement->setUniform("texRadius", maxResolution);
-		dispatchSize = idealTexSize / glm::ivec3(3) + glm::ivec3(1);
-		for (int i = 0; i < 50; ++i)
-		{
-			glDispatchCompute(dispatchSize.x, dispatchSize.y, dispatchSize.z);
-			glMemoryBarrier(GL_ALL_BARRIER_BITS);
-		}
 		std::cout << "Compute shader time: " << loadTime << '\n';
 
 		//Variables
@@ -275,13 +213,15 @@ int main(int argc, char** argv)
 			mainShader->use();
 			mainShader->setUniform("inversePVMatrix", camera->getInverseProjectionViewMatrix());
 			mainShader->setUniform("cameraPosition", camera->getPosition());
-			mainShader->setUniform("grid_min", molecule.min_pos - glm::vec3(probeRadius / 2));
-			mainShader->setUniform("grid_max", molecule.max_pos + glm::vec3(probeRadius / 2));
-			mainShader->setUniform("subsurfaceDepth", 2.0f);
-			SESTexture.bindAsTexture(0);
+			mainShader->setUniform("grid_min", surfaceRepresentation.getTexMin());
+			mainShader->setUniform("grid_max", surfaceRepresentation.getTexMax());
+			mainShader->setUniform("subsurfaceDepth", 5.0f);
+			surfaceRepresentation.bindToUnit(0);
 			mainShader->setUniform("SESTexture", 0);
 			quad->draw();
+			
 			//lightManager->setUniforms(shaders);
+
 			//shader->use();
 			//shader->setUniform("cameraPosition", camera->getPosition());
 			//shader->setUniform("viewProjectionMatrix", camera->getProjectionViewMatrix());

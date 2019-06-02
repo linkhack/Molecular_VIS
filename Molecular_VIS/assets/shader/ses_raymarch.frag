@@ -89,17 +89,14 @@ float sceneSDF(vec3 pos)
 	return texture(SESTexture,scale_unit(pos)).r;
 }
 
-vec3 calculateNormal(vec3 pos){
-	const float eps=0.1;
-    const vec3 v1 = vec3( 1.0,-1.0,-1.0);
-    const vec3 v2 = vec3(-1.0,-1.0, 1.0);
-    const vec3 v3 = vec3(-1.0, 1.0,-1.0);
-    const vec3 v4 = vec3( 1.0, 1.0, 1.0);
+vec3 calculateNormal(vec3 pos, float value){
+	const float eps=0.3;
+	const vec2 k = vec2(1,-1);
 
-    return normalize( v1 * sceneSDF( pos + v1*eps ).x +
-                    v2 * sceneSDF( pos + v2*eps ).x +
-                    v3 * sceneSDF( pos + v3*eps ).x +
-                    v4 * sceneSDF( pos + v4*eps ).x );
+    return normalize( k.xyy * (sceneSDF( pos + k.xyy*eps ).x -value)+
+                    k.yyx * (sceneSDF( pos + k.yyx*eps ).x - value)+
+                    k.yxy * (sceneSDF( pos + k.yxy*eps ).x - value)+
+                    k.xxx * (sceneSDF( pos + k.xxx*eps ).x - value));
 }
 
 
@@ -112,7 +109,7 @@ Hit rayMarching(vec3 start, vec3 direction){
 		if(dist < EPSILON){
 			result.distance = depth;
 			result.position = start+depth*direction;
-			result.normal = calculateNormal(result.position);
+			result.normal = calculateNormal(result.position, dist);
 			result.viewDirection = direction;
 			result.steps = i;
 			return result;
@@ -134,24 +131,27 @@ vec4 calculateShading(Hit hit){
 	//
 	vec3 color;
 	float ao = 0.0;
-	const int nbIte = 16;
+	const int nbIte = 4;
 	const float maxDist = 16.f;
+	float distance = 1.0f;
 	float falloff=1.0;
     for( int i=0; i<nbIte; i++ )
     {
-        float l = (0.01+float(i)/float(nbIte))*maxDist;
-        vec3 rd = hit.normal*l;
-        ao += (l - max(sceneSDF( hit.position + rd ),0.f))/maxDist*falloff;
-		falloff*=0.9;
+        
+        vec3 rd = hit.normal*distance;
+		distance *= 2.1f;
+        ao += (distance - max(sceneSDF( hit.position + rd ),0.f))/maxDist*falloff;
+		falloff*=0.95;
     }
 
-	float light =1.f - 2.f*ao/float(nbIte);
+	float light =1.0f-0.15f*ao;
+	//float light = 0.5f;
 	//Subsurface
 	vec3 innerPosition = hit.position + subsurfaceDepth*hit.viewDirection;
 	float innerSDF = sceneSDF(innerPosition);
 	float scalingFactor = (subsurfaceDepth - innerSDF)/(2*subsurfaceDepth);
-
-	color = mat.color*mat.diffuse*light + .5f*vec3(1-scalingFactor);
+	//scalingFactor = 1.0f;
+	color = mat.color*mat.diffuse*light + .25f*vec3(1-scalingFactor);
 	return vec4(vec3(color),1.f);
 
 }
@@ -164,6 +164,7 @@ void main() {
 		return;
 	}else{
 		FragColor = calculateShading(closestHit);
+		//FragColor = vec4(closestHit.normal,1.0f);
 		return;
 	}
 }

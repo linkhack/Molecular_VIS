@@ -31,10 +31,12 @@ layout(std430, binding = 1) readonly buffer Grid
 	GridCell cells[];
 };
 
-layout(r32f, binding = 0) uniform coherent image3D SESTexture;
-layout(r32f, binding = 1) uniform coherent image3D borderClassification;
+layout(r32f, binding = 0) uniform restrict coherent image3D SESTexture;
+layout(r16f, binding = 1) uniform restrict coherent image3D borderClassification;
 
 uniform vec3 grid_min;
+uniform vec3 tex_min;
+uniform vec3 tex_max;
 uniform vec3 grid_max;
 uniform uvec3 nr_cells;
 uniform float probeRadius;
@@ -42,48 +44,33 @@ uniform float texRadius;
 
 // Function prototypes
 uint calculateGridIndex(vec3 pos);
-vec3 atomGridPosition(uint id);
 vec3 textureToWorld(ivec3 tex_pos);
-vec3 scale_unit(vec3 pos);
-vec3 scale_original(vec3 pos);
+vec3 scale_unit(vec3 pos, vec3 minimum, vec3 maximum);
+vec3 scale_original(vec3 pos, vec3 minimum, vec3 maximum);
 
 
 //Calculate grid index from position 
 uint calculateGridIndex(vec3 pos)
 {
-	vec3 u_pos = scale_unit(pos);
+	vec3 u_pos = scale_unit(pos,grid_min,grid_max);
 	return uint(nr_cells.x * u_pos.x)
 		+ nr_cells.x * uint(nr_cells.y * u_pos.y)
 		+ nr_cells.x * nr_cells.y * uint(u_pos.z * nr_cells.z);
 }
-// Calculates position from gird index
-vec3 atomGridPosition(uint id)
-{
-	// x,y,z of grid
-	float x = float(mod(id, nr_cells.x));
-	float y = float(mod(id/nr_cells.x, nr_cells.y));
-	float z = float(id / (nr_cells.x*nr_cells.y));
-	// x,y,z in unit (should we add 0.5?)
-	x = x / float(nr_cells.x);
-	y = y / float(nr_cells.y);
-	z = z / float(nr_cells.z);
-	// scale to min/max
-	return scale_original(vec3(x, y, z));
-}
 
 vec3 textureToWorld(uvec3 tex_pos)
 {
-	return scale_original(vec3(tex_pos) / vec3(imageSize(SESTexture)));
+	return scale_original(vec3(tex_pos) / vec3(imageSize(SESTexture)),tex_min, tex_max);
 }
 
-vec3 scale_unit(vec3 pos)
+vec3 scale_unit(vec3 pos, vec3 minimum, vec3 maximum)
 {
-	return (pos - grid_min) / (grid_max - grid_min);
+	return (pos - minimum) / (maximum - minimum);
 }
 
-vec3 scale_original(vec3 pos)
+vec3 scale_original(vec3 pos, vec3 minimum, vec3 maximum)
 {
-	return (grid_max - grid_min)*pos + grid_min;
+	return (maximum - minimum)*pos + minimum;
 }
 
 void main()
@@ -97,7 +84,6 @@ void main()
 	vec3 worldPos = textureToWorld(texPos);
 	uint atomGridId = calculateGridIndex(worldPos);
 	int nr_atoms = atoms.length();
-	int count = 0;
 	// Check for intersections
 	for (int i = -1; i <= 1; ++i) // x
 	{
@@ -111,9 +97,8 @@ void main()
 					GridCell currentCell = cells[checkIndex];
 					if (currentCell.count > 0) // has atom in grid
 					{
-						for (int atomIndex = 0; atomIndex < MAX_ATOMS_PER_GRID; ++atomIndex)
+						for (int atomIndex = 0; atomIndex < currentCell.count; ++atomIndex)
 						{
-							if (atomIndex >= currentCell.count) break;
 							uint ssboIndex = currentCell.ids[atomIndex];
 							AtomStruct currentAtom = atoms[ssboIndex];
 							float dist2 = dot(worldPos - currentAtom.position, worldPos - currentAtom.position);
@@ -148,7 +133,7 @@ void main()
 	}
 	if (isInside)
 	{
-		imageStore(SESTexture, ivec3(texPos), vec4(-1000.0f,0,0,1));
+		imageStore(SESTexture, ivec3(texPos), vec4(-10000.f,0,0,1));
 	}
 	if (isBorder)
 	{

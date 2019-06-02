@@ -1,8 +1,8 @@
 #version 460 core
 layout(local_size_x = 3, local_size_y = 3, local_size_z = 3) in;
 
-layout(r32f, binding = 0) uniform coherent image3D SESTexture;
-layout(r32f, binding = 1) uniform coherent readonly image3D borderClassification;
+layout(r32f, binding = 0) uniform restrict image3D SESTexture;
+layout(r16f, binding = 1) uniform restrict readonly image3D borderClassification;
 
 shared float values[5][5][5];
 shared float classification[5][5][5];
@@ -42,7 +42,7 @@ void main()
 	barrier();
 	float maxValue = -10000.0f;
 	ivec3 sharedCenter = ivec3(blockCoords) + ivec3(1);
-	if (classification[sharedCenter.x][sharedCenter.y][sharedCenter.z] < 0)
+	if (classification[sharedCenter.x][sharedCenter.y][sharedCenter.z] <0)
 	{
 		for (int i = -1; i <= 1; ++i)
 		{

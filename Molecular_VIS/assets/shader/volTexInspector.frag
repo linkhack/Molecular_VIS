@@ -11,6 +11,6 @@ uniform sampler3D SESTexture;
 
 void main()
 {
-   float value = (texture(SESTexture, vec3(TexCoords,slice)).r+12.f)/11.f;
+   float value = (texture(SESTexture, vec3(TexCoords,slice)).r+5.0f)/(5.0f+probeRadius);
    FragColor = vec4(vec3(value),1.0f);
 }

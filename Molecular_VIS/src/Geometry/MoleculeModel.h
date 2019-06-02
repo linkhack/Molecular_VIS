@@ -1,6 +1,6 @@
 #pragma once
 #include "Geometry.h"
-#include "../Molecule.h"
+#include "../Molecule/Molecule.h"
 
 class MoleculeModel:public Geometry
 {

@@ -7,20 +7,17 @@
 #include <gemmi/chemcomp.hpp>
 #include "../Geometry/Geometry.h"
 #include <glm/glm.hpp>
-#include "../Molecule.h"
+#include "../Molecule/Molecule.h"
 
-class PDB_Tests
+class PDBLoader
 {
 private:
 	gemmi::Structure molStructure;
-	gemmi::ChemComp ccMol;
-	std::shared_ptr<Shader> shader;
 public:
-	PDB_Tests(const std::string& dir);
-	~PDB_Tests();
+	PDBLoader(const std::string& dir);
+	~PDBLoader();
 
-	Molecule doStuff();
-	std::shared_ptr<Shader> getShader();
+	Molecule getMolecule();
 	void buildAtomTable();
 };
 
