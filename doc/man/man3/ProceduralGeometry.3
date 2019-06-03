@@ -1,0 +1,48 @@
+.TH "ProceduralGeometry" 3 "Mon Jun 3 2019" "Molecular Vis" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+ProceduralGeometry
+.SH SYNOPSIS
+.br
+.PP
+.PP
+Inherits \fBGeometry\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBProceduralGeometry\fP (glm::mat4 modelMatrix, \fBGeometryData\fP &geometryData, std::shared_ptr< \fBMaterial\fP > material)"
+.br
+.ti -1c
+.RI "\fBProceduralGeometry\fP (glm::mat4 modelMatrix, \fBGeometryData\fP &geometryData, std::shared_ptr< \fBShader\fP > shader)"
+.br
+.ti -1c
+.RI "virtual void \fBdraw\fP (glm::mat4 matrix=glm::mat4(1\&.0f))"
+.br
+.in -1c
+.SS "Static Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "static \fBGeometryData\fP \fBcreateCubeGeometry\fP (float width, float height, float depth)"
+.br
+.ti -1c
+.RI "static \fBGeometryData\fP \fBcreateSphereGeometry\fP (float radius, unsigned int longitudeSegments, unsigned int latitudeSegments)"
+.br
+.ti -1c
+.RI "static void \fBcreateSphereGeometry\fP (float radius, unsigned int longitudeSegments, unsigned int latitudeSegments, glm::vec3 position, \fBGeometryData\fP &geometry)"
+.br
+.ti -1c
+.RI "static \fBGeometryData\fP \fBcreateCylinderGeometry\fP (float radius, float height, unsigned int segments)"
+.br
+.ti -1c
+.RI "static \fBGeometryData\fP \fBcreateFullScreenQuad\fP ()"
+.br
+.in -1c
+.SS "Additional Inherited Members"
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Molecular Vis from the source code\&.

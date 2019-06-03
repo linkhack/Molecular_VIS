@@ -1,0 +1,63 @@
+\hypertarget{struct_molecule}{}\section{Molecule Struct Reference}
+\label{struct_molecule}\index{Molecule@{Molecule}}
+
+
+Struct for molecule data.  
+
+
+
+
+{\ttfamily \#include $<$Molecule.\+h$>$}
+
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ \mbox{\hyperlink{struct_atom}{Atom}} $>$ \mbox{\hyperlink{struct_molecule_a69365132d17fe1d98a0954960ae1eb00}{atoms}}
+\item 
+float \mbox{\hyperlink{struct_molecule_a01e9bc4e0fc5fc24d8793434741dcfa3}{max\+\_\+radius}}
+\end{DoxyCompactItemize}
+\begin{Indent}\textbf{ Bounding-\/\+Box}\par
+\begin{DoxyCompactItemize}
+\item 
+glm\+::vec3 \mbox{\hyperlink{struct_molecule_a0ffe6af0a1ea4ff5cbbdd1a2a922253b}{max\+\_\+pos}}
+\item 
+glm\+::vec3 \mbox{\hyperlink{struct_molecule_a8a7e5c28190e929197dee74935604f67}{min\+\_\+pos}}
+\end{DoxyCompactItemize}
+\end{Indent}
+
+
+\subsection{Detailed Description}
+Struct for molecule data. 
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{struct_molecule_a69365132d17fe1d98a0954960ae1eb00}\label{struct_molecule_a69365132d17fe1d98a0954960ae1eb00}} 
+\index{Molecule@{Molecule}!atoms@{atoms}}
+\index{atoms@{atoms}!Molecule@{Molecule}}
+\subsubsection{\texorpdfstring{atoms}{atoms}}
+{\footnotesize\ttfamily std\+::vector$<$\mbox{\hyperlink{struct_atom}{Atom}}$>$ Molecule\+::atoms}
+
+Vector of all atoms of the molecule \mbox{\Hypertarget{struct_molecule_a0ffe6af0a1ea4ff5cbbdd1a2a922253b}\label{struct_molecule_a0ffe6af0a1ea4ff5cbbdd1a2a922253b}} 
+\index{Molecule@{Molecule}!max\_pos@{max\_pos}}
+\index{max\_pos@{max\_pos}!Molecule@{Molecule}}
+\subsubsection{\texorpdfstring{max\_pos}{max\_pos}}
+{\footnotesize\ttfamily glm\+::vec3 Molecule\+::max\+\_\+pos}
+
+Bounding box for the molecule. All atoms are between min\+\_\+pos and max\+\_\+pos \mbox{\Hypertarget{struct_molecule_a01e9bc4e0fc5fc24d8793434741dcfa3}\label{struct_molecule_a01e9bc4e0fc5fc24d8793434741dcfa3}} 
+\index{Molecule@{Molecule}!max\_radius@{max\_radius}}
+\index{max\_radius@{max\_radius}!Molecule@{Molecule}}
+\subsubsection{\texorpdfstring{max\_radius}{max\_radius}}
+{\footnotesize\ttfamily float Molecule\+::max\+\_\+radius}
+
+Maximum of van der Waals radii of the atoms of the molecule. \mbox{\Hypertarget{struct_molecule_a8a7e5c28190e929197dee74935604f67}\label{struct_molecule_a8a7e5c28190e929197dee74935604f67}} 
+\index{Molecule@{Molecule}!min\_pos@{min\_pos}}
+\index{min\_pos@{min\_pos}!Molecule@{Molecule}}
+\subsubsection{\texorpdfstring{min\_pos}{min\_pos}}
+{\footnotesize\ttfamily glm\+::vec3 Molecule\+::min\+\_\+pos}
+
+Bounding box for the molecule. All atoms are between min\+\_\+pos and max\+\_\+pos 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Molecule/Molecule.\+h\end{DoxyCompactItemize}

@@ -8,7 +8,7 @@ MoleculeModel::MoleculeModel(glm::mat4 modelMatrix, std::shared_ptr<Material> ma
 	GeometryData geometryData;
 	for (const auto& atom : molecule.atoms)
 	{
-		ProceduralGeometry::createSphereGeometry(0.8f*atom.radius, 8u, 8u, atom.position, geometryData);
+		ProceduralGeometry::createSphereGeometry(0.5f*atom.radius, 8u, 8u, atom.position, geometryData);
 	}
 
 	//Create Vertex Array Object
@@ -69,7 +69,7 @@ void MoleculeModel::draw(glm::mat4 matrix)
 	glm::mat4 totalMatrix = matrix * modelMatrix;
 	std::shared_ptr<Shader> shader = material->getShader();
 	//set Model Uniforms
-	material->setUniforms(0);
+	material->setUniforms();
 	shader->use();
 	shader->setUniform("modelMatrix", totalMatrix);
 	shader->setUniform("normalMatrix", glm::mat3(glm::inverse(glm::transpose(totalMatrix))));

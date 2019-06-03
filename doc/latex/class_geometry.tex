@@ -1,0 +1,67 @@
+\hypertarget{class_geometry}{}\section{Geometry Class Reference}
+\label{class_geometry}\index{Geometry@{Geometry}}
+
+
+Base class for \mbox{\hyperlink{class_geometry}{Geometry}} classes.  
+
+
+
+
+{\ttfamily \#include $<$Geometry.\+h$>$}
+
+Inheritance diagram for Geometry\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_geometry}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{class_geometry_a417f18c0d1f3c8a09ee93023c0a8330d}{draw}} (glm\+::mat4 matrix=glm\+::mat4(1.\+0f))=0
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+glm\+::mat4 \mbox{\hyperlink{class_geometry_a03134a55079f6ca6ff750f31869f645e}{model\+Matrix}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Base class for \mbox{\hyperlink{class_geometry}{Geometry}} classes. 
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_geometry_a417f18c0d1f3c8a09ee93023c0a8330d}\label{class_geometry_a417f18c0d1f3c8a09ee93023c0a8330d}} 
+\index{Geometry@{Geometry}!draw@{draw}}
+\index{draw@{draw}!Geometry@{Geometry}}
+\subsubsection{\texorpdfstring{draw()}{draw()}}
+{\footnotesize\ttfamily virtual void Geometry\+::draw (\begin{DoxyParamCaption}\item[{glm\+::mat4}]{matrix = {\ttfamily glm\+:\+:mat4(1.0f)} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Abstract function defining how to draw
+
+
+\begin{DoxyParams}{Parameters}
+{\em matrix} & Defines a transformation from word space to word space. Gets left-\/multiplied with the model matrix. \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \mbox{\hyperlink{class_procedural_geometry_ab3c3e34093cb3af5756d214b18ff6047}{Procedural\+Geometry}}, and \mbox{\hyperlink{class_molecule_model_a3f33fde639e7778b811467a81e917d15}{Molecule\+Model}}.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{class_geometry_a03134a55079f6ca6ff750f31869f645e}\label{class_geometry_a03134a55079f6ca6ff750f31869f645e}} 
+\index{Geometry@{Geometry}!modelMatrix@{modelMatrix}}
+\index{modelMatrix@{modelMatrix}!Geometry@{Geometry}}
+\subsubsection{\texorpdfstring{modelMatrix}{modelMatrix}}
+{\footnotesize\ttfamily glm\+::mat4 Geometry\+::model\+Matrix\hspace{0.3cm}{\ttfamily [protected]}}
+
+contains model matrix. Transforms geometry from object to world space. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Geometry/Geometry.\+h\item 
+Geometry/Geometry.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,87 @@
+\hypertarget{class_frustum_plane}{}\section{Frustum\+Plane Class Reference}
+\label{class_frustum_plane}\index{FrustumPlane@{FrustumPlane}}
+
+
+Class for Frustum plane.  
+
+
+
+
+{\ttfamily \#include $<$Frustum\+Plane.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_frustum_plane_a8199d02374fe7f01f9610593059cac92}{Frustum\+Plane}} (const glm\+::vec3 \&v1, const glm\+::vec3 \&v2, const glm\+::vec3 \&v3)
+\item 
+void \mbox{\hyperlink{class_frustum_plane_a3678151d513b029d839f602a1624707b}{set3\+Points}} (const glm\+::vec3 \&v1, const glm\+::vec3 \&v2, const glm\+::vec3 \&v3)
+\item 
+float \mbox{\hyperlink{class_frustum_plane_a82f59e8cbd67a6d3b5ffaf91c1ff8e32}{distance}} (const glm\+::vec3 \&p) const
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for Frustum plane. 
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_frustum_plane_a8199d02374fe7f01f9610593059cac92}\label{class_frustum_plane_a8199d02374fe7f01f9610593059cac92}} 
+\index{FrustumPlane@{FrustumPlane}!FrustumPlane@{FrustumPlane}}
+\index{FrustumPlane@{FrustumPlane}!FrustumPlane@{FrustumPlane}}
+\subsubsection{\texorpdfstring{FrustumPlane()}{FrustumPlane()}}
+{\footnotesize\ttfamily Frustum\+Plane\+::\+Frustum\+Plane (\begin{DoxyParamCaption}\item[{const glm\+::vec3 \&}]{v1,  }\item[{const glm\+::vec3 \&}]{v2,  }\item[{const glm\+::vec3 \&}]{v3 }\end{DoxyParamCaption})}
+
+Constructs frustum plane from three points. The orientation of the plane is defined by the order of the points, assumed counter-\/clockwise
+
+
+\begin{DoxyParams}{Parameters}
+{\em v1} & first point \\
+\hline
+{\em v2} & second point \\
+\hline
+{\em v3} & third point \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_frustum_plane_a82f59e8cbd67a6d3b5ffaf91c1ff8e32}\label{class_frustum_plane_a82f59e8cbd67a6d3b5ffaf91c1ff8e32}} 
+\index{FrustumPlane@{FrustumPlane}!distance@{distance}}
+\index{distance@{distance}!FrustumPlane@{FrustumPlane}}
+\subsubsection{\texorpdfstring{distance()}{distance()}}
+{\footnotesize\ttfamily float Frustum\+Plane\+::distance (\begin{DoxyParamCaption}\item[{const glm\+::vec3 \&}]{p }\end{DoxyParamCaption}) const}
+
+Calculates signed distance from plane.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & Coordinates of point to which the distance will be calculated. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The signed distance from the plane to the point. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_frustum_plane_a3678151d513b029d839f602a1624707b}\label{class_frustum_plane_a3678151d513b029d839f602a1624707b}} 
+\index{FrustumPlane@{FrustumPlane}!set3Points@{set3Points}}
+\index{set3Points@{set3Points}!FrustumPlane@{FrustumPlane}}
+\subsubsection{\texorpdfstring{set3Points()}{set3Points()}}
+{\footnotesize\ttfamily void Frustum\+Plane\+::set3\+Points (\begin{DoxyParamCaption}\item[{const glm\+::vec3 \&}]{v1,  }\item[{const glm\+::vec3 \&}]{v2,  }\item[{const glm\+::vec3 \&}]{v3 }\end{DoxyParamCaption})}
+
+Updates frustum plane from three points. The orientation of the plane is defined by the order of the points, assumed counter-\/clockwise
+
+
+\begin{DoxyParams}{Parameters}
+{\em v1} & First point. \\
+\hline
+{\em v2} & Second point. \\
+\hline
+{\em v3} & Third point. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Renderer/Frustum\+Plane.\+h\item 
+Renderer/Frustum\+Plane.\+cpp\end{DoxyCompactItemize}

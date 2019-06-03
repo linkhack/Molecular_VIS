@@ -1,0 +1,103 @@
+\hypertarget{class_p_b_r_material}{}\section{P\+B\+R\+Material Class Reference}
+\label{class_p_b_r_material}\index{PBRMaterial@{PBRMaterial}}
+
+
+Class for a physically based brdf. Inspired by Disney\textquotesingle{}s B\+R\+DF.  
+
+
+
+
+{\ttfamily \#include $<$P\+B\+R\+Material.\+h$>$}
+
+Inheritance diagram for P\+B\+R\+Material\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_p_b_r_material}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_p_b_r_material_a7d68d63ef74715518d63041336b2a684}{P\+B\+R\+Material}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_shader}{Shader}} $>$ \mbox{\hyperlink{class_material_a2528e7055a949798de91d54c259faf1e}{shader}}, glm\+::vec3 base\+Color, float ambient, float metallic, float specular, float specular\+Tint, float roughness, float anisotropic, float sheen, float sheen\+Tint, float clearcoat, float clearcoat\+Gloss)
+\item 
+\mbox{\hyperlink{class_p_b_r_material_ac100af6df5a64a4c64a948669b9b66be}{P\+B\+R\+Material}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_shader}{Shader}} $>$ \mbox{\hyperlink{class_material_a2528e7055a949798de91d54c259faf1e}{shader}}, glm\+::vec3 base\+Color)
+\item 
+\mbox{\hyperlink{class_p_b_r_material_a153da8222f39498c6749a2c7d2c20e21}{P\+B\+R\+Material}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_shader}{Shader}} $>$ \mbox{\hyperlink{class_material_a2528e7055a949798de91d54c259faf1e}{shader}}, glm\+::vec3 base\+Color, float metallic, float roughness)
+\item 
+virtual void \mbox{\hyperlink{class_p_b_r_material_ae8cabaa3a19fc6787233f2f06b1d058e}{set\+Uniforms}} ()
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Class for a physically based brdf. Inspired by Disney\textquotesingle{}s B\+R\+DF. 
+
+See \href{https://disney-animation.s3.amazonaws.com/library/s2012_pbs_disney_brdf_notes_v2.pdf}{\texttt{ https\+://disney-\/animation.\+s3.\+amazonaws.\+com/library/s2012\+\_\+pbs\+\_\+disney\+\_\+brdf\+\_\+notes\+\_\+v2.\+pdf}} 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_p_b_r_material_a7d68d63ef74715518d63041336b2a684}\label{class_p_b_r_material_a7d68d63ef74715518d63041336b2a684}} 
+\index{PBRMaterial@{PBRMaterial}!PBRMaterial@{PBRMaterial}}
+\index{PBRMaterial@{PBRMaterial}!PBRMaterial@{PBRMaterial}}
+\subsubsection{\texorpdfstring{PBRMaterial()}{PBRMaterial()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily P\+B\+R\+Material\+::\+P\+B\+R\+Material (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_shader}{Shader}} $>$}]{shader,  }\item[{glm\+::vec3}]{base\+Color,  }\item[{float}]{ambient,  }\item[{float}]{metallic,  }\item[{float}]{specular,  }\item[{float}]{specular\+Tint,  }\item[{float}]{roughness,  }\item[{float}]{anisotropic,  }\item[{float}]{sheen,  }\item[{float}]{sheen\+Tint,  }\item[{float}]{clearcoat,  }\item[{float}]{clearcoat\+Gloss }\end{DoxyParamCaption})}
+
+Constructs B\+R\+DF. For meaning of parameters see\+: \href{https://disney-animation.s3.amazonaws.com/library/s2012_pbs_disney_brdf_notes_v2.pdf}{\texttt{ https\+://disney-\/animation.\+s3.\+amazonaws.\+com/library/s2012\+\_\+pbs\+\_\+disney\+\_\+brdf\+\_\+notes\+\_\+v2.\+pdf}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em shader} & \mbox{\hyperlink{class_shader}{Shader}} used to draw this material. \\
+\hline
+{\em base\+Color} & \\
+\hline
+{\em ambient} & \\
+\hline
+{\em metallic} & \\
+\hline
+{\em specular} & \\
+\hline
+{\em specular\+Tint} & \\
+\hline
+{\em roughness} & \\
+\hline
+{\em anisotropic} & \\
+\hline
+{\em sheen} & \\
+\hline
+{\em sheen\+Tint} & \\
+\hline
+{\em clearcoat} & \\
+\hline
+{\em clearcoat\+Gloss} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_p_b_r_material_ac100af6df5a64a4c64a948669b9b66be}\label{class_p_b_r_material_ac100af6df5a64a4c64a948669b9b66be}} 
+\index{PBRMaterial@{PBRMaterial}!PBRMaterial@{PBRMaterial}}
+\index{PBRMaterial@{PBRMaterial}!PBRMaterial@{PBRMaterial}}
+\subsubsection{\texorpdfstring{PBRMaterial()}{PBRMaterial()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily P\+B\+R\+Material\+::\+P\+B\+R\+Material (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_shader}{Shader}} $>$}]{shader,  }\item[{glm\+::vec3}]{base\+Color }\end{DoxyParamCaption})}
+
+This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. \mbox{\Hypertarget{class_p_b_r_material_a153da8222f39498c6749a2c7d2c20e21}\label{class_p_b_r_material_a153da8222f39498c6749a2c7d2c20e21}} 
+\index{PBRMaterial@{PBRMaterial}!PBRMaterial@{PBRMaterial}}
+\index{PBRMaterial@{PBRMaterial}!PBRMaterial@{PBRMaterial}}
+\subsubsection{\texorpdfstring{PBRMaterial()}{PBRMaterial()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily P\+B\+R\+Material\+::\+P\+B\+R\+Material (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_shader}{Shader}} $>$}]{shader,  }\item[{glm\+::vec3}]{base\+Color,  }\item[{float}]{metallic,  }\item[{float}]{roughness }\end{DoxyParamCaption})}
+
+This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_p_b_r_material_ae8cabaa3a19fc6787233f2f06b1d058e}\label{class_p_b_r_material_ae8cabaa3a19fc6787233f2f06b1d058e}} 
+\index{PBRMaterial@{PBRMaterial}!setUniforms@{setUniforms}}
+\index{setUniforms@{setUniforms}!PBRMaterial@{PBRMaterial}}
+\subsubsection{\texorpdfstring{setUniforms()}{setUniforms()}}
+{\footnotesize\ttfamily void P\+B\+R\+Material\+::set\+Uniforms (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Sets all material related uniforms in the shader of this material. 
+
+Reimplemented from \mbox{\hyperlink{class_material_a793da829d1f2daf3f3317d9b495f8b26}{Material}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Material/P\+B\+R\+Material.\+h\item 
+Material/P\+B\+R\+Material.\+cpp\end{DoxyCompactItemize}

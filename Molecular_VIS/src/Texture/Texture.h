@@ -1,6 +1,10 @@
 #pragma once
 #include <string>
 
+/*!
+ * \brief Abstract base class for textures.
+ * 
+ */
 class Texture {
 public:
 	virtual ~Texture() {};

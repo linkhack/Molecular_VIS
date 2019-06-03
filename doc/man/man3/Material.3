@@ -1,0 +1,37 @@
+.TH "Material" 3 "Mon Jun 3 2019" "Molecular Vis" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Material
+.SH SYNOPSIS
+.br
+.PP
+.PP
+Inherited by \fBLambertMaterial\fP, and \fBPBRMaterial\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBMaterial\fP (std::shared_ptr< \fBShader\fP > shader)"
+.br
+.ti -1c
+.RI "virtual void \fBsetUniforms\fP ()"
+.br
+.ti -1c
+.RI "virtual void \fBsetUniforms\fP (int textureUnit)"
+.br
+.ti -1c
+.RI "virtual std::shared_ptr< \fBShader\fP > \fBgetShader\fP () final"
+.br
+.in -1c
+.SS "Protected Attributes"
+
+.in +1c
+.ti -1c
+.RI "std::shared_ptr< \fBShader\fP > \fBshader\fP"
+.br
+.in -1c
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Molecular Vis from the source code\&.

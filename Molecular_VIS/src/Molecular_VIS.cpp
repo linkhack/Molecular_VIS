@@ -20,6 +20,7 @@
 #include "Geometry/MoleculeModel.h"
 #include "Texture/VolumetricTexture.h"
 #include "Molecule/SESSurface.h"
+#include "Renderer/FBO.h"
 
 #include "Shader/SSBO.h"
 #include "Molecule/Molecule.h"
@@ -119,19 +120,13 @@ int main(int argc, char** argv)
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 #endif
 
-	// Check needed extensions
-	if(!GL_ARB_shader_group_vote)
-	{
-		EXIT_WITH_ERROR("Need extensions: GL_ARB_shader_group_vote")
-	}
-
 	//Set input callbacks
 	glfwSetKeyCallback(window, keyCallback);
 	glfwSetScrollCallback(window, scrollCallback);
 	glfwSetMouseButtonCallback(window, mouseKeyCallback);
 
 	//Set GL defaults (color etc.)
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 	// Depth Test
 	glEnable(GL_DEPTH_TEST);
@@ -151,7 +146,6 @@ int main(int argc, char** argv)
 		std::shared_ptr<Shader> texVis = std::make_shared<Shader>("fullScreenQuad.vert", "volTexInspector.frag");
 		GeometryData quadGeom = ProceduralGeometry::createFullScreenQuad();
 		Geometry* quad = new ProceduralGeometry(glm::mat4(1.0f), quadGeom, mainShader);
-
 		//Camera
 		Camera* camera = new Camera(fov, float(window_width) / float(window_height), nearZ, farZ);
 
@@ -160,10 +154,12 @@ int main(int argc, char** argv)
 		lightManager->createPointLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.8f*glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.1f, 0.4f, 1.0f));
 		lightManager->createDirectionalLight(glm::vec3(1.8f), glm::vec3(0.0f, -1.0f, -1.0f));
 
-
+		//FBO
+		FBO ballsFBO(1u,true,false,window_width,window_height);
+		
 
 		double loadTime = glfwGetTime();
-		PDBLoader test("data/6mbd.cif");
+		PDBLoader test("data/5xyu.cif");
 		//std::vector<std::unique_ptr<Geometry>> atoms = test.doStuff();
 		loadTime = glfwGetTime() - loadTime;
 		std::cout << "time to load: " << loadTime << '\n';
@@ -178,7 +174,7 @@ int main(int argc, char** argv)
 		std::shared_ptr<LambertMaterial> material = std::make_shared<LambertMaterial>(shader);
 		material->setColor(glm::vec3(1.0f, 0.0f, 0.0f));
 		std::unique_ptr<Geometry> ballGeometry = std::make_unique<ProceduralGeometry>(glm::mat4(1.0f), ball, material);
-		std::unique_ptr<MoleculeModel> atomModel = std::make_unique<MoleculeModel>(glm::scale(glm::mat4(1.0f),glm::vec3(0.5f,0.5f,0.5f)), material, molecule);
+		std::unique_ptr<MoleculeModel> atomModel = std::make_unique<MoleculeModel>(glm::mat4(1.0f), material, molecule);
 		shaders.push_back(shader);
 
 		//SES calculations
@@ -208,26 +204,40 @@ int main(int argc, char** argv)
 			glfwGetCursorPos(window, &mouseX, &mouseY);
 			//update camera
 			camera->update(mouseX, mouseY, _zoom, _dragging, _strafing);
-			//update uniforms
-			//lightManager->setUniforms(shaders);
+			// Render balls
+			lightManager->setUniforms(shaders);
+
+			//Use FBO
+			ballsFBO.setActive();
+			shader->use();
+			shader->setUniform("cameraPosition", camera->getPosition());
+			shader->setUniform("viewProjectionMatrix", camera->getProjectionViewMatrix());
+
+			atomModel->draw();
+			
+			//Draw Surface
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			mainShader->use();
 			mainShader->setUniform("inversePVMatrix", camera->getInverseProjectionViewMatrix());
 			mainShader->setUniform("cameraPosition", camera->getPosition());
 			mainShader->setUniform("grid_min", surfaceRepresentation.getTexMin());
 			mainShader->setUniform("grid_max", surfaceRepresentation.getTexMax());
-			mainShader->setUniform("subsurfaceDepth", 5.0f);
+			mainShader->setUniform("subsurfaceDepth", 3.0f);
+			// SES Texture
 			surfaceRepresentation.bindToUnit(0);
 			mainShader->setUniform("SESTexture", 0);
+			//Balls Texture
+			glActiveTexture(GL_TEXTURE0 + 1);
+			glBindTexture(GL_TEXTURE_2D, ballsFBO.getColorTexture());
+			mainShader->setUniform("balls_texture", 1);
+			glActiveTexture(GL_TEXTURE0 + 2);
+			glBindTexture(GL_TEXTURE_2D, ballsFBO.getDepthTexture());
+			mainShader->setUniform("balls_depth", 2);
+			mainShader->setUniform("far", farZ);
+			mainShader->setUniform("near", nearZ);
+			mainShader->setUniform("cameraDirection", camera->getDirection());
+
 			quad->draw();
-			
-			//lightManager->setUniforms(shaders);
-
-			//shader->use();
-			//shader->setUniform("cameraPosition", camera->getPosition());
-			//shader->setUniform("viewProjectionMatrix", camera->getProjectionViewMatrix());
-
-			//atomModel->draw();
-			//quad->draw();
 
 
 			//Texture inspection

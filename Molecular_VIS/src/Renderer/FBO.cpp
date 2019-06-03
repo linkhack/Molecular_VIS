@@ -29,10 +29,6 @@ void FBO::setActive() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void FBO::changeSize(unsigned int width, unsigned int height)
-{
-}
-
 void FBO::createFrameBuffers(unsigned int nrColorTexture, bool useDepthTexture, bool useMultisampling, unsigned int width, unsigned int height)
 {
 	glGenFramebuffers(1, &fbo);
@@ -74,9 +70,9 @@ void FBO::createFrameBuffers(unsigned int nrColorTexture, bool useDepthTexture, 
 		if (useMultisampling) {
 			glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, depthTexture);
 			glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, MULTI_SAMPLE_COUNT, GL_DEPTH_COMPONENT32, width, height, GL_TRUE);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-			glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
+			glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+			glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+			glTexParameterfv(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_BORDER_COLOR, borderColor);
 			glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D_MULTISAMPLE, depthTexture, 0);
 		}
@@ -108,14 +104,10 @@ void FBO::createFrameBuffers(unsigned int nrColorTexture, bool useDepthTexture, 
 	for (unsigned int i = 0; i < nrColorTexture; ++i) {
 		attachments.push_back(GL_COLOR_ATTACHMENT0 + i);
 	}
-	unsigned int bla = GL_COLOR_ATTACHMENT0;
-	unsigned int bla2 = GL_COLOR_ATTACHMENT1;
 	glNamedFramebufferDrawBuffers(fbo, nrColorTexture, attachments.data());
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		std::cout << "ERROR - FRAMEBUFFER is not completed!" << std::endl;
-
-	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 

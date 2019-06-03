@@ -1,0 +1,32 @@
+.TH "PBRMaterial" 3 "Mon Jun 3 2019" "Molecular Vis" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+PBRMaterial
+.SH SYNOPSIS
+.br
+.PP
+.PP
+Inherits \fBMaterial\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBPBRMaterial\fP (std::shared_ptr< \fBShader\fP > shader, glm::vec3 baseColor)"
+.br
+.ti -1c
+.RI "\fBPBRMaterial\fP (std::shared_ptr< \fBShader\fP > shader, glm::vec3 baseColor, float metallic, float roughness)"
+.br
+.ti -1c
+.RI "\fBPBRMaterial\fP (std::shared_ptr< \fBShader\fP > shader, glm::vec3 baseColor, float ambient, float metallic, float specular, float specularTint, float roughness, float anisotropic, float sheen, float sheenTint, float clearcoat, float clearcoatGloss)"
+.br
+.ti -1c
+.RI "virtual void \fBsetUniforms\fP ()"
+.br
+.in -1c
+.SS "Additional Inherited Members"
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Molecular Vis from the source code\&.

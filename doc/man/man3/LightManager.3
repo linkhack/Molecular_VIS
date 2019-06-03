@@ -1,0 +1,41 @@
+.TH "LightManager" 3 "Mon Jun 3 2019" "Molecular Vis" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+LightManager
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBcreatePointLight\fP (glm::vec3 color, glm::vec3 position, glm::vec3 attenuation)"
+.br
+.ti -1c
+.RI "void \fBcreateDirectionalLight\fP (glm::vec3 color, glm::vec3 direction)"
+.br
+.ti -1c
+.RI "void \fBcreateSpotLight\fP (glm::vec3 color, glm::vec3 position, glm::vec3 direction, float innerOpeningAngle, float outerOpeningAngle, glm::vec3 attenuation)"
+.br
+.ti -1c
+.RI "void \fBsetUniforms\fP (const std::vector< std::shared_ptr< \fBShader\fP >> &shaders)"
+.br
+.in -1c
+.SS "Static Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "static const int \fBmaxDirectionalLights\fP = 1"
+.br
+.ti -1c
+.RI "static const int \fBmaxPointLights\fP = 1"
+.br
+.ti -1c
+.RI "static const int \fBmaxSpotLights\fP = 1"
+.br
+.in -1c
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Molecular Vis from the source code\&.

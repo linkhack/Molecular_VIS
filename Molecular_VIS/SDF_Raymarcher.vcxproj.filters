@@ -168,5 +168,6 @@
     <None Include="assets\shader\volTexInspector.frag" />
     <None Include="assets\shader\ses_raymarch.frag" />
     <None Include="assets\shader\df_inner.glsl" />
+    <None Include="data\1af6.cif" />
   </ItemGroup>
 </Project>

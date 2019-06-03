@@ -1,0 +1,78 @@
+\hypertarget{class_point_light}{}\section{Point\+Light Class Reference}
+\label{class_point_light}\index{PointLight@{PointLight}}
+
+
+Class for point-\/lights.  
+
+
+
+
+{\ttfamily \#include $<$Point\+Light.\+h$>$}
+
+Inheritance diagram for Point\+Light\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_point_light}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_point_light_a6432222ee0719ab7f38547ee576f4cca}{Point\+Light}} (glm\+::vec3 color, glm\+::vec3 position, glm\+::vec3 attenuation)
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{class_point_light_a846794e557d5820c316f3ace8d2b5003}{set\+Uniform}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_shader}{Shader}} $>$ \&shader, int index)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for point-\/lights. 
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_point_light_a6432222ee0719ab7f38547ee576f4cca}\label{class_point_light_a6432222ee0719ab7f38547ee576f4cca}} 
+\index{PointLight@{PointLight}!PointLight@{PointLight}}
+\index{PointLight@{PointLight}!PointLight@{PointLight}}
+\subsubsection{\texorpdfstring{PointLight()}{PointLight()}}
+{\footnotesize\ttfamily Point\+Light\+::\+Point\+Light (\begin{DoxyParamCaption}\item[{glm\+::vec3}]{color,  }\item[{glm\+::vec3}]{position,  }\item[{glm\+::vec3}]{attenuation }\end{DoxyParamCaption})}
+
+Creates a point-\/light.
+
+
+\begin{DoxyParams}{Parameters}
+{\em color} & Color of the light. \\
+\hline
+{\em position} & Position of the light. \\
+\hline
+{\em attenuation} & Attenuation coefficients of the light.\+ss \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_point_light_a846794e557d5820c316f3ace8d2b5003}\label{class_point_light_a846794e557d5820c316f3ace8d2b5003}} 
+\index{PointLight@{PointLight}!setUniform@{setUniform}}
+\index{setUniform@{setUniform}!PointLight@{PointLight}}
+\subsubsection{\texorpdfstring{setUniform()}{setUniform()}}
+{\footnotesize\ttfamily void Point\+Light\+::set\+Uniform (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_shader}{Shader}} $>$ \&}]{shader,  }\item[{int}]{index }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+Sets the point-\/light related uniforms in a shader. Sets following uniforms\+: point\+Lights\mbox{[}index\mbox{]}.color point\+Lights\mbox{[}index\mbox{]}.position point\+Lights\mbox{[}index\mbox{]}.attenuation 
+\begin{DoxyParams}{Parameters}
+{\em shader} & \mbox{\hyperlink{class_shader}{Shader}} to be updated \\
+\hline
+{\em index} & index of the light among lights of the same type (used in shader to index light) \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \mbox{\hyperlink{class_light_a05d202e42ffec4c8bece9c18b4d4541e}{Light}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Light/Point\+Light.\+h\item 
+Light/Point\+Light.\+cpp\end{DoxyCompactItemize}

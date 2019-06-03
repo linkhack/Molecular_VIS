@@ -1,0 +1,76 @@
+\hypertarget{class_molecule_model}{}\section{Molecule\+Model Class Reference}
+\label{class_molecule_model}\index{MoleculeModel@{MoleculeModel}}
+
+
+Class representing the molecule as geometric model.  
+
+
+
+
+{\ttfamily \#include $<$Molecule\+Model.\+h$>$}
+
+Inheritance diagram for Molecule\+Model\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_molecule_model}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_molecule_model_aebdf0cf8057e91460a55a73b660ef880}{Molecule\+Model}} (glm\+::mat4 model\+Matrix, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_material}{Material}} $>$ material, \mbox{\hyperlink{struct_molecule}{Molecule}} \&molecule)
+\item 
+virtual void \mbox{\hyperlink{class_molecule_model_a3f33fde639e7778b811467a81e917d15}{draw}} (glm\+::mat4 matrix=glm\+::mat4(1.\+0f))
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Class representing the molecule as geometric model. 
+
+The atoms will be represented by balls with radius proportional to the van der Waals radius. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_molecule_model_aebdf0cf8057e91460a55a73b660ef880}\label{class_molecule_model_aebdf0cf8057e91460a55a73b660ef880}} 
+\index{MoleculeModel@{MoleculeModel}!MoleculeModel@{MoleculeModel}}
+\index{MoleculeModel@{MoleculeModel}!MoleculeModel@{MoleculeModel}}
+\subsubsection{\texorpdfstring{MoleculeModel()}{MoleculeModel()}}
+{\footnotesize\ttfamily Molecule\+Model\+::\+Molecule\+Model (\begin{DoxyParamCaption}\item[{glm\+::mat4}]{model\+Matrix,  }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_material}{Material}} $>$}]{material,  }\item[{\mbox{\hyperlink{struct_molecule}{Molecule}} \&}]{molecule }\end{DoxyParamCaption})}
+
+Constructs the geometric model of a given molecule.
+
+
+\begin{DoxyParams}{Parameters}
+{\em model\+Matrix} & Modelmatrix, gives transformation from object space to world space. \\
+\hline
+{\em material} & The material that should be used for drawing. \\
+\hline
+{\em molecule} & The molecule for which a model should be constructed. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_molecule_model_a3f33fde639e7778b811467a81e917d15}\label{class_molecule_model_a3f33fde639e7778b811467a81e917d15}} 
+\index{MoleculeModel@{MoleculeModel}!draw@{draw}}
+\index{draw@{draw}!MoleculeModel@{MoleculeModel}}
+\subsubsection{\texorpdfstring{draw()}{draw()}}
+{\footnotesize\ttfamily void Molecule\+Model\+::draw (\begin{DoxyParamCaption}\item[{glm\+::mat4}]{matrix = {\ttfamily glm\+:\+:mat4(1.0f)} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Draws the model.
+
+
+\begin{DoxyParams}{Parameters}
+{\em matrix} & Defines a transformation from word space to word space. Gets left-\/multiplied with the model matrix. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{class_geometry_a417f18c0d1f3c8a09ee93023c0a8330d}{Geometry}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Geometry/Molecule\+Model.\+h\item 
+Geometry/Molecule\+Model.\+cpp\end{DoxyCompactItemize}

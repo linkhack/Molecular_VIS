@@ -1,0 +1,91 @@
+\hypertarget{class_material}{}\section{Material Class Reference}
+\label{class_material}\index{Material@{Material}}
+
+
+Base class for materials.  
+
+
+
+
+{\ttfamily \#include $<$Material.\+h$>$}
+
+Inheritance diagram for Material\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_material}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_material_a6c6dc52dccc57852a3763ed5a39028e5}{Material}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_shader}{Shader}} $>$ \mbox{\hyperlink{class_material_a2528e7055a949798de91d54c259faf1e}{shader}})
+\item 
+virtual void \mbox{\hyperlink{class_material_a793da829d1f2daf3f3317d9b495f8b26}{set\+Uniforms}} ()
+\item 
+virtual std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_shader}{Shader}} $>$ \mbox{\hyperlink{class_material_af71678b4a7b47e3b2b7f018318d6c4c6}{get\+Shader}} () final
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_shader}{Shader}} $>$ \mbox{\hyperlink{class_material_a2528e7055a949798de91d54c259faf1e}{shader}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Base class for materials. 
+
+Base class for materials. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_material_a6c6dc52dccc57852a3763ed5a39028e5}\label{class_material_a6c6dc52dccc57852a3763ed5a39028e5}} 
+\index{Material@{Material}!Material@{Material}}
+\index{Material@{Material}!Material@{Material}}
+\subsubsection{\texorpdfstring{Material()}{Material()}}
+{\footnotesize\ttfamily Material\+::\+Material (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_shader}{Shader}} $>$}]{shader }\end{DoxyParamCaption})}
+
+Constructs material with a given shader.
+
+
+\begin{DoxyParams}{Parameters}
+{\em shader} & \mbox{\hyperlink{class_shader}{Shader}} that is used to draw the material. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_material_af71678b4a7b47e3b2b7f018318d6c4c6}\label{class_material_af71678b4a7b47e3b2b7f018318d6c4c6}} 
+\index{Material@{Material}!getShader@{getShader}}
+\index{getShader@{getShader}!Material@{Material}}
+\subsubsection{\texorpdfstring{getShader()}{getShader()}}
+{\footnotesize\ttfamily std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_shader}{Shader}} $>$ Material\+::get\+Shader (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [final]}, {\ttfamily [virtual]}}
+
+Gets the shader used to draw the material.
+
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{class_shader}{Shader}} used to draw the material. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_material_a793da829d1f2daf3f3317d9b495f8b26}\label{class_material_a793da829d1f2daf3f3317d9b495f8b26}} 
+\index{Material@{Material}!setUniforms@{setUniforms}}
+\index{setUniforms@{setUniforms}!Material@{Material}}
+\subsubsection{\texorpdfstring{setUniforms()}{setUniforms()}}
+{\footnotesize\ttfamily void Material\+::set\+Uniforms (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Sets all material related uniform in its shader. 
+
+Reimplemented in \mbox{\hyperlink{class_p_b_r_material_ae8cabaa3a19fc6787233f2f06b1d058e}{P\+B\+R\+Material}}, and \mbox{\hyperlink{class_lambert_material_a2983e583790ba13a782dc49d78358bb7}{Lambert\+Material}}.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{class_material_a2528e7055a949798de91d54c259faf1e}\label{class_material_a2528e7055a949798de91d54c259faf1e}} 
+\index{Material@{Material}!shader@{shader}}
+\index{shader@{shader}!Material@{Material}}
+\subsubsection{\texorpdfstring{shader}{shader}}
+{\footnotesize\ttfamily std\+::shared\+\_\+ptr$<$\mbox{\hyperlink{class_shader}{Shader}}$>$ Material\+::shader\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\hyperlink{class_shader}{Shader}} that is used to draw the material. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Material/Material.\+h\item 
+Material/Material.\+cpp\end{DoxyCompactItemize}

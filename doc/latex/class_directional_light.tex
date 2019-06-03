@@ -1,0 +1,76 @@
+\hypertarget{class_directional_light}{}\section{Directional\+Light Class Reference}
+\label{class_directional_light}\index{DirectionalLight@{DirectionalLight}}
+
+
+Class defining directional lights.  
+
+
+
+
+{\ttfamily \#include $<$Directional\+Light.\+h$>$}
+
+Inheritance diagram for Directional\+Light\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_directional_light}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_directional_light_aaeeb1532c03c9ea6b3f4a8d4c6407f04}{Directional\+Light}} (glm\+::vec3 color, glm\+::vec3 direction)
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{class_directional_light_a81d638a84a99683bf260efd871fdf1e2}{set\+Uniform}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_shader}{Shader}} $>$ \&shader, int index)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class defining directional lights. 
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_directional_light_aaeeb1532c03c9ea6b3f4a8d4c6407f04}\label{class_directional_light_aaeeb1532c03c9ea6b3f4a8d4c6407f04}} 
+\index{DirectionalLight@{DirectionalLight}!DirectionalLight@{DirectionalLight}}
+\index{DirectionalLight@{DirectionalLight}!DirectionalLight@{DirectionalLight}}
+\subsubsection{\texorpdfstring{DirectionalLight()}{DirectionalLight()}}
+{\footnotesize\ttfamily Directional\+Light\+::\+Directional\+Light (\begin{DoxyParamCaption}\item[{glm\+::vec3}]{color,  }\item[{glm\+::vec3}]{direction }\end{DoxyParamCaption})}
+
+Creates directional light.
+
+
+\begin{DoxyParams}{Parameters}
+{\em color} & Color of the light. The r,g,b components should be between 0 and 1. \\
+\hline
+{\em direction} & The direction of the light. This gets normalized. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_directional_light_a81d638a84a99683bf260efd871fdf1e2}\label{class_directional_light_a81d638a84a99683bf260efd871fdf1e2}} 
+\index{DirectionalLight@{DirectionalLight}!setUniform@{setUniform}}
+\index{setUniform@{setUniform}!DirectionalLight@{DirectionalLight}}
+\subsubsection{\texorpdfstring{setUniform()}{setUniform()}}
+{\footnotesize\ttfamily void Directional\+Light\+::set\+Uniform (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_shader}{Shader}} $>$ \&}]{shader,  }\item[{int}]{index }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+Sets the directional light related uniforms in a shader. Sets following uniforms\+: \char`\"{}directional\+Lights\mbox{[}index\mbox{]}.\+color\char`\"{} \char`\"{}directional\+Lights\mbox{[}index\mbox{]}.\+direction\char`\"{} 
+\begin{DoxyParams}{Parameters}
+{\em shader} & \mbox{\hyperlink{class_shader}{Shader}} to be updated \\
+\hline
+{\em index} & index of the light among lights of the same type (used in shader to index light) \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \mbox{\hyperlink{class_light_a05d202e42ffec4c8bece9c18b4d4541e}{Light}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Light/Directional\+Light.\+h\item 
+Light/Directional\+Light.\+cpp\end{DoxyCompactItemize}

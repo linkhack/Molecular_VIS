@@ -1,0 +1,103 @@
+\hypertarget{class_lambert_material}{}\section{Lambert\+Material Class Reference}
+\label{class_lambert_material}\index{LambertMaterial@{LambertMaterial}}
+
+
+Class for a material with lambert brdf.  
+
+
+
+
+{\ttfamily \#include $<$Lambert\+Material.\+h$>$}
+
+Inheritance diagram for Lambert\+Material\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_lambert_material}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_lambert_material_a0639faca1171374ee0060362e9bcb38d}{Lambert\+Material}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_shader}{Shader}} $>$ \mbox{\hyperlink{class_material_a2528e7055a949798de91d54c259faf1e}{shader}}, glm\+::vec3 ambient, glm\+::vec3 diffuse, glm\+::vec3 specular, float specular\+Coefficient)
+\item 
+\mbox{\hyperlink{class_lambert_material_af0d314dd4a95407d3aef3310f695ec26}{Lambert\+Material}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_shader}{Shader}} $>$ \mbox{\hyperlink{class_material_a2528e7055a949798de91d54c259faf1e}{shader}})
+\item 
+virtual void \mbox{\hyperlink{class_lambert_material_a982be68e1db56d7d4980b48172891315}{set\+Color}} (glm\+::vec3 color)
+\item 
+virtual void \mbox{\hyperlink{class_lambert_material_a2983e583790ba13a782dc49d78358bb7}{set\+Uniforms}} ()
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Class for a material with lambert brdf. 
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_lambert_material_a0639faca1171374ee0060362e9bcb38d}\label{class_lambert_material_a0639faca1171374ee0060362e9bcb38d}} 
+\index{LambertMaterial@{LambertMaterial}!LambertMaterial@{LambertMaterial}}
+\index{LambertMaterial@{LambertMaterial}!LambertMaterial@{LambertMaterial}}
+\subsubsection{\texorpdfstring{LambertMaterial()}{LambertMaterial()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Lambert\+Material\+::\+Lambert\+Material (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_shader}{Shader}} $>$}]{shader,  }\item[{glm\+::vec3}]{ambient,  }\item[{glm\+::vec3}]{diffuse,  }\item[{glm\+::vec3}]{specular,  }\item[{float}]{specular\+Coefficient }\end{DoxyParamCaption})}
+
+Construct material with lambert brdf.
+
+
+\begin{DoxyParams}{Parameters}
+{\em shader} & \mbox{\hyperlink{class_shader}{Shader}} that is used to draw this material. \\
+\hline
+{\em ambient} & Ambient color. \\
+\hline
+{\em diffuse} & Diffuse color. \\
+\hline
+{\em specular} & Specular color. \\
+\hline
+{\em specular\+Coefficient} & specular coeffiecent, sometimes also called shineness. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_lambert_material_af0d314dd4a95407d3aef3310f695ec26}\label{class_lambert_material_af0d314dd4a95407d3aef3310f695ec26}} 
+\index{LambertMaterial@{LambertMaterial}!LambertMaterial@{LambertMaterial}}
+\index{LambertMaterial@{LambertMaterial}!LambertMaterial@{LambertMaterial}}
+\subsubsection{\texorpdfstring{LambertMaterial()}{LambertMaterial()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Lambert\+Material\+::\+Lambert\+Material (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_shader}{Shader}} $>$}]{shader }\end{DoxyParamCaption})}
+
+Construut material with lambert brdf with default parameters.
+
+
+\begin{DoxyParams}{Parameters}
+{\em shader} & \mbox{\hyperlink{class_shader}{Shader}} that is used to draw this material. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_lambert_material_a982be68e1db56d7d4980b48172891315}\label{class_lambert_material_a982be68e1db56d7d4980b48172891315}} 
+\index{LambertMaterial@{LambertMaterial}!setColor@{setColor}}
+\index{setColor@{setColor}!LambertMaterial@{LambertMaterial}}
+\subsubsection{\texorpdfstring{setColor()}{setColor()}}
+{\footnotesize\ttfamily void Lambert\+Material\+::set\+Color (\begin{DoxyParamCaption}\item[{glm\+::vec3}]{color }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Sets the base color of this material
+
+
+\begin{DoxyParams}{Parameters}
+{\em color} & Base color. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_lambert_material_a2983e583790ba13a782dc49d78358bb7}\label{class_lambert_material_a2983e583790ba13a782dc49d78358bb7}} 
+\index{LambertMaterial@{LambertMaterial}!setUniforms@{setUniforms}}
+\index{setUniforms@{setUniforms}!LambertMaterial@{LambertMaterial}}
+\subsubsection{\texorpdfstring{setUniforms()}{setUniforms()}}
+{\footnotesize\ttfamily void Lambert\+Material\+::set\+Uniforms (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Sets all material related uniforms in the shader of this material. 
+
+Reimplemented from \mbox{\hyperlink{class_material_a793da829d1f2daf3f3317d9b495f8b26}{Material}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Material/Lambert\+Material.\+h\item 
+Material/Lambert\+Material.\+cpp\end{DoxyCompactItemize}
