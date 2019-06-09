@@ -1,4 +1,4 @@
-// SDF_Raymarcher.cpp : Diese Datei enthält die Funktion "main". Hier beginnt und endet die Ausführung des Programms.
+﻿// SDF_Raymarcher.cpp : Diese Datei enthält die Funktion "main". Hier beginnt und endet die Ausführung des Programms.
 //
 
 #include <sstream>
@@ -24,6 +24,12 @@
 #include "Shader/SSBO.h"
 #include "Molecule/Molecule.h"
 
+#include "Renderer/FBO.h"
+
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_glfw.h"
+#include "imgui/imgui_impl_opengl3.h"
+#include "tinyfiledialogs.h"
 
 #define EXIT_WITH_ERROR(err) \
 	std::cout << "ERROR: " << err << std::endl; \
@@ -39,6 +45,8 @@ static void scrollCallback(GLFWwindow* window, double xoffset, double yoffset);
 static void mouseKeyCallback(GLFWwindow* window, int button, int action, int mods);
 static void APIENTRY DebugCallbackDefault(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const GLvoid* userParam);
 static std::string FormatDebugOutput(GLenum source, GLenum type, GLuint id, GLenum severity, const char* msg);
+static std::string FormatDebugOutput(GLenum source, GLenum type, GLuint id, GLenum severity, const char* msg);
+static std::shared_ptr<SESSurface> loadModel(const char* path);
 // static void perFrameUniforms(std::vector<std::shared_ptr<Shader>>& shaders, Camera& camera);
 
 /* --------------------------------------------- */
@@ -50,7 +58,13 @@ bool _strafing = false;
 bool _wireframe = false;
 bool _backFaceCulling = true;
 float _slice = 0.5f;
-
+float subsurfaceDepth = 1.0f;
+bool reflectionOn = true;
+bool refractionOn = true;
+bool translucencyOn = true;
+std::unique_ptr<MoleculeModel> atomModel;
+std::shared_ptr<Shader> shader;
+std::vector<std::shared_ptr<Shader>> shaders;
 /* --------------------------------------------- */
 // Structs
 /* --------------------------------------------- */
@@ -130,6 +144,15 @@ int main(int argc, char** argv)
 	glfwSetScrollCallback(window, scrollCallback);
 	glfwSetMouseButtonCallback(window, mouseKeyCallback);
 
+	//Set up IMGUI
+	const char* glsl_version = "#version 130";
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGui::StyleColorsDark();
+	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplOpenGL3_Init(glsl_version);
+	
 	//Set GL defaults (color etc.)
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -145,6 +168,7 @@ int main(int argc, char** argv)
 
 		//Shaders
 		std::vector<std::shared_ptr<Shader>> shaders;
+		shader = std::make_shared<Shader>("Phong.vert", "Phong.frag");
 		std::shared_ptr<Shader> mainShader = std::make_shared<Shader>("base.vert","ses_raymarch.frag");
 		shaders.push_back(mainShader);
 		std::shared_ptr<Geometry> fullScreenQuad;
@@ -159,34 +183,11 @@ int main(int argc, char** argv)
 		LightManager* lightManager = new LightManager();
 		lightManager->createPointLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.8f*glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.1f, 0.4f, 1.0f));
 		lightManager->createDirectionalLight(glm::vec3(1.8f), glm::vec3(0.0f, -1.0f, -1.0f));
-
-
-
-		double loadTime = glfwGetTime();
-		PDBLoader test("data/6mbd.cif");
-		//std::vector<std::unique_ptr<Geometry>> atoms = test.doStuff();
-		loadTime = glfwGetTime() - loadTime;
-		std::cout << "time to load: " << loadTime << '\n';
-		loadTime = glfwGetTime();
-		Molecule molecule = test.getMolecule();
-		loadTime = glfwGetTime() - loadTime;
-		std::cout << "Nr of Atoms: "<< molecule.atoms.size() << '\n';
-		std::cout << "time to do stuff: " << loadTime << '\n';
-		std::shared_ptr<Shader> shader = std::make_shared<Shader>("Phong.vert", "Phong.frag");
-		GeometryData ball = ProceduralGeometry::createSphereGeometry(1.1f, 16u, 8u);
-	
-		std::shared_ptr<LambertMaterial> material = std::make_shared<LambertMaterial>(shader);
-		material->setColor(glm::vec3(1.0f, 0.0f, 0.0f));
-		std::unique_ptr<Geometry> ballGeometry = std::make_unique<ProceduralGeometry>(glm::mat4(1.0f), ball, material);
-		std::unique_ptr<MoleculeModel> atomModel = std::make_unique<MoleculeModel>(glm::scale(glm::mat4(1.0f),glm::vec3(0.5f,0.5f,0.5f)), material, molecule);
-		shaders.push_back(shader);
-
-		//SES calculations
-		float probeRadius = 1.5f;
-		loadTime = glfwGetTime();
-		SESSurface surfaceRepresentation(molecule, probeRadius);
-		loadTime = glfwGetTime() - loadTime;
-		std::cout << "Compute shader time: " << loadTime << '\n';
+		
+		std::shared_ptr<SESSurface> surfaceRepresentation = loadModel("data/1jjj.cif");		
+		
+		FBO atomFbo((unsigned int)1, true, false, window_width, window_height);
+		FBO SESFbo((unsigned int)3, false, false, window_width, window_height);		
 
 		//Variables
 		double mouseX, mouseY;
@@ -209,18 +210,57 @@ int main(int argc, char** argv)
 			//update camera
 			camera->update(mouseX, mouseY, _zoom, _dragging, _strafing);
 			//update uniforms
+
+			atomFbo.setActive();
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			shader->use();
+			shader->setUniform("cameraPosition", camera->getPosition());
+			shader->setUniform("viewProjectionMatrix", camera->getProjectionViewMatrix());
+			atomModel->draw();
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	
 			//lightManager->setUniforms(shaders);
+			SESFbo.setActive();
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			mainShader->use();
 			mainShader->setUniform("inversePVMatrix", camera->getInverseProjectionViewMatrix());
 			mainShader->setUniform("cameraPosition", camera->getPosition());
 			mainShader->setUniform("grid_min", surfaceRepresentation.getTexMin());
 			mainShader->setUniform("grid_max", surfaceRepresentation.getTexMax());
-			mainShader->setUniform("subsurfaceDepth", 5.0f);
+			mainShader->setUniform("dmax", dmax);
+			mainShader->setUniform("subsurfaceDepth", subsurfaceDepth);
+			mainShader->setUniform("refraction", refraction);
+			mainShader->setUniform("reflectionOn", reflectionOn);
+			mainShader->setUniform("refractionOn", refractionOn);
 			surfaceRepresentation.bindToUnit(0);
 			mainShader->setUniform("SESTexture", 0);
+			mainShader->setUniform("SESTexture", 0);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, atomFbo.getColorTexture(0));
+			mainShader->setUniform("AtomTexture", 1);
+			glActiveTexture(GL_TEXTURE2);
+			glBindTexture(GL_TEXTURE_2D, atomFbo.getDepthTexture());
+			mainShader->setUniform("AtomDepth", 2);
 			quad->draw();
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			
 			//lightManager->setUniforms(shaders);
+
+			
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			tex->use();
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D,SESFbo.getColorTexture(0));
+			tex->setUniform("SEStexture", 0);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, SESFbo.getColorTexture(1));
+			tex->setUniform("fc", 1);
+			glActiveTexture(GL_TEXTURE2);
+			glBindTexture(GL_TEXTURE_2D, SESFbo.getColorTexture(2));
+			tex->setUniform("offset", 2);
+			tex->setUniform("refractionOn", refractionOn);
+			tex->setUniform("translucencyOn", translucencyOn);
+			translucencyQuad->draw();
 
 			//shader->use();
 			//shader->setUniform("cameraPosition", camera->getPosition());
@@ -240,6 +280,39 @@ int main(int argc, char** argv)
 
 			//quad->draw();
 			//
+
+			ImGui_ImplOpenGL3_NewFrame();
+			ImGui_ImplGlfw_NewFrame();
+			ImGui::NewFrame();
+			ImGui::Begin("Options");
+
+			ImGui::SliderFloat("Dmax", &dmax, 0.00f, 12.0f);
+			ImGui::SliderFloat("Subsurface Depth", &subsurfaceDepth, 0.00f, 1.0f);
+			ImGui::Checkbox("Reflection On",&reflectionOn);
+			ImGui::Checkbox("Refraction On", &refractionOn);
+			ImGui::SliderFloat("Refraction", &refraction, 1.00f, 2.0f);
+			ImGui::Checkbox("Translucency On", &translucencyOn);
+			if (ImGui::Button("Open"))
+			{
+				char const* lFilterPatterns[1] = { "*.cif" };
+				char const* path;
+				path = tinyfd_openFileDialog(
+					"Open Molecule",
+					"",
+					1,
+					lFilterPatterns,
+					NULL,
+					0);
+				surfaceRepresentation = loadModel(path);
+			}
+			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			ImGui::End();
+
+			ImGui::Render();
+			int display_w, display_h;
+			glfwGetFramebufferSize(window, &display_w, &display_h);
+			glViewport(0, 0, display_w, display_h);
+			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 			//Swap Buffers
 			glfwSwapBuffers(window);
@@ -263,6 +336,36 @@ int main(int argc, char** argv)
 
 	return EXIT_SUCCESS;
 }
+
+std::shared_ptr<SESSurface> loadModel(const char* path)
+{
+	double loadTime = glfwGetTime();
+	PDBLoader test(path);
+	//std::vector<std::unique_ptr<Geometry>> atoms = test.doStuff();
+	loadTime = glfwGetTime() - loadTime;
+	std::cout << "time to load: " << loadTime << '\n';
+	loadTime = glfwGetTime();
+	Molecule molecule = test.getMolecule();
+	loadTime = glfwGetTime() - loadTime;
+	std::cout << "Nr of Atoms: " << molecule.atoms.size() << '\n';
+	std::cout << "time to do stuff: " << loadTime << '\n';
+	GeometryData ball = ProceduralGeometry::createSphereGeometry(1.1f, 16u, 8u);
+
+	std::shared_ptr<LambertMaterial> material = std::make_shared<LambertMaterial>(shader);
+	material->setColor(glm::vec3(1.0f, 0.0f, 0.0f));
+	std::unique_ptr<Geometry> ballGeometry = std::make_unique<ProceduralGeometry>(glm::mat4(1.0f), ball, material);
+	atomModel = std::make_unique<MoleculeModel>(glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f)), material, molecule);
+	shaders.push_back(shader);
+
+	//SES calculations
+	float probeRadius = 1.5f;
+	loadTime = glfwGetTime();
+	auto surfaceRepresentation = std::make_shared<SESSurface>(molecule, probeRadius);
+	loadTime = glfwGetTime() - loadTime;
+	std::cout << "Compute shader time: " << loadTime << '\n';
+	return surfaceRepresentation;
+}
+
 
 
 static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {

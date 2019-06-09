@@ -56,10 +56,13 @@ struct Material {
 };
 
 out vec4 FragColor;
+out vec4 fcout;
+out vec4 offset;
 
 in vec2 TexCoords;
 in vec3 viewDirection;
 in Ray ray;
+in float distance;
 
 //Lights
 uniform PointLight pointLights[_POINT_LIGHTS_COUNT];
@@ -72,9 +75,17 @@ uniform int nrSpotLight;
 uniform vec3 cameraPosition;
 
 uniform sampler3D SESTexture;
+uniform sampler2D AtomTexture;
+uniform sampler2D AtomDepth;
 uniform vec3 grid_min;
 uniform vec3 grid_max;
 uniform float subsurfaceDepth;
+uniform float dmax;
+uniform float refraction;
+uniform bool reflectionOn;
+uniform bool refractionOn;
+vec2 texOffset;
+
 
 //Matrial constant
 const Material mat = {vec3(0.0f,0.0f,1.f),vec3(0.1f),vec3(0.8f),vec3(0.1f),15.0f};
@@ -157,14 +168,40 @@ vec4 calculateShading(Hit hit){
 }
 
 void main() {
+	texOffset = 1.0/textureSize(SESTexture,0);
 	vec3 rayDirection = normalize(ray.direction);
 	Hit closestHit = rayMarching(ray.origin, rayDirection);
 	if(closestHit.distance > MAX_DISTANCE){
-		FragColor = WHITE;
+		FragColor = BLACK;
 		return;
-	}else{
-		FragColor = calculateShading(closestHit);
-		//FragColor = vec4(closestHit.normal,1.0f);
+	}
+	else{
+		float sigma = min(((texture(AtomDepth,TexCoords).x)-(closestHit.distance/MAX_DISTANCE))/dmax,1);
+		float fc = exp(-5*sigma);
+		fcout = vec4(fc);
+		if(reflectionOn)
+		{
+			Ray reflection;
+			reflection.origin = closestHit.position;
+			reflection.direction = rayDirection-2*(dot(rayDirection,normalize(closestHit.normal)))*normalize(closestHit.normal);
+			Hit reflectionHit = rayMarching(reflection.origin, reflection.direction);
+			//FragColor = calculateShading(reflectionHit)*(fc)+vec4(texture(AtomTexture,TexCoords))*(1-fc);
+			if(reflectionHit.distance < MAX_DISTANCE)
+			{
+				FragColor = calculateShading(reflectionHit)*(1-fc)+vec4(texture(AtomTexture,TexCoords))*(fc);
+			}else{
+				FragColor = calculateShading(closestHit)*(1-fc)+vec4(texture(AtomTexture,TexCoords))*(fc);
+			}
+			return;
+		}
+		if(refractionOn)
+		{
+			vec3 R = normalize(refract(closestHit.viewDirection, closestHit.normal, 1/refraction));
+			vec3 t = normalize(closestHit.viewDirection) - R;
+
+		}
+		offset = vec4(0.0f);
+		FragColor = calculateShading(closestHit)*(1-fc)+vec4(texture(AtomTexture,TexCoords))*(fc);
 		return;
 	}
 }
