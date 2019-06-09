@@ -5,7 +5,6 @@
 #define BLACK vec4(0.0f,0.0f,0.0f,1.0f);
 #define WHITE vec4(1.0f,1.0f,1.0f,1.0f);
 #define MAX_STEPS 256
-#define MAX_DISTANCE 250.0f
 
 #define _DIRECTIONAL_LIGHTS_COUNT 1
 #define _POINT_LIGHTS_COUNT 1
@@ -81,11 +80,11 @@ uniform vec3 grid_min;
 uniform vec3 grid_max;
 uniform float subsurfaceDepth;
 uniform float dmax;
+uniform float MAX_DISTANCE = 250.0f;
 uniform float refraction;
 uniform bool reflectionOn;
 uniform bool refractionOn;
 vec2 texOffset;
-
 
 //Matrial constant
 const Material mat = {vec3(0.0f,0.0f,1.f),vec3(0.1f),vec3(0.8f),vec3(0.1f),15.0f};
@@ -148,7 +147,6 @@ vec4 calculateShading(Hit hit){
 	float falloff=1.0;
     for( int i=0; i<nbIte; i++ )
     {
-        
         vec3 rd = hit.normal*distance;
 		distance *= 2.1f;
         ao += (distance - max(sceneSDF( hit.position + rd ),0.f))/maxDist*falloff;
@@ -164,21 +162,26 @@ vec4 calculateShading(Hit hit){
 	//scalingFactor = 1.0f;
 	color = mat.color*mat.diffuse*light + .25f*vec3(1-scalingFactor);
 	return vec4(vec3(color),1.f);
-
 }
 
 void main() {
-	texOffset = 1.0/textureSize(SESTexture,0);
+	texOffset = 1.0/textureSize(AtomTexture,0);
 	vec3 rayDirection = normalize(ray.direction);
 	Hit closestHit = rayMarching(ray.origin, rayDirection);
 	if(closestHit.distance > MAX_DISTANCE){
-		FragColor = BLACK;
+		FragColor = WHITE;
 		return;
 	}
 	else{
 		float sigma = min(((texture(AtomDepth,TexCoords).x)-(closestHit.distance/MAX_DISTANCE))/dmax,1);
 		float fc = exp(-5*sigma);
 		fcout = vec4(fc);
+		if(refractionOn)
+		{
+			vec3 R = refract(closestHit.viewDirection, closestHit.normal, 1/refraction);
+			vec3 t = closestHit.viewDirection - R;
+			offset = vec4(t,0.0f);
+		}
 		if(reflectionOn)
 		{
 			Ray reflection;
@@ -194,13 +197,6 @@ void main() {
 			}
 			return;
 		}
-		if(refractionOn)
-		{
-			vec3 R = normalize(refract(closestHit.viewDirection, closestHit.normal, 1/refraction));
-			vec3 t = normalize(closestHit.viewDirection) - R;
-
-		}
-		offset = vec4(0.0f);
 		FragColor = calculateShading(closestHit)*(1-fc)+vec4(texture(AtomTexture,TexCoords))*(fc);
 		return;
 	}
