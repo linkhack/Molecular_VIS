@@ -91,13 +91,15 @@ $(document).ready(function(){initNavTree('index.html','');});
 </div><!--header-->
 <div class="contents">
 
-    <center><img src="example.png" alt="Example picture of a rendered molecule"/></center>
+    <center><img src="example.png" alt="Example picture of a rendered molecule" /></center>
 
     <h1>Introduction</h1>
     In their paper "Improving Perception of Molecular Surface Visualizations by Incorporating Translucency Effects"[1] P. Hermosilla et al. provide a state of the art
     method of visualizing molecules to help analyze their surface, as well as their underlying structure. It does so by
     improving the perception of the surface using reflection and refraction effects and by removing visual noise by only
-    rendering the structures close to the molecule surface by employing transparency and translucency effects. 
+    rendering the structures close to the molecule surface by employing transparency and translucency effects.
+    <br />
+    The program is obtainable either as <a href="../../src.zip">source</a> or as <a href="../../bin.zip">binary</a>
 
     <h1>Implementation</h1>
     We implemented the paper in C++ and uses OpenGL for rendering. In addition we used the gemmi library to
@@ -133,6 +135,8 @@ $(document).ready(function(){initNavTree('index.html','');});
     <h3>Libraries</h3>
     <div><a href="https://github.com/ocornut/imgui">Dear ImGui</a></div>
     <div><a href="https://github.com/project-gemmi/gemmi">gemmi</a></div>
+
+    by Patrick Link, Martin Novak
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
