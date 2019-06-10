@@ -87,6 +87,7 @@
     <None Include="assets\shader\ses_raymarch.frag" />
     <None Include="assets\shader\translucency.frag" />
     <None Include="assets\shader\volTexInspector.frag" />
+    <None Include="data\1af6.cif" />
     <None Include="data\1jjj.cif" />
     <None Include="data\1k4r.cif" />
     <None Include="data\1s3s.cif" />

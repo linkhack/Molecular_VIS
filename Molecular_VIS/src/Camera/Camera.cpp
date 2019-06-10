@@ -1,9 +1,9 @@
 #include "Camera.h"
 using namespace glm;
+
 /*
  Creates Camera, fov in degrees
 */
-
 Camera::Camera(float fov, float aspect, float near, float far)
 { 
 	pitch = 0.0f;
@@ -45,6 +45,11 @@ glm::vec3 Camera::getPosition()
 	return position;
 }
 
+glm::vec3 Camera::getDirection()
+{
+	return normalizedDirection;
+}
+
 void Camera::update(int x, int y, float zoom, bool dragging, bool strafing)
 {
 	mat4 rotation = mat4(1.0f);
@@ -71,6 +76,7 @@ void Camera::update(int x, int y, float zoom, bool dragging, bool strafing)
 
 	vec3 up = vec3(0.0f, 1.0f, 0.0f);
 	vec3 lookingDirection =-position;
+	normalizedDirection = glm::normalize(lookingDirection);
 	vec3 front = normalize(lookingDirection);
 	vec3 right = normalize(cross(front, up));
 	vec3 zAxis = cross(right, front);

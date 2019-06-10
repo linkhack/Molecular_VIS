@@ -1,0 +1,125 @@
+\hypertarget{class_frustum_cull}{}\section{Frustum\+Cull Class Reference}
+\label{class_frustum_cull}\index{FrustumCull@{FrustumCull}}
+
+
+Class for frustum-\/culling.  
+
+
+
+
+{\ttfamily \#include $<$Frustum\+Cull.\+h$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{class_frustum_cull_ac3f2e416581ca09b43008ac4acabc508}{Classification}} \{ {\bfseries O\+U\+T\+S\+I\+DE}, 
+{\bfseries I\+N\+T\+E\+R\+S\+E\+CT}, 
+{\bfseries I\+N\+S\+I\+DE}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_frustum_cull_ae3f9818bf1c4c339875d9b28855ac39f}{set\+Cam\+Internals}} (float angle, float ratio, float nearD, float farD)
+\item 
+void \mbox{\hyperlink{class_frustum_cull_aab9e225ad60c090feed4824a3393c800}{set\+Cam\+Def}} (const glm\+::vec3 \&p, const glm\+::vec3 \&l, const glm\+::vec3 \&u)
+\item 
+\mbox{\hyperlink{class_frustum_cull_ac3f2e416581ca09b43008ac4acabc508}{Classification}} \mbox{\hyperlink{class_frustum_cull_a7f85e51b496174f49ecb9e4aaada2628}{point\+In\+Frustum}} (const glm\+::vec3 \&p) const
+\item 
+\mbox{\hyperlink{class_frustum_cull_ac3f2e416581ca09b43008ac4acabc508}{Classification}} \mbox{\hyperlink{class_frustum_cull_aaba1b14e06072c6e32d680f515e016ab}{sphere\+In\+Frustum}} (const glm\+::vec3 \&p, float raio) const
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for frustum-\/culling. 
+
+
+
+\subsection{Member Enumeration Documentation}
+\mbox{\Hypertarget{class_frustum_cull_ac3f2e416581ca09b43008ac4acabc508}\label{class_frustum_cull_ac3f2e416581ca09b43008ac4acabc508}} 
+\index{FrustumCull@{FrustumCull}!Classification@{Classification}}
+\index{Classification@{Classification}!FrustumCull@{FrustumCull}}
+\subsubsection{\texorpdfstring{Classification}{Classification}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{class_frustum_cull_ac3f2e416581ca09b43008ac4acabc508}{Frustum\+Cull\+::\+Classification}}}
+
+Enum for classification of intersection 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_frustum_cull_a7f85e51b496174f49ecb9e4aaada2628}\label{class_frustum_cull_a7f85e51b496174f49ecb9e4aaada2628}} 
+\index{FrustumCull@{FrustumCull}!pointInFrustum@{pointInFrustum}}
+\index{pointInFrustum@{pointInFrustum}!FrustumCull@{FrustumCull}}
+\subsubsection{\texorpdfstring{pointInFrustum()}{pointInFrustum()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_frustum_cull_ac3f2e416581ca09b43008ac4acabc508}{Frustum\+Cull\+::\+Classification}} Frustum\+Cull\+::point\+In\+Frustum (\begin{DoxyParamCaption}\item[{const glm\+::vec3 \&}]{p }\end{DoxyParamCaption}) const}
+
+Checks if a point lies inside the frustum region
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & coordinates of the point to check \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+I\+N\+S\+I\+DE or O\+U\+T\+S\+I\+DE depending on if the point lies inside or outside of the frustum region 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_frustum_cull_aab9e225ad60c090feed4824a3393c800}\label{class_frustum_cull_aab9e225ad60c090feed4824a3393c800}} 
+\index{FrustumCull@{FrustumCull}!setCamDef@{setCamDef}}
+\index{setCamDef@{setCamDef}!FrustumCull@{FrustumCull}}
+\subsubsection{\texorpdfstring{setCamDef()}{setCamDef()}}
+{\footnotesize\ttfamily void Frustum\+Cull\+::set\+Cam\+Def (\begin{DoxyParamCaption}\item[{const glm\+::vec3 \&}]{p,  }\item[{const glm\+::vec3 \&}]{l,  }\item[{const glm\+::vec3 \&}]{u }\end{DoxyParamCaption})}
+
+Sets the parameters needed for calculation of frustum planes. These parameters come from the camera position and orientation. Calling this function updates the Culling Planes.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & position of camera \\
+\hline
+{\em l} & coordinates of point where the camera looks at / focus point. \\
+\hline
+{\em u} & Vector pointing up from the camera. \\
+\hline
+{\em l,u} & define the camera coordinate system. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_frustum_cull_ae3f9818bf1c4c339875d9b28855ac39f}\label{class_frustum_cull_ae3f9818bf1c4c339875d9b28855ac39f}} 
+\index{FrustumCull@{FrustumCull}!setCamInternals@{setCamInternals}}
+\index{setCamInternals@{setCamInternals}!FrustumCull@{FrustumCull}}
+\subsubsection{\texorpdfstring{setCamInternals()}{setCamInternals()}}
+{\footnotesize\ttfamily void Frustum\+Cull\+::set\+Cam\+Internals (\begin{DoxyParamCaption}\item[{float}]{angle,  }\item[{float}]{ratio,  }\item[{float}]{nearD,  }\item[{float}]{farD }\end{DoxyParamCaption})}
+
+Sets the parameters needed for calculation of frustum planes. These parameters come from the camera projection
+
+
+\begin{DoxyParams}{Parameters}
+{\em angle} & Field of view of camera in degrees. \\
+\hline
+{\em ratio} & Aspect ratio. \\
+\hline
+{\em nearD} & Near plane z. \\
+\hline
+{\em farD} & Far plane z. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_frustum_cull_aaba1b14e06072c6e32d680f515e016ab}\label{class_frustum_cull_aaba1b14e06072c6e32d680f515e016ab}} 
+\index{FrustumCull@{FrustumCull}!sphereInFrustum@{sphereInFrustum}}
+\index{sphereInFrustum@{sphereInFrustum}!FrustumCull@{FrustumCull}}
+\subsubsection{\texorpdfstring{sphereInFrustum()}{sphereInFrustum()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_frustum_cull_ac3f2e416581ca09b43008ac4acabc508}{Frustum\+Cull\+::\+Classification}} Frustum\+Cull\+::sphere\+In\+Frustum (\begin{DoxyParamCaption}\item[{const glm\+::vec3 \&}]{p,  }\item[{float}]{raio }\end{DoxyParamCaption}) const}
+
+Checks the intersection of a sphere with the frustum region
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & coordinates of the center of the sphere. \\
+\hline
+{\em raio} & radius of the sphere \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+I\+N\+S\+I\+DE, I\+N\+T\+E\+R\+S\+E\+CT or O\+U\+T\+S\+I\+DE, depending if the circle lies totally inside or partially inside or outside the frustum region 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Renderer/Frustum\+Cull.\+h\item 
+Renderer/Frustum\+Cull.\+cpp\end{DoxyCompactItemize}

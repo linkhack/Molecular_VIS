@@ -52,9 +52,9 @@ void FrustumCull::setCamDef(const glm::vec3 &p, const glm::vec3 &l, const glm::v
 }
 
 
-int FrustumCull::pointInFrustum(const glm::vec3 &p) const {
+FrustumCull::Classification FrustumCull::pointInFrustum(const glm::vec3 &p) const {
 
-	int result = INSIDE;
+	Classification result = INSIDE;
 	for (int i = 0; i < 6; i++) {
 
 		if (pl[i].distance(p) < 0)
@@ -64,9 +64,9 @@ int FrustumCull::pointInFrustum(const glm::vec3 &p) const {
 }
 
 
-int FrustumCull::sphereInFrustum(const glm::vec3 &p, float raio) const {
+FrustumCull::Classification FrustumCull::sphereInFrustum(const glm::vec3 &p, float raio) const {
 		
-	int result = INSIDE;
+	Classification result = INSIDE;
 	float distance;
 
 	for(int i=0; i < 6; i++) {

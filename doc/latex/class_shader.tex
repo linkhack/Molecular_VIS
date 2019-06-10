@@ -1,0 +1,307 @@
+\hypertarget{class_shader}{}\section{Shader Class Reference}
+\label{class_shader}\index{Shader@{Shader}}
+
+
+Class handling shader construction and managment.  
+
+
+
+
+{\ttfamily \#include $<$Shader.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_shader_a76576a620ff181bb85d22e6ab69c0c82}{Shader}} (std\+::string vertex\+Shader, std\+::string fragment\+Shader)
+\item 
+\mbox{\hyperlink{class_shader_a59d00e31f9c5cb3dc0dc3dc2b3f4fe75}{Shader}} (std\+::string compute\+Shader)
+\item 
+void \mbox{\hyperlink{class_shader_a68198848608bdc77bf3458f012fc0254}{set\+Uniform}} (std\+::string uniform, const glm\+::vec3 \&value)
+\item 
+void \mbox{\hyperlink{class_shader_a8be651239acd7054e67008ed65640c1a}{set\+Unifrom}} (G\+Lint location, const glm\+::vec3 \&value)
+\item 
+void \mbox{\hyperlink{class_shader_a067b36bf8725bb293d710fc238a25810}{set\+Uniform}} (std\+::string uniform, const glm\+::uvec3 \&value)
+\item 
+void \mbox{\hyperlink{class_shader_a817f7990832a2d6694ce401c13ec849b}{set\+Unifrom}} (G\+Lint location, const glm\+::uvec3 \&value)
+\item 
+void \mbox{\hyperlink{class_shader_aafe91198ce854c8aa597634c2aade5b1}{set\+Uniform}} (std\+::string uniform, const int value)
+\item 
+void \mbox{\hyperlink{class_shader_a244823f885cf9940884274099f18f181}{set\+Uniform}} (G\+Lint location, const int value)
+\item 
+void \mbox{\hyperlink{class_shader_a544a8d9f51111f1372085dc9bf9c2164}{set\+Uniform}} (std\+::string uniform, const float value)
+\item 
+void \mbox{\hyperlink{class_shader_ab1281bdfea19a0c093189106ae1efe69}{set\+Uniform}} (G\+Lint location, const float value)
+\item 
+void \mbox{\hyperlink{class_shader_a500fce8b6eba1eaa28b6f5bc62bcf9fd}{set\+Uniform}} (std\+::string uniform, const glm\+::mat4 \&mat)
+\item 
+void \mbox{\hyperlink{class_shader_a46355ed56b88314db5d718d4a62d35c8}{set\+Uniform}} (G\+Lint location, const glm\+::mat4 \&mat)
+\item 
+void \mbox{\hyperlink{class_shader_acfe710bb28287970d342326fb0c48eb4}{set\+Uniform}} (std\+::string uniform, const glm\+::mat3 \&mat)
+\item 
+void \mbox{\hyperlink{class_shader_a043b7949a585fab2da3d8f1c060dfe47}{set\+Uniform}} (G\+Lint location, const glm\+::mat3 \&mat)
+\item 
+void \mbox{\hyperlink{class_shader_a870fa9f13d69e558815d6fd351a469dc}{use}} ()
+\item 
+void \mbox{\hyperlink{class_shader_a8eb0c22bd8a71aaf85f4ce7a4102fa34}{unuse}} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const std\+::string \mbox{\hyperlink{class_shader_aa6e44073d2057294985c44d4026bfe76}{I\+M\+P\+O\+R\+T\+\_\+\+D\+I\+R\+E\+C\+T\+I\+VE}} = \char`\"{}\%\%import\char`\"{}
+\item 
+static const std\+::string \mbox{\hyperlink{class_shader_aa455d9f9902f2c9ac34fb6a3103b86d1}{S\+H\+A\+D\+E\+R\+\_\+\+D\+I\+R\+E\+C\+T\+O\+RY}} = \char`\"{}./assets/shader/\char`\"{}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class handling shader construction and managment. 
+
+This class can be used to generate vertex-\/fragment programs or compute shader programs. It handles the reading of the source files and compilation and linking of the source. It also handles the setting of uniforms and can also handle the import of shaders into other shaders. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_shader_a76576a620ff181bb85d22e6ab69c0c82}\label{class_shader_a76576a620ff181bb85d22e6ab69c0c82}} 
+\index{Shader@{Shader}!Shader@{Shader}}
+\index{Shader@{Shader}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{Shader()}{Shader()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Shader\+::\+Shader (\begin{DoxyParamCaption}\item[{std\+::string}]{vertex\+Shader,  }\item[{std\+::string}]{fragment\+Shader }\end{DoxyParamCaption})}
+
+Creates a vertex -\/ fragment shader program
+
+
+\begin{DoxyParams}{Parameters}
+{\em vertex\+Shader} & filename of vertex shader, has to be located in S\+H\+A\+D\+E\+R\+::\+S\+H\+A\+D\+E\+R\+\_\+\+D\+I\+R\+E\+C\+T\+O\+RY \\
+\hline
+{\em fragment\+Shader} & filename of fragment shader, has to be located in S\+H\+A\+D\+E\+R\+::\+S\+H\+A\+D\+E\+R\+\_\+\+D\+I\+R\+E\+C\+T\+O\+RY \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_shader_a59d00e31f9c5cb3dc0dc3dc2b3f4fe75}\label{class_shader_a59d00e31f9c5cb3dc0dc3dc2b3f4fe75}} 
+\index{Shader@{Shader}!Shader@{Shader}}
+\index{Shader@{Shader}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{Shader()}{Shader()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Shader\+::\+Shader (\begin{DoxyParamCaption}\item[{std\+::string}]{compute\+Shader }\end{DoxyParamCaption})}
+
+Creates a compute shader program
+
+
+\begin{DoxyParams}{Parameters}
+{\em compute\+Shader} & filename of compute shader, has to be located in S\+H\+A\+D\+E\+R\+::\+S\+H\+A\+D\+E\+R\+\_\+\+D\+I\+R\+E\+C\+T\+O\+RY \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_shader_a68198848608bdc77bf3458f012fc0254}\label{class_shader_a68198848608bdc77bf3458f012fc0254}} 
+\index{Shader@{Shader}!setUniform@{setUniform}}
+\index{setUniform@{setUniform}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{setUniform()}{setUniform()}\hspace{0.1cm}{\footnotesize\ttfamily [1/10]}}
+{\footnotesize\ttfamily void Shader\+::set\+Uniform (\begin{DoxyParamCaption}\item[{std\+::string}]{uniform,  }\item[{const glm\+::vec3 \&}]{value }\end{DoxyParamCaption})}
+
+Set a vec3 uniform
+
+
+\begin{DoxyParams}{Parameters}
+{\em uniform} & string of uniform name \\
+\hline
+{\em value} & glm\+::vec3 value to be set \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_shader_a067b36bf8725bb293d710fc238a25810}\label{class_shader_a067b36bf8725bb293d710fc238a25810}} 
+\index{Shader@{Shader}!setUniform@{setUniform}}
+\index{setUniform@{setUniform}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{setUniform()}{setUniform()}\hspace{0.1cm}{\footnotesize\ttfamily [2/10]}}
+{\footnotesize\ttfamily void Shader\+::set\+Uniform (\begin{DoxyParamCaption}\item[{std\+::string}]{uniform,  }\item[{const glm\+::uvec3 \&}]{value }\end{DoxyParamCaption})}
+
+Set a uvec3 uniform
+
+
+\begin{DoxyParams}{Parameters}
+{\em uniform} & string of uniform name \\
+\hline
+{\em value} & glm\+::uvec3 value to be set \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_shader_aafe91198ce854c8aa597634c2aade5b1}\label{class_shader_aafe91198ce854c8aa597634c2aade5b1}} 
+\index{Shader@{Shader}!setUniform@{setUniform}}
+\index{setUniform@{setUniform}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{setUniform()}{setUniform()}\hspace{0.1cm}{\footnotesize\ttfamily [3/10]}}
+{\footnotesize\ttfamily void Shader\+::set\+Uniform (\begin{DoxyParamCaption}\item[{std\+::string}]{uniform,  }\item[{const int}]{value }\end{DoxyParamCaption})}
+
+Set a int uniform
+
+
+\begin{DoxyParams}{Parameters}
+{\em uniform} & string of uniform name \\
+\hline
+{\em value} & int value to be set \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_shader_a244823f885cf9940884274099f18f181}\label{class_shader_a244823f885cf9940884274099f18f181}} 
+\index{Shader@{Shader}!setUniform@{setUniform}}
+\index{setUniform@{setUniform}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{setUniform()}{setUniform()}\hspace{0.1cm}{\footnotesize\ttfamily [4/10]}}
+{\footnotesize\ttfamily void Shader\+::set\+Uniform (\begin{DoxyParamCaption}\item[{G\+Lint}]{location,  }\item[{const int}]{value }\end{DoxyParamCaption})}
+
+Set a int uniform
+
+
+\begin{DoxyParams}{Parameters}
+{\em location} & G\+Lint location of uniform \\
+\hline
+{\em value} & int value to be set \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_shader_a544a8d9f51111f1372085dc9bf9c2164}\label{class_shader_a544a8d9f51111f1372085dc9bf9c2164}} 
+\index{Shader@{Shader}!setUniform@{setUniform}}
+\index{setUniform@{setUniform}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{setUniform()}{setUniform()}\hspace{0.1cm}{\footnotesize\ttfamily [5/10]}}
+{\footnotesize\ttfamily void Shader\+::set\+Uniform (\begin{DoxyParamCaption}\item[{std\+::string}]{uniform,  }\item[{const float}]{value }\end{DoxyParamCaption})}
+
+Set a float uniform
+
+
+\begin{DoxyParams}{Parameters}
+{\em uniform} & string of uniform name \\
+\hline
+{\em value} & float value to be set \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_shader_ab1281bdfea19a0c093189106ae1efe69}\label{class_shader_ab1281bdfea19a0c093189106ae1efe69}} 
+\index{Shader@{Shader}!setUniform@{setUniform}}
+\index{setUniform@{setUniform}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{setUniform()}{setUniform()}\hspace{0.1cm}{\footnotesize\ttfamily [6/10]}}
+{\footnotesize\ttfamily void Shader\+::set\+Uniform (\begin{DoxyParamCaption}\item[{G\+Lint}]{location,  }\item[{const float}]{value }\end{DoxyParamCaption})}
+
+Set a float uniform
+
+
+\begin{DoxyParams}{Parameters}
+{\em location} & G\+Lint location of uniform \\
+\hline
+{\em value} & float value to be set \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_shader_a500fce8b6eba1eaa28b6f5bc62bcf9fd}\label{class_shader_a500fce8b6eba1eaa28b6f5bc62bcf9fd}} 
+\index{Shader@{Shader}!setUniform@{setUniform}}
+\index{setUniform@{setUniform}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{setUniform()}{setUniform()}\hspace{0.1cm}{\footnotesize\ttfamily [7/10]}}
+{\footnotesize\ttfamily void Shader\+::set\+Uniform (\begin{DoxyParamCaption}\item[{std\+::string}]{uniform,  }\item[{const glm\+::mat4 \&}]{mat }\end{DoxyParamCaption})}
+
+Set a mat4 uniform
+
+
+\begin{DoxyParams}{Parameters}
+{\em uniform} & string of uniform name \\
+\hline
+{\em mat} & glm\+::mat4 value to be set \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_shader_a46355ed56b88314db5d718d4a62d35c8}\label{class_shader_a46355ed56b88314db5d718d4a62d35c8}} 
+\index{Shader@{Shader}!setUniform@{setUniform}}
+\index{setUniform@{setUniform}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{setUniform()}{setUniform()}\hspace{0.1cm}{\footnotesize\ttfamily [8/10]}}
+{\footnotesize\ttfamily void Shader\+::set\+Uniform (\begin{DoxyParamCaption}\item[{G\+Lint}]{location,  }\item[{const glm\+::mat4 \&}]{mat }\end{DoxyParamCaption})}
+
+Set a mat4 uniform
+
+
+\begin{DoxyParams}{Parameters}
+{\em location} & G\+Lint location of uniform \\
+\hline
+{\em mat} & glm\+::mat4 value to be set \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_shader_acfe710bb28287970d342326fb0c48eb4}\label{class_shader_acfe710bb28287970d342326fb0c48eb4}} 
+\index{Shader@{Shader}!setUniform@{setUniform}}
+\index{setUniform@{setUniform}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{setUniform()}{setUniform()}\hspace{0.1cm}{\footnotesize\ttfamily [9/10]}}
+{\footnotesize\ttfamily void Shader\+::set\+Uniform (\begin{DoxyParamCaption}\item[{std\+::string}]{uniform,  }\item[{const glm\+::mat3 \&}]{mat }\end{DoxyParamCaption})}
+
+Set a uvec3 uniform
+
+
+\begin{DoxyParams}{Parameters}
+{\em uniform} & string of uniform name \\
+\hline
+{\em mat} & glm\+::uvec3 value to be set \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_shader_a043b7949a585fab2da3d8f1c060dfe47}\label{class_shader_a043b7949a585fab2da3d8f1c060dfe47}} 
+\index{Shader@{Shader}!setUniform@{setUniform}}
+\index{setUniform@{setUniform}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{setUniform()}{setUniform()}\hspace{0.1cm}{\footnotesize\ttfamily [10/10]}}
+{\footnotesize\ttfamily void Shader\+::set\+Uniform (\begin{DoxyParamCaption}\item[{G\+Lint}]{location,  }\item[{const glm\+::mat3 \&}]{mat }\end{DoxyParamCaption})}
+
+Set a mat3 uniform
+
+
+\begin{DoxyParams}{Parameters}
+{\em location} & G\+Lint location of uniform \\
+\hline
+{\em mat} & glm\+::mat3 value to be set \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_shader_a8be651239acd7054e67008ed65640c1a}\label{class_shader_a8be651239acd7054e67008ed65640c1a}} 
+\index{Shader@{Shader}!setUnifrom@{setUnifrom}}
+\index{setUnifrom@{setUnifrom}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{setUnifrom()}{setUnifrom()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void Shader\+::set\+Unifrom (\begin{DoxyParamCaption}\item[{G\+Lint}]{location,  }\item[{const glm\+::vec3 \&}]{value }\end{DoxyParamCaption})}
+
+Set a vec3 uniform
+
+
+\begin{DoxyParams}{Parameters}
+{\em location} & G\+Lint location of uniform \\
+\hline
+{\em value} & glm\+::vec3 value to be set \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_shader_a817f7990832a2d6694ce401c13ec849b}\label{class_shader_a817f7990832a2d6694ce401c13ec849b}} 
+\index{Shader@{Shader}!setUnifrom@{setUnifrom}}
+\index{setUnifrom@{setUnifrom}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{setUnifrom()}{setUnifrom()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Shader\+::set\+Unifrom (\begin{DoxyParamCaption}\item[{G\+Lint}]{location,  }\item[{const glm\+::uvec3 \&}]{value }\end{DoxyParamCaption})}
+
+Set a uvec3 uniform
+
+
+\begin{DoxyParams}{Parameters}
+{\em location} & G\+Lint location of uniform \\
+\hline
+{\em value} & glm\+::uvec3 value to be set \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_shader_a8eb0c22bd8a71aaf85f4ce7a4102fa34}\label{class_shader_a8eb0c22bd8a71aaf85f4ce7a4102fa34}} 
+\index{Shader@{Shader}!unuse@{unuse}}
+\index{unuse@{unuse}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{unuse()}{unuse()}}
+{\footnotesize\ttfamily void Shader\+::unuse (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Disables current active shader program. \mbox{\Hypertarget{class_shader_a870fa9f13d69e558815d6fd351a469dc}\label{class_shader_a870fa9f13d69e558815d6fd351a469dc}} 
+\index{Shader@{Shader}!use@{use}}
+\index{use@{use}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{use()}{use()}}
+{\footnotesize\ttfamily void Shader\+::use (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Sets the shader program as active. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{class_shader_aa6e44073d2057294985c44d4026bfe76}\label{class_shader_aa6e44073d2057294985c44d4026bfe76}} 
+\index{Shader@{Shader}!IMPORT\_DIRECTIVE@{IMPORT\_DIRECTIVE}}
+\index{IMPORT\_DIRECTIVE@{IMPORT\_DIRECTIVE}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{IMPORT\_DIRECTIVE}{IMPORT\_DIRECTIVE}}
+{\footnotesize\ttfamily const std\+::string Shader\+::\+I\+M\+P\+O\+R\+T\+\_\+\+D\+I\+R\+E\+C\+T\+I\+VE = \char`\"{}\%\%import\char`\"{}\hspace{0.3cm}{\ttfamily [static]}}
+
+Preprocesser directive for import statement. Usage in shader code\+: $<$\+I\+M\+P\+O\+R\+T\+\_\+\+D\+I\+R\+E\+C\+T\+I\+V\+E$>$ $<$file$>$
+
+This directive gets replaced with the code in file before compilation. \mbox{\Hypertarget{class_shader_aa455d9f9902f2c9ac34fb6a3103b86d1}\label{class_shader_aa455d9f9902f2c9ac34fb6a3103b86d1}} 
+\index{Shader@{Shader}!SHADER\_DIRECTORY@{SHADER\_DIRECTORY}}
+\index{SHADER\_DIRECTORY@{SHADER\_DIRECTORY}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{SHADER\_DIRECTORY}{SHADER\_DIRECTORY}}
+{\footnotesize\ttfamily const std\+::string Shader\+::\+S\+H\+A\+D\+E\+R\+\_\+\+D\+I\+R\+E\+C\+T\+O\+RY = \char`\"{}./assets/shader/\char`\"{}\hspace{0.3cm}{\ttfamily [static]}}
+
+Path to the shader folder 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Shader/Shader.\+h\item 
+Shader/Shader.\+cpp\end{DoxyCompactItemize}

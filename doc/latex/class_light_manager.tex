@@ -1,0 +1,145 @@
+\hypertarget{class_light_manager}{}\section{Light\+Manager Class Reference}
+\label{class_light_manager}\index{LightManager@{LightManager}}
+
+
+Manages the collection of lights.  
+
+
+
+
+{\ttfamily \#include $<$Light\+Manager.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_light_manager_a1eee8eb276ec7f041d961a567389754a}{Light\+Manager}} ()
+\item 
+void \mbox{\hyperlink{class_light_manager_ae0f5b4100720ed12a23e32ffe7de9d3a}{create\+Point\+Light}} (glm\+::vec3 color, glm\+::vec3 position, glm\+::vec3 attenuation)
+\item 
+void \mbox{\hyperlink{class_light_manager_a4c9bb6347e3d2ef437a5b8ad8cba86d2}{create\+Directional\+Light}} (glm\+::vec3 color, glm\+::vec3 direction)
+\item 
+void \mbox{\hyperlink{class_light_manager_a35f0a1eacd4e6666173651fd96d2b5e6}{create\+Spot\+Light}} (glm\+::vec3 color, glm\+::vec3 position, glm\+::vec3 direction, float inner\+Opening\+Angle, float outer\+Opening\+Angle, glm\+::vec3 attenuation)
+\item 
+void \mbox{\hyperlink{class_light_manager_af81f79c0cff819a9d3bd1a36253aa5cb}{set\+Uniforms}} (const std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_shader}{Shader}} $>$$>$ \&shaders)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const int \mbox{\hyperlink{class_light_manager_a86c2dd9645783cfa9051eba87afbf11c}{max\+Directional\+Lights}} = 1
+\item 
+static const int \mbox{\hyperlink{class_light_manager_a9144bde2784500d384280660de2460ae}{max\+Point\+Lights}} = 1
+\item 
+static const int \mbox{\hyperlink{class_light_manager_ab805ba7944bb72374cd02bbae19dfd08}{max\+Spot\+Lights}} = 1
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Manages the collection of lights. 
+
+Is responsible for holding the information of the different lights and setting all the corresponding uniforms. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_light_manager_a1eee8eb276ec7f041d961a567389754a}\label{class_light_manager_a1eee8eb276ec7f041d961a567389754a}} 
+\index{LightManager@{LightManager}!LightManager@{LightManager}}
+\index{LightManager@{LightManager}!LightManager@{LightManager}}
+\subsubsection{\texorpdfstring{LightManager()}{LightManager()}}
+{\footnotesize\ttfamily Light\+Manager\+::\+Light\+Manager (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Creates an empty \mbox{\hyperlink{class_light_manager}{Light\+Manager}} 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_light_manager_a4c9bb6347e3d2ef437a5b8ad8cba86d2}\label{class_light_manager_a4c9bb6347e3d2ef437a5b8ad8cba86d2}} 
+\index{LightManager@{LightManager}!createDirectionalLight@{createDirectionalLight}}
+\index{createDirectionalLight@{createDirectionalLight}!LightManager@{LightManager}}
+\subsubsection{\texorpdfstring{createDirectionalLight()}{createDirectionalLight()}}
+{\footnotesize\ttfamily void Light\+Manager\+::create\+Directional\+Light (\begin{DoxyParamCaption}\item[{glm\+::vec3}]{color,  }\item[{glm\+::vec3}]{direction }\end{DoxyParamCaption})}
+
+Creates a directional-\/light and adds it to the manager. See \mbox{\hyperlink{class_directional_light}{Directional\+Light}}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em color} & Color of the light. \\
+\hline
+{\em direction} & Direction of the light. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_light_manager_ae0f5b4100720ed12a23e32ffe7de9d3a}\label{class_light_manager_ae0f5b4100720ed12a23e32ffe7de9d3a}} 
+\index{LightManager@{LightManager}!createPointLight@{createPointLight}}
+\index{createPointLight@{createPointLight}!LightManager@{LightManager}}
+\subsubsection{\texorpdfstring{createPointLight()}{createPointLight()}}
+{\footnotesize\ttfamily void Light\+Manager\+::create\+Point\+Light (\begin{DoxyParamCaption}\item[{glm\+::vec3}]{color,  }\item[{glm\+::vec3}]{position,  }\item[{glm\+::vec3}]{attenuation }\end{DoxyParamCaption})}
+
+Creates a point-\/light and adds it to the manager. See \mbox{\hyperlink{class_point_light}{Point\+Light}}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em color} & Color of the light. \\
+\hline
+{\em position} & Position of the light. \\
+\hline
+{\em attenuation} & Attenuation coefficients of the light. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_light_manager_a35f0a1eacd4e6666173651fd96d2b5e6}\label{class_light_manager_a35f0a1eacd4e6666173651fd96d2b5e6}} 
+\index{LightManager@{LightManager}!createSpotLight@{createSpotLight}}
+\index{createSpotLight@{createSpotLight}!LightManager@{LightManager}}
+\subsubsection{\texorpdfstring{createSpotLight()}{createSpotLight()}}
+{\footnotesize\ttfamily void Light\+Manager\+::create\+Spot\+Light (\begin{DoxyParamCaption}\item[{glm\+::vec3}]{color,  }\item[{glm\+::vec3}]{position,  }\item[{glm\+::vec3}]{direction,  }\item[{float}]{inner\+Opening\+Angle,  }\item[{float}]{outer\+Opening\+Angle,  }\item[{glm\+::vec3}]{attenuation }\end{DoxyParamCaption})}
+
+Creates a spot-\/light and adds it to the manager. See \mbox{\hyperlink{class_spot_light}{Spot\+Light}}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em color} & Color of the light. \\
+\hline
+{\em position} & Position of the light. \\
+\hline
+{\em direction} & Direction of the light. \\
+\hline
+{\em inner\+Opening\+Angle} & Inner angle in degrees. \\
+\hline
+{\em outer\+Opening\+Angle} & Outer angle in degrees. \\
+\hline
+{\em attenuation} & Attenuation factors. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_light_manager_af81f79c0cff819a9d3bd1a36253aa5cb}\label{class_light_manager_af81f79c0cff819a9d3bd1a36253aa5cb}} 
+\index{LightManager@{LightManager}!setUniforms@{setUniforms}}
+\index{setUniforms@{setUniforms}!LightManager@{LightManager}}
+\subsubsection{\texorpdfstring{setUniforms()}{setUniforms()}}
+{\footnotesize\ttfamily void Light\+Manager\+::set\+Uniforms (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_shader}{Shader}} $>$$>$ \&}]{shaders }\end{DoxyParamCaption})}
+
+Sets the light releted uniforms for all shaders in the vector.
+
+
+\begin{DoxyParams}{Parameters}
+{\em shaders} & Vector of shaders for which the uniforms will be set. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{class_light_manager_a86c2dd9645783cfa9051eba87afbf11c}\label{class_light_manager_a86c2dd9645783cfa9051eba87afbf11c}} 
+\index{LightManager@{LightManager}!maxDirectionalLights@{maxDirectionalLights}}
+\index{maxDirectionalLights@{maxDirectionalLights}!LightManager@{LightManager}}
+\subsubsection{\texorpdfstring{maxDirectionalLights}{maxDirectionalLights}}
+{\footnotesize\ttfamily const int Light\+Manager\+::max\+Directional\+Lights = 1\hspace{0.3cm}{\ttfamily [static]}}
+
+Maximum number of directional-\/lights. \mbox{\Hypertarget{class_light_manager_a9144bde2784500d384280660de2460ae}\label{class_light_manager_a9144bde2784500d384280660de2460ae}} 
+\index{LightManager@{LightManager}!maxPointLights@{maxPointLights}}
+\index{maxPointLights@{maxPointLights}!LightManager@{LightManager}}
+\subsubsection{\texorpdfstring{maxPointLights}{maxPointLights}}
+{\footnotesize\ttfamily const int Light\+Manager\+::max\+Point\+Lights = 1\hspace{0.3cm}{\ttfamily [static]}}
+
+Maximum number of point-\/lights. \mbox{\Hypertarget{class_light_manager_ab805ba7944bb72374cd02bbae19dfd08}\label{class_light_manager_ab805ba7944bb72374cd02bbae19dfd08}} 
+\index{LightManager@{LightManager}!maxSpotLights@{maxSpotLights}}
+\index{maxSpotLights@{maxSpotLights}!LightManager@{LightManager}}
+\subsubsection{\texorpdfstring{maxSpotLights}{maxSpotLights}}
+{\footnotesize\ttfamily const int Light\+Manager\+::max\+Spot\+Lights = 1\hspace{0.3cm}{\ttfamily [static]}}
+
+Maximum number of spot-\/lights. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Light/Light\+Manager.\+h\item 
+Light/Light\+Manager.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,196 @@
+\hypertarget{class_procedural_geometry}{}\section{Procedural\+Geometry Class Reference}
+\label{class_procedural_geometry}\index{ProceduralGeometry@{ProceduralGeometry}}
+
+
+Class for procedurally genereted geometries, like spheres and cubes.  
+
+
+
+
+{\ttfamily \#include $<$Geometry.\+h$>$}
+
+Inheritance diagram for Procedural\+Geometry\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_procedural_geometry}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_procedural_geometry_a30248690322b0e29f013e3e832338dd0}{Procedural\+Geometry}} (glm\+::mat4 model\+Matrix, \mbox{\hyperlink{struct_geometry_data}{Geometry\+Data}} \&geometry\+Data, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_material}{Material}} $>$ material)
+\item 
+\mbox{\hyperlink{class_procedural_geometry_ada1bdbdd69542837089d339dd9c63564}{Procedural\+Geometry}} (glm\+::mat4 model\+Matrix, \mbox{\hyperlink{struct_geometry_data}{Geometry\+Data}} \&geometry\+Data, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_shader}{Shader}} $>$ shader)
+\item 
+virtual void \mbox{\hyperlink{class_procedural_geometry_ab3c3e34093cb3af5756d214b18ff6047}{draw}} (glm\+::mat4 matrix=glm\+::mat4(1.\+0f))
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{struct_geometry_data}{Geometry\+Data}} \mbox{\hyperlink{class_procedural_geometry_a640ac76e0dd9de37fd2025ac7e3667fc}{create\+Cube\+Geometry}} (float width, float height, float depth)
+\item 
+static \mbox{\hyperlink{struct_geometry_data}{Geometry\+Data}} \mbox{\hyperlink{class_procedural_geometry_a86aa1b10c06ae770bce69d5d48a54c47}{create\+Sphere\+Geometry}} (float radius, unsigned int longitude\+Segments, unsigned int latitude\+Segments)
+\item 
+static void \mbox{\hyperlink{class_procedural_geometry_a7cbbd9f84b647754d571f10934da8f49}{create\+Sphere\+Geometry}} (float radius, unsigned int longitude\+Segments, unsigned int latitude\+Segments, glm\+::vec3 position, \mbox{\hyperlink{struct_geometry_data}{Geometry\+Data}} \&geometry)
+\item 
+static \mbox{\hyperlink{struct_geometry_data}{Geometry\+Data}} \mbox{\hyperlink{class_procedural_geometry_a2d8786dba5064c14c73f2e3fafccd2ac}{create\+Cylinder\+Geometry}} (float radius, float height, unsigned int segments)
+\item 
+static \mbox{\hyperlink{struct_geometry_data}{Geometry\+Data}} \mbox{\hyperlink{class_procedural_geometry_ad2ad8b1fd1b3630cc1fcd4646270421c}{create\+Full\+Screen\+Quad}} ()
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Class for procedurally genereted geometries, like spheres and cubes. 
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_procedural_geometry_a30248690322b0e29f013e3e832338dd0}\label{class_procedural_geometry_a30248690322b0e29f013e3e832338dd0}} 
+\index{ProceduralGeometry@{ProceduralGeometry}!ProceduralGeometry@{ProceduralGeometry}}
+\index{ProceduralGeometry@{ProceduralGeometry}!ProceduralGeometry@{ProceduralGeometry}}
+\subsubsection{\texorpdfstring{ProceduralGeometry()}{ProceduralGeometry()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Procedural\+Geometry\+::\+Procedural\+Geometry (\begin{DoxyParamCaption}\item[{glm\+::mat4}]{model\+Matrix,  }\item[{\mbox{\hyperlink{struct_geometry_data}{Geometry\+Data}} \&}]{geometry\+Data,  }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_material}{Material}} $>$}]{material }\end{DoxyParamCaption})}
+
+Creates a procedural geometry object
+
+
+\begin{DoxyParams}{Parameters}
+{\em model\+Matrix} & The model matrix of the geometry. Transforms geometry from object to world space. \\
+\hline
+{\em geometry\+Data} & Data of the vertices and connectivity. This is used to construct the indexed buffers. \\
+\hline
+{\em material} & \mbox{\hyperlink{class_material}{Material}} of the geometry, defining the brdf properties of the geometry. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_procedural_geometry_ada1bdbdd69542837089d339dd9c63564}\label{class_procedural_geometry_ada1bdbdd69542837089d339dd9c63564}} 
+\index{ProceduralGeometry@{ProceduralGeometry}!ProceduralGeometry@{ProceduralGeometry}}
+\index{ProceduralGeometry@{ProceduralGeometry}!ProceduralGeometry@{ProceduralGeometry}}
+\subsubsection{\texorpdfstring{ProceduralGeometry()}{ProceduralGeometry()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Procedural\+Geometry\+::\+Procedural\+Geometry (\begin{DoxyParamCaption}\item[{glm\+::mat4}]{model\+Matrix,  }\item[{\mbox{\hyperlink{struct_geometry_data}{Geometry\+Data}} \&}]{geometry\+Data,  }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_shader}{Shader}} $>$}]{shader }\end{DoxyParamCaption})}
+
+Creates a procedural geometry object with standard material values for a given shader.
+
+
+\begin{DoxyParams}{Parameters}
+{\em model\+Matrix} & The model matrix of the geometry. Transforms geometry from object to world space. \\
+\hline
+{\em geometry\+Data} & Data of the vertices and connectivity. This is used to construct the indexed buffers. \\
+\hline
+{\em shader} & \mbox{\hyperlink{class_shader}{Shader}} that is used to draw. Is used to construct the default material. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_procedural_geometry_a640ac76e0dd9de37fd2025ac7e3667fc}\label{class_procedural_geometry_a640ac76e0dd9de37fd2025ac7e3667fc}} 
+\index{ProceduralGeometry@{ProceduralGeometry}!createCubeGeometry@{createCubeGeometry}}
+\index{createCubeGeometry@{createCubeGeometry}!ProceduralGeometry@{ProceduralGeometry}}
+\subsubsection{\texorpdfstring{createCubeGeometry()}{createCubeGeometry()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{struct_geometry_data}{Geometry\+Data}} Procedural\+Geometry\+::create\+Cube\+Geometry (\begin{DoxyParamCaption}\item[{float}]{width,  }\item[{float}]{height,  }\item[{float}]{depth }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Creates \mbox{\hyperlink{struct_geometry_data}{Geometry\+Data}} for a cube.
+
+
+\begin{DoxyParams}{Parameters}
+{\em width,height,depth} & dimensions of the cube \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{struct_geometry_data}{Geometry\+Data}} for a cube. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_procedural_geometry_a2d8786dba5064c14c73f2e3fafccd2ac}\label{class_procedural_geometry_a2d8786dba5064c14c73f2e3fafccd2ac}} 
+\index{ProceduralGeometry@{ProceduralGeometry}!createCylinderGeometry@{createCylinderGeometry}}
+\index{createCylinderGeometry@{createCylinderGeometry}!ProceduralGeometry@{ProceduralGeometry}}
+\subsubsection{\texorpdfstring{createCylinderGeometry()}{createCylinderGeometry()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{struct_geometry_data}{Geometry\+Data}} Procedural\+Geometry\+::create\+Cylinder\+Geometry (\begin{DoxyParamCaption}\item[{float}]{radius,  }\item[{float}]{height,  }\item[{unsigned int}]{segments }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Creates \mbox{\hyperlink{struct_geometry_data}{Geometry\+Data}} for a cylinder.
+
+
+\begin{DoxyParams}{Parameters}
+{\em radius} & Radius of cylinder. \\
+\hline
+{\em height} & Height of cylinder. \\
+\hline
+{\em segments} & Number of segments along cylinder used for triangulation. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{struct_geometry_data}{Geometry\+Data}} for a cylinder. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_procedural_geometry_ad2ad8b1fd1b3630cc1fcd4646270421c}\label{class_procedural_geometry_ad2ad8b1fd1b3630cc1fcd4646270421c}} 
+\index{ProceduralGeometry@{ProceduralGeometry}!createFullScreenQuad@{createFullScreenQuad}}
+\index{createFullScreenQuad@{createFullScreenQuad}!ProceduralGeometry@{ProceduralGeometry}}
+\subsubsection{\texorpdfstring{createFullScreenQuad()}{createFullScreenQuad()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{struct_geometry_data}{Geometry\+Data}} Procedural\+Geometry\+::create\+Full\+Screen\+Quad (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Creates a full-\/screen quad with texture coordinates from (0,0) to (1,1)
+
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{struct_geometry_data}{Geometry\+Data}} for a full-\/screen quad. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_procedural_geometry_a86aa1b10c06ae770bce69d5d48a54c47}\label{class_procedural_geometry_a86aa1b10c06ae770bce69d5d48a54c47}} 
+\index{ProceduralGeometry@{ProceduralGeometry}!createSphereGeometry@{createSphereGeometry}}
+\index{createSphereGeometry@{createSphereGeometry}!ProceduralGeometry@{ProceduralGeometry}}
+\subsubsection{\texorpdfstring{createSphereGeometry()}{createSphereGeometry()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{struct_geometry_data}{Geometry\+Data}} Procedural\+Geometry\+::create\+Sphere\+Geometry (\begin{DoxyParamCaption}\item[{float}]{radius,  }\item[{unsigned int}]{longitude\+Segments,  }\item[{unsigned int}]{latitude\+Segments }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Creates \mbox{\hyperlink{struct_geometry_data}{Geometry\+Data}} for a sphere.
+
+
+\begin{DoxyParams}{Parameters}
+{\em radius} & Radius of sphere \\
+\hline
+{\em longitude\+Segments} & Number of segments along longitude. \\
+\hline
+{\em latitude\+Segments} & Number of segments along latitude. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{struct_geometry_data}{Geometry\+Data}} for a sphere. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_procedural_geometry_a7cbbd9f84b647754d571f10934da8f49}\label{class_procedural_geometry_a7cbbd9f84b647754d571f10934da8f49}} 
+\index{ProceduralGeometry@{ProceduralGeometry}!createSphereGeometry@{createSphereGeometry}}
+\index{createSphereGeometry@{createSphereGeometry}!ProceduralGeometry@{ProceduralGeometry}}
+\subsubsection{\texorpdfstring{createSphereGeometry()}{createSphereGeometry()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Procedural\+Geometry\+::create\+Sphere\+Geometry (\begin{DoxyParamCaption}\item[{float}]{radius,  }\item[{unsigned int}]{longitude\+Segments,  }\item[{unsigned int}]{latitude\+Segments,  }\item[{glm\+::vec3}]{position,  }\item[{\mbox{\hyperlink{struct_geometry_data}{Geometry\+Data}} \&}]{geometry }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Append a Sphere to the given \mbox{\hyperlink{struct_geometry_data}{Geometry\+Data}} at a given position. Can be used to construct a collection of spheres.
+
+
+\begin{DoxyParams}[1]{Parameters}
+ & {\em radius} & Radius of sphere \\
+\hline
+ & {\em longitude\+Segments} & Number of segments along longitude. \\
+\hline
+ & {\em latitude\+Segments} & Number of segments along latitude. \\
+\hline
+ & {\em position} & Coordinates of position where this sphere will be added. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em geometry} & \mbox{\hyperlink{struct_geometry_data}{Geometry\+Data}} to which the sphere will be added. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_procedural_geometry_ab3c3e34093cb3af5756d214b18ff6047}\label{class_procedural_geometry_ab3c3e34093cb3af5756d214b18ff6047}} 
+\index{ProceduralGeometry@{ProceduralGeometry}!draw@{draw}}
+\index{draw@{draw}!ProceduralGeometry@{ProceduralGeometry}}
+\subsubsection{\texorpdfstring{draw()}{draw()}}
+{\footnotesize\ttfamily void Procedural\+Geometry\+::draw (\begin{DoxyParamCaption}\item[{glm\+::mat4}]{matrix = {\ttfamily glm\+:\+:mat4(1.0f)} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Function defining how to draw the \mbox{\hyperlink{class_geometry}{Geometry}}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em matrix} & Defines a transformation from word space to word space. Gets left-\/multiplied with the model matrix. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{class_geometry_a417f18c0d1f3c8a09ee93023c0a8330d}{Geometry}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Geometry/Geometry.\+h\item 
+Geometry/Procedural\+Geometry.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,96 @@
+\hypertarget{class_volumetric_texture}{}\section{Volumetric\+Texture Class Reference}
+\label{class_volumetric_texture}\index{VolumetricTexture@{VolumetricTexture}}
+
+
+Wrapper class for G\+L\+\_\+\+T\+E\+X\+T\+U\+R\+E\+\_\+3D.  
+
+
+
+
+{\ttfamily \#include $<$Volumetric\+Texture.\+h$>$}
+
+Inheritance diagram for Volumetric\+Texture\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_volumetric_texture}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_volumetric_texture_a70ced10d0c65766cc8faf3f11b293633}{Volumetric\+Texture}} (int width, int height, int depth, G\+Lenum internal\+Format, G\+Lenum format, G\+Lenum type)
+\item 
+virtual void \mbox{\hyperlink{class_volumetric_texture_ab151b11d41cb83bcb4fbbe5bbd319ec3}{bind\+As\+Texture}} (int unit)
+\item 
+virtual void \mbox{\hyperlink{class_volumetric_texture_a148e0b996afc42e622a7533d5c57a8d7}{bind\+As\+Image}} (int unit)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Wrapper class for G\+L\+\_\+\+T\+E\+X\+T\+U\+R\+E\+\_\+3D. 
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_volumetric_texture_a70ced10d0c65766cc8faf3f11b293633}\label{class_volumetric_texture_a70ced10d0c65766cc8faf3f11b293633}} 
+\index{VolumetricTexture@{VolumetricTexture}!VolumetricTexture@{VolumetricTexture}}
+\index{VolumetricTexture@{VolumetricTexture}!VolumetricTexture@{VolumetricTexture}}
+\subsubsection{\texorpdfstring{VolumetricTexture()}{VolumetricTexture()}}
+{\footnotesize\ttfamily Volumetric\+Texture\+::\+Volumetric\+Texture (\begin{DoxyParamCaption}\item[{int}]{width,  }\item[{int}]{height,  }\item[{int}]{depth,  }\item[{G\+Lenum}]{internal\+Format,  }\item[{G\+Lenum}]{format,  }\item[{G\+Lenum}]{type }\end{DoxyParamCaption})}
+
+Creates 3d texture.
+
+
+\begin{DoxyParams}{Parameters}
+{\em width,height,depth} & Dimensions of texture. \\
+\hline
+{\em internal\+Format} & Internal format of the texture. See open\+GL documentation. \\
+\hline
+{\em format} & Format of data. \\
+\hline
+{\em type} & Type of data. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_volumetric_texture_a148e0b996afc42e622a7533d5c57a8d7}\label{class_volumetric_texture_a148e0b996afc42e622a7533d5c57a8d7}} 
+\index{VolumetricTexture@{VolumetricTexture}!bindAsImage@{bindAsImage}}
+\index{bindAsImage@{bindAsImage}!VolumetricTexture@{VolumetricTexture}}
+\subsubsection{\texorpdfstring{bindAsImage()}{bindAsImage()}}
+{\footnotesize\ttfamily void Volumetric\+Texture\+::bind\+As\+Image (\begin{DoxyParamCaption}\item[{int}]{unit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Binds the texture as image for image load/store operations (in compute shaders etc.)
+
+
+\begin{DoxyParams}{Parameters}
+{\em unit} & Location to bind the image to. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{class_texture}{Texture}}.
+
+\mbox{\Hypertarget{class_volumetric_texture_ab151b11d41cb83bcb4fbbe5bbd319ec3}\label{class_volumetric_texture_ab151b11d41cb83bcb4fbbe5bbd319ec3}} 
+\index{VolumetricTexture@{VolumetricTexture}!bindAsTexture@{bindAsTexture}}
+\index{bindAsTexture@{bindAsTexture}!VolumetricTexture@{VolumetricTexture}}
+\subsubsection{\texorpdfstring{bindAsTexture()}{bindAsTexture()}}
+{\footnotesize\ttfamily void Volumetric\+Texture\+::bind\+As\+Texture (\begin{DoxyParamCaption}\item[{int}]{unit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Binds the texture as texture to texture unit.
+
+
+\begin{DoxyParams}{Parameters}
+{\em unit} & \mbox{\hyperlink{class_texture}{Texture}} unit to bind to. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{class_texture}{Texture}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Texture/Volumetric\+Texture.\+h\item 
+Texture/Volumetric\+Texture.\+cpp\end{DoxyCompactItemize}

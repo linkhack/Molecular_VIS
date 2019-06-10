@@ -230,10 +230,6 @@ void Shader::processImport(std::string & source)
 	}
 }
 
-Shader::Shader()
-{
-}
-
 Shader::Shader(std::string vertexShader, std::string fragmentShader)
 {
 	this->vertexShader = vertexShader;

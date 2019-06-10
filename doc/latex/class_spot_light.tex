@@ -1,0 +1,84 @@
+\hypertarget{class_spot_light}{}\section{Spot\+Light Class Reference}
+\label{class_spot_light}\index{SpotLight@{SpotLight}}
+
+
+Class for spot-\/lights.  
+
+
+
+
+{\ttfamily \#include $<$Spot\+Light.\+h$>$}
+
+Inheritance diagram for Spot\+Light\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_spot_light}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_spot_light_a308ab1c137899599cb4c30d193c480ab}{Spot\+Light}} (glm\+::vec3 color, glm\+::vec3 position, glm\+::vec3 direction, float inner\+Opening\+Angle, float outer\+Opening\+Angle, glm\+::vec3 attenuation)
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{class_spot_light_a7712847acb6f2d61b4c20968cd8ff461}{set\+Uniform}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_shader}{Shader}} $>$ \&shader, int index)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for spot-\/lights. 
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_spot_light_a308ab1c137899599cb4c30d193c480ab}\label{class_spot_light_a308ab1c137899599cb4c30d193c480ab}} 
+\index{SpotLight@{SpotLight}!SpotLight@{SpotLight}}
+\index{SpotLight@{SpotLight}!SpotLight@{SpotLight}}
+\subsubsection{\texorpdfstring{SpotLight()}{SpotLight()}}
+{\footnotesize\ttfamily Spot\+Light\+::\+Spot\+Light (\begin{DoxyParamCaption}\item[{glm\+::vec3}]{color,  }\item[{glm\+::vec3}]{position,  }\item[{glm\+::vec3}]{direction,  }\item[{float}]{inner\+Opening\+Angle,  }\item[{float}]{outer\+Opening\+Angle,  }\item[{glm\+::vec3}]{attenuation }\end{DoxyParamCaption})}
+
+Creates a spot-\/light.
+
+
+\begin{DoxyParams}{Parameters}
+{\em color} & Color of the light. \\
+\hline
+{\em position} & Position of the light. \\
+\hline
+{\em direction} & Direction of the light. \\
+\hline
+{\em inner\+Opening\+Angle} & Inner opening angle of the light in degrees. \\
+\hline
+{\em outer\+Opening\+Angle} & Outer opening angle of the light in degrees. \\
+\hline
+{\em attenuation} & Attenuation coefficients of the light. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_spot_light_a7712847acb6f2d61b4c20968cd8ff461}\label{class_spot_light_a7712847acb6f2d61b4c20968cd8ff461}} 
+\index{SpotLight@{SpotLight}!setUniform@{setUniform}}
+\index{setUniform@{setUniform}!SpotLight@{SpotLight}}
+\subsubsection{\texorpdfstring{setUniform()}{setUniform()}}
+{\footnotesize\ttfamily void Spot\+Light\+::set\+Uniform (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_shader}{Shader}} $>$ \&}]{shader,  }\item[{int}]{index }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+Sets the spot-\/light related uniforms in a shader. Sets following uniforms\+: spot\+Lights\mbox{[}index\mbox{]}.color spot\+Lights\mbox{[}index\mbox{]}.position spot\+Lights\mbox{[}index\mbox{]}.attenuation spot\+Lights\mbox{[}index\mbox{]}.direction spot\+Lights\mbox{[}index\mbox{]}.inner\+Opening\+Angle spot\+Lights\mbox{[}index\mbox{]}.outer\+Opening\+Angle 
+\begin{DoxyParams}{Parameters}
+{\em shader} & \mbox{\hyperlink{class_shader}{Shader}} to be updated \\
+\hline
+{\em index} & index of the light among lights of the same type (used in shader to index light) \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \mbox{\hyperlink{class_light_a05d202e42ffec4c8bece9c18b4d4541e}{Light}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Light/Spot\+Light.\+h\item 
+Light/Spot\+Light.\+cpp\end{DoxyCompactItemize}

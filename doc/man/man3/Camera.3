@@ -1,0 +1,37 @@
+.TH "Camera" 3 "Mon Jun 3 2019" "Molecular Vis" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Camera
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBCamera\fP (float fov, float aspect, float near, float far)"
+.br
+.ti -1c
+.RI "glm::mat4 \fBgetInverseProjectionViewMatrix\fP ()"
+.br
+.ti -1c
+.RI "glm::mat4 \fBgetProjectionViewMatrix\fP ()"
+.br
+.ti -1c
+.RI "glm::mat4 \fBgetViewMatrix\fP ()"
+.br
+.ti -1c
+.RI "glm::vec3 \fBgetPosition\fP ()"
+.br
+.ti -1c
+.RI "glm::vec3 \fBgetDirection\fP ()"
+.br
+.ti -1c
+.RI "void \fBupdate\fP (int x, int y, float zoom, bool dragging, bool strafing)"
+.br
+.in -1c
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Molecular Vis from the source code\&.

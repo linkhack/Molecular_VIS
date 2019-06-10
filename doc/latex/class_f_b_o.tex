@@ -1,0 +1,204 @@
+\hypertarget{class_f_b_o}{}\section{F\+BO Class Reference}
+\label{class_f_b_o}\index{FBO@{FBO}}
+
+
+Class for handling render to texture using framebuffer objects.  
+
+
+
+
+{\ttfamily \#include $<$F\+B\+O.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_f_b_o_a2948b029f198e0298617ce7749ebce07}{F\+BO}} (bool use\+Texture\+Color, bool use\+Texture\+Depth, bool multi\+Sample, unsigned int width, unsigned int height, bool add\+Second\+Color\+Buffer=false)
+\item 
+\mbox{\hyperlink{class_f_b_o_a8e07c3b50fdd03a8df93f73c89d5e6cd}{F\+BO}} (unsigned int nr\+Color\+Texture, bool use\+Depth\+Texture, bool use\+Multisampling, unsigned int width, unsigned int height)
+\item 
+const unsigned int \mbox{\hyperlink{class_f_b_o_ae5051caff550fc37a9b2f1800ff02ed6}{get\+Color\+Texture}} (unsigned int i) const
+\item 
+const unsigned int \mbox{\hyperlink{class_f_b_o_a18441302a3220a0f24a69a4eea1959c0}{get\+Color\+Texture}} () const
+\item 
+const unsigned int \mbox{\hyperlink{class_f_b_o_a12cf770f6b67937a89b13cdeb5d5aeb1}{get\+Secondary\+Color\+Texture}} () const
+\item 
+const unsigned int \mbox{\hyperlink{class_f_b_o_a7463991775d4c862d55108f918b0b2f9}{get\+Depth\+Texture}} () const
+\item 
+const bool \mbox{\hyperlink{class_f_b_o_a0d20c728cb85513791a853695ee527a6}{is\+Multi\+Sample}} () const
+\item 
+void \mbox{\hyperlink{class_f_b_o_a0372e62761da8e6e073c8c05b9dfb8f7}{set\+Active}} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{class_f_b_o_addf89df1a720d8dd34594ac87e21ca03}{copy\+F\+BO}} (const \mbox{\hyperlink{class_f_b_o}{F\+BO}} \&from, const \mbox{\hyperlink{class_f_b_o}{F\+BO}} \&to, unsigned int buffer\+Mask=G\+L\+\_\+\+C\+O\+L\+O\+R\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+B\+IT$\vert$G\+L\+\_\+\+D\+E\+P\+T\+H\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+B\+IT)
+\item 
+static void \mbox{\hyperlink{class_f_b_o_ad01c27b4426d49ee55ec9c2734291fe2}{copy\+F\+BO}} (const \mbox{\hyperlink{class_f_b_o}{F\+BO}} \&from, unsigned int to, unsigned int buffer\+Mask=G\+L\+\_\+\+C\+O\+L\+O\+R\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+B\+IT$\vert$G\+L\+\_\+\+D\+E\+P\+T\+H\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+B\+IT)
+\item 
+static void \mbox{\hyperlink{class_f_b_o_a813e10a4d1dadeb29c781419c6c5a8dd}{copy\+F\+BO}} (unsigned int from, const \mbox{\hyperlink{class_f_b_o}{F\+BO}} \&to, unsigned int buffer\+Mask=G\+L\+\_\+\+C\+O\+L\+O\+R\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+B\+IT$\vert$G\+L\+\_\+\+D\+E\+P\+T\+H\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+B\+IT)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static unsigned int \mbox{\hyperlink{class_f_b_o_ac1a0e5bfd75a342c885ff5a90d8f4677}{M\+U\+L\+T\+I\+\_\+\+S\+A\+M\+P\+L\+E\+\_\+\+C\+O\+U\+NT}} = 16
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for handling render to texture using framebuffer objects. 
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_f_b_o_a2948b029f198e0298617ce7749ebce07}\label{class_f_b_o_a2948b029f198e0298617ce7749ebce07}} 
+\index{FBO@{FBO}!FBO@{FBO}}
+\index{FBO@{FBO}!FBO@{FBO}}
+\subsubsection{\texorpdfstring{FBO()}{FBO()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily F\+B\+O\+::\+F\+BO (\begin{DoxyParamCaption}\item[{bool}]{use\+Texture\+Color,  }\item[{bool}]{use\+Texture\+Depth,  }\item[{bool}]{multi\+Sample,  }\item[{unsigned int}]{width,  }\item[{unsigned int}]{height,  }\item[{bool}]{add\+Second\+Color\+Buffer = {\ttfamily false} }\end{DoxyParamCaption})}
+
+Creates a \mbox{\hyperlink{class_f_b_o}{F\+BO}} with at most two color textures and one depth texture
+
+
+\begin{DoxyParams}{Parameters}
+{\em use\+Texture\+Color} & if a color texture is used \\
+\hline
+{\em use\+Texture\+Depth} & if a depth texture is used \\
+\hline
+{\em multi\+Sample} & if multisampling should be enabled \\
+\hline
+{\em width} & width of the framebuffer and textures \\
+\hline
+{\em height} & height of the framebuffer and textures \\
+\hline
+{\em add\+Second\+Color\+Buffer} & if an additional color texture should be attached. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_f_b_o_a8e07c3b50fdd03a8df93f73c89d5e6cd}\label{class_f_b_o_a8e07c3b50fdd03a8df93f73c89d5e6cd}} 
+\index{FBO@{FBO}!FBO@{FBO}}
+\index{FBO@{FBO}!FBO@{FBO}}
+\subsubsection{\texorpdfstring{FBO()}{FBO()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily F\+B\+O\+::\+F\+BO (\begin{DoxyParamCaption}\item[{unsigned int}]{nr\+Color\+Texture,  }\item[{bool}]{use\+Depth\+Texture,  }\item[{bool}]{use\+Multisampling,  }\item[{unsigned int}]{width,  }\item[{unsigned int}]{height }\end{DoxyParamCaption})}
+
+Creates a \mbox{\hyperlink{class_f_b_o}{F\+BO}} with a arbitrary number of color textures.
+
+
+\begin{DoxyParams}{Parameters}
+{\em nr\+Color\+Texture} & nr of color textures attached. \\
+\hline
+{\em use\+Depth\+Texture} & if a depth texture is used \\
+\hline
+{\em use\+Multisampling} & if multisampling should be enabled \\
+\hline
+{\em width} & width of the framebuffer and textures \\
+\hline
+{\em height} & height of the framebuffer and textures \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_f_b_o_addf89df1a720d8dd34594ac87e21ca03}\label{class_f_b_o_addf89df1a720d8dd34594ac87e21ca03}} 
+\index{FBO@{FBO}!copyFBO@{copyFBO}}
+\index{copyFBO@{copyFBO}!FBO@{FBO}}
+\subsubsection{\texorpdfstring{copyFBO()}{copyFBO()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily void F\+B\+O\+::copy\+F\+BO (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_f_b_o}{F\+BO}} \&}]{from,  }\item[{const \mbox{\hyperlink{class_f_b_o}{F\+BO}} \&}]{to,  }\item[{unsigned int}]{buffer\+Mask = {\ttfamily GL\+\_\+COLOR\+\_\+BUFFER\+\_\+BIT~$\vert$~GL\+\_\+DEPTH\+\_\+BUFFER\+\_\+BIT} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Copys fbo data from one fbo to an other.
+
+
+\begin{DoxyParams}{Parameters}
+{\em from} & where to copy from \\
+\hline
+{\em to} & where to copy to \\
+\hline
+{\em buffer\+Mask} & what to copy. See open\+GL documentaiton of gl\+Blit\+Framebuffer \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_f_b_o_ad01c27b4426d49ee55ec9c2734291fe2}\label{class_f_b_o_ad01c27b4426d49ee55ec9c2734291fe2}} 
+\index{FBO@{FBO}!copyFBO@{copyFBO}}
+\index{copyFBO@{copyFBO}!FBO@{FBO}}
+\subsubsection{\texorpdfstring{copyFBO()}{copyFBO()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily void F\+B\+O\+::copy\+F\+BO (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_f_b_o}{F\+BO}} \&}]{from,  }\item[{unsigned int}]{to,  }\item[{unsigned int}]{buffer\+Mask = {\ttfamily GL\+\_\+COLOR\+\_\+BUFFER\+\_\+BIT~$\vert$~GL\+\_\+DEPTH\+\_\+BUFFER\+\_\+BIT} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. \mbox{\Hypertarget{class_f_b_o_a813e10a4d1dadeb29c781419c6c5a8dd}\label{class_f_b_o_a813e10a4d1dadeb29c781419c6c5a8dd}} 
+\index{FBO@{FBO}!copyFBO@{copyFBO}}
+\index{copyFBO@{copyFBO}!FBO@{FBO}}
+\subsubsection{\texorpdfstring{copyFBO()}{copyFBO()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily void F\+B\+O\+::copy\+F\+BO (\begin{DoxyParamCaption}\item[{unsigned int}]{from,  }\item[{const \mbox{\hyperlink{class_f_b_o}{F\+BO}} \&}]{to,  }\item[{unsigned int}]{buffer\+Mask = {\ttfamily GL\+\_\+COLOR\+\_\+BUFFER\+\_\+BIT~$\vert$~GL\+\_\+DEPTH\+\_\+BUFFER\+\_\+BIT} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. \mbox{\Hypertarget{class_f_b_o_ae5051caff550fc37a9b2f1800ff02ed6}\label{class_f_b_o_ae5051caff550fc37a9b2f1800ff02ed6}} 
+\index{FBO@{FBO}!getColorTexture@{getColorTexture}}
+\index{getColorTexture@{getColorTexture}!FBO@{FBO}}
+\subsubsection{\texorpdfstring{getColorTexture()}{getColorTexture()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily const unsigned int F\+B\+O\+::get\+Color\+Texture (\begin{DoxyParamCaption}\item[{unsigned int}]{i }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Gets the handle of the i-\/th color texture, counted from 0. Handle can then be used in gl\+Bind\+Texture etc. The texture is either a G\+L\+\_\+\+T\+E\+X\+T\+U\+R\+E\+\_\+2D or G\+L\+\_\+\+T\+E\+X\+T\+U\+R\+E\+\_\+2\+D\+\_\+\+M\+U\+L\+T\+I\+S\+A\+M\+P\+LE, depending on if multisampling is enabled or not.
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & index of the texture \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+handle of texture at index 0 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_f_b_o_a18441302a3220a0f24a69a4eea1959c0}\label{class_f_b_o_a18441302a3220a0f24a69a4eea1959c0}} 
+\index{FBO@{FBO}!getColorTexture@{getColorTexture}}
+\index{getColorTexture@{getColorTexture}!FBO@{FBO}}
+\subsubsection{\texorpdfstring{getColorTexture()}{getColorTexture()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily const unsigned int F\+B\+O\+::get\+Color\+Texture (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Convinience method for get\+Color\+Texture(0)
+
+\begin{DoxyReturn}{Returns}
+handle of first color texture 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_f_b_o_a7463991775d4c862d55108f918b0b2f9}\label{class_f_b_o_a7463991775d4c862d55108f918b0b2f9}} 
+\index{FBO@{FBO}!getDepthTexture@{getDepthTexture}}
+\index{getDepthTexture@{getDepthTexture}!FBO@{FBO}}
+\subsubsection{\texorpdfstring{getDepthTexture()}{getDepthTexture()}}
+{\footnotesize\ttfamily const unsigned int F\+B\+O\+::get\+Depth\+Texture (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Gets the handle of the depth texture. Handle can then be used in gl\+Bind\+Texture etc. The texture is either a G\+L\+\_\+\+T\+E\+X\+T\+U\+R\+E\+\_\+2D or G\+L\+\_\+\+T\+E\+X\+T\+U\+R\+E\+\_\+2\+D\+\_\+\+M\+U\+L\+T\+I\+S\+A\+M\+P\+LE, depending on if multisampling is enabled or not.
+
+\begin{DoxyReturn}{Returns}
+handle of depth texture 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_f_b_o_a12cf770f6b67937a89b13cdeb5d5aeb1}\label{class_f_b_o_a12cf770f6b67937a89b13cdeb5d5aeb1}} 
+\index{FBO@{FBO}!getSecondaryColorTexture@{getSecondaryColorTexture}}
+\index{getSecondaryColorTexture@{getSecondaryColorTexture}!FBO@{FBO}}
+\subsubsection{\texorpdfstring{getSecondaryColorTexture()}{getSecondaryColorTexture()}}
+{\footnotesize\ttfamily const unsigned int F\+B\+O\+::get\+Secondary\+Color\+Texture (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+convinience method for get\+Color\+Texture(1)
+
+\begin{DoxyReturn}{Returns}
+handle of first color texture 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_f_b_o_a0d20c728cb85513791a853695ee527a6}\label{class_f_b_o_a0d20c728cb85513791a853695ee527a6}} 
+\index{FBO@{FBO}!isMultiSample@{isMultiSample}}
+\index{isMultiSample@{isMultiSample}!FBO@{FBO}}
+\subsubsection{\texorpdfstring{isMultiSample()}{isMultiSample()}}
+{\footnotesize\ttfamily const bool F\+B\+O\+::is\+Multi\+Sample (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Checks if \mbox{\hyperlink{class_f_b_o}{F\+BO}} has multisampling enabled \mbox{\Hypertarget{class_f_b_o_a0372e62761da8e6e073c8c05b9dfb8f7}\label{class_f_b_o_a0372e62761da8e6e073c8c05b9dfb8f7}} 
+\index{FBO@{FBO}!setActive@{setActive}}
+\index{setActive@{setActive}!FBO@{FBO}}
+\subsubsection{\texorpdfstring{setActive()}{setActive()}}
+{\footnotesize\ttfamily void F\+B\+O\+::set\+Active (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Prepares \mbox{\hyperlink{class_f_b_o}{F\+BO}} for rendering. All draw commands after calling this output to attached textures. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{class_f_b_o_ac1a0e5bfd75a342c885ff5a90d8f4677}\label{class_f_b_o_ac1a0e5bfd75a342c885ff5a90d8f4677}} 
+\index{FBO@{FBO}!MULTI\_SAMPLE\_COUNT@{MULTI\_SAMPLE\_COUNT}}
+\index{MULTI\_SAMPLE\_COUNT@{MULTI\_SAMPLE\_COUNT}!FBO@{FBO}}
+\subsubsection{\texorpdfstring{MULTI\_SAMPLE\_COUNT}{MULTI\_SAMPLE\_COUNT}}
+{\footnotesize\ttfamily unsigned int F\+B\+O\+::\+M\+U\+L\+T\+I\+\_\+\+S\+A\+M\+P\+L\+E\+\_\+\+C\+O\+U\+NT = 16\hspace{0.3cm}{\ttfamily [static]}}
+
+Multisample count if multisampling is enebled. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Renderer/F\+B\+O.\+h\item 
+Renderer/F\+B\+O.\+cpp\end{DoxyCompactItemize}

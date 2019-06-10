@@ -1,0 +1,63 @@
+.TH "FBO" 3 "Mon Jun 3 2019" "Molecular Vis" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+FBO
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBFBO\fP (bool useTextureColor, bool useTextureDepth, bool multiSample, unsigned int width, unsigned int height, bool addSecondColorBuffer=false)"
+.br
+.ti -1c
+.RI "\fBFBO\fP (unsigned int nrColorTexture, bool useDepthTexture, bool useMultisampling, unsigned int width, unsigned int height)"
+.br
+.ti -1c
+.RI "const unsigned int \fBgetColorTexture\fP () const"
+.br
+.ti -1c
+.RI "const unsigned int \fBgetColorTexture\fP (unsigned int i) const"
+.br
+.ti -1c
+.RI "const unsigned int \fBgetSecondaryColorTexture\fP () const"
+.br
+.ti -1c
+.RI "const unsigned int \fBgetDepthTexture\fP () const"
+.br
+.ti -1c
+.RI "const bool \fBisMultiSample\fP () const"
+.br
+.ti -1c
+.RI "void \fBsetActive\fP ()"
+.br
+.ti -1c
+.RI "void \fBchangeSize\fP (unsigned int width, unsigned int height)"
+.br
+.in -1c
+.SS "Static Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "static void \fBcopyFBO\fP (const \fBFBO\fP &from, const \fBFBO\fP &to, unsigned int bufferMask=GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)"
+.br
+.ti -1c
+.RI "static void \fBcopyFBO\fP (const \fBFBO\fP &from, unsigned int to, unsigned int bufferMask=GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)"
+.br
+.ti -1c
+.RI "static void \fBcopyFBO\fP (unsigned int from, const \fBFBO\fP &to, unsigned int bufferMask=GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)"
+.br
+.in -1c
+.SS "Static Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "static unsigned int \fBMULTI_SAMPLE_COUNT\fP = 16"
+.br
+.in -1c
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Molecular Vis from the source code\&.

@@ -1,0 +1,93 @@
+.TH "FrustumCull" 3 "Mon Jun 3 2019" "Molecular Vis" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+FrustumCull
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Types"
+
+.in +1c
+.ti -1c
+.RI "enum { \fBOUTSIDE\fP, \fBINTERSECT\fP, \fBINSIDE\fP }"
+.br
+.in -1c
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBsetCamInternals\fP (float angle, float ratio, float nearD, float farD)"
+.br
+.ti -1c
+.RI "void \fBsetCamDef\fP (const glm::vec3 &p, const glm::vec3 &l, const glm::vec3 &u)"
+.br
+.ti -1c
+.RI "int \fBpointInFrustum\fP (const glm::vec3 &p) const"
+.br
+.ti -1c
+.RI "int \fBsphereInFrustum\fP (const glm::vec3 &p, float raio) const"
+.br
+.in -1c
+.SS "Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "\fBFrustumPlane\fP \fBpl\fP [6]"
+.br
+.ti -1c
+.RI "glm::vec3 \fBntl\fP"
+.br
+.ti -1c
+.RI "glm::vec3 \fBntr\fP"
+.br
+.ti -1c
+.RI "glm::vec3 \fBnbl\fP"
+.br
+.ti -1c
+.RI "glm::vec3 \fBnbr\fP"
+.br
+.ti -1c
+.RI "glm::vec3 \fBftl\fP"
+.br
+.ti -1c
+.RI "glm::vec3 \fBftr\fP"
+.br
+.ti -1c
+.RI "glm::vec3 \fBfbl\fP"
+.br
+.ti -1c
+.RI "glm::vec3 \fBfbr\fP"
+.br
+.ti -1c
+.RI "float \fBnearD\fP"
+.br
+.ti -1c
+.RI "float \fBfarD\fP"
+.br
+.ti -1c
+.RI "float \fBratio\fP"
+.br
+.ti -1c
+.RI "float \fBangle\fP"
+.br
+.ti -1c
+.RI "float \fBtang\fP"
+.br
+.ti -1c
+.RI "float \fBnw\fP"
+.br
+.ti -1c
+.RI "float \fBnh\fP"
+.br
+.ti -1c
+.RI "float \fBfw\fP"
+.br
+.ti -1c
+.RI "float \fBfh\fP"
+.br
+.in -1c
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Molecular Vis from the source code\&.

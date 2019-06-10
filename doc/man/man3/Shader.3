@@ -1,0 +1,104 @@
+.TH "Shader" 3 "Mon Jun 3 2019" "Molecular Vis" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Shader
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBShader\fP (std::string vertexShader, std::string fragmentShader)"
+.br
+.ti -1c
+.RI "\fBShader\fP (std::string computeShader)"
+.br
+.ti -1c
+.RI "void \fBsetUniform\fP (std::string uniform, const glm::vec3 &value)"
+.br
+.ti -1c
+.RI "void \fBsetUnifrom\fP (GLint location, const glm::vec3 &value)"
+.br
+.ti -1c
+.RI "void \fBsetUniform\fP (std::string uniform, const glm::uvec3 &value)"
+.br
+.ti -1c
+.RI "void \fBsetUnifrom\fP (GLint location, const glm::uvec3 &value)"
+.br
+.ti -1c
+.RI "void \fBsetUniform\fP (std::string uniform, const int value)"
+.br
+.ti -1c
+.RI "void \fBsetUniform\fP (GLint location, const int value)"
+.br
+.ti -1c
+.RI "void \fBsetUniform\fP (std::string uniform, const float value)"
+.br
+.ti -1c
+.RI "void \fBsetUniform\fP (GLint location, const float value)"
+.br
+.ti -1c
+.RI "void \fBsetUniform\fP (std::string uniform, const glm::mat4 &mat)"
+.br
+.ti -1c
+.RI "void \fBsetUniform\fP (GLint location, const glm::mat4 &mat)"
+.br
+.ti -1c
+.RI "void \fBsetUniform\fP (std::string uniform, const glm::mat3 &mat)"
+.br
+.ti -1c
+.RI "void \fBsetUniform\fP (GLint location, const glm::mat3 &mat)"
+.br
+.ti -1c
+.RI "void \fBuse\fP ()"
+.br
+.ti -1c
+.RI "void \fBunuse\fP ()"
+.br
+.in -1c
+.SS "Static Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "static const std::string \fBIMPORT_DIRECTIVE\fP = '%%import'"
+.br
+.ti -1c
+.RI "static const std::string \fBSHADER_DIRECTORY\fP = '\&./assets/shader/'"
+.br
+.in -1c
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "Shader::Shader (std::string vertexShader, std::string fragmentShader)"
+Creates a vertex - fragment shader program
+.PP
+\fBParameters:\fP
+.RS 4
+\fIvertexShader\fP filename of vertex shader, has to be located in SHADER::SHADER_DIRECTORY 
+.br
+\fIfragmentShader\fP filename of fragment shader, has to be located in SHADER::SHADER_DIRECTORY 
+.RE
+.PP
+
+.SS "Shader::Shader (std::string computeShader)"
+Creates a compute shader program
+.PP
+\fBParameters:\fP
+.RS 4
+\fIcomputeShader\fP filename of compute shader, has to be located in SHADER::SHADER_DIRECTORY 
+.RE
+.PP
+
+.SH "Member Data Documentation"
+.PP 
+.SS "const std::string Shader::IMPORT_DIRECTIVE = '%%import'\fC [static]\fP"
+Preprocesser directive for import statement\&. Usage in shader code: <IMPORT_DIRECTIVE> <file>
+.PP
+This directive gets replaced with the code in file before compilation\&. 
+.SS "const std::string Shader::SHADER_DIRECTORY = '\&./assets/shader/'\fC [static]\fP"
+Path to the shader folder 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Molecular Vis from the source code\&.

@@ -1,0 +1,94 @@
+\hypertarget{class_s_s_b_o}{}\section{S\+S\+BO$<$ T $>$ Class Template Reference}
+\label{class_s_s_b_o}\index{SSBO$<$ T $>$@{SSBO$<$ T $>$}}
+
+
+Wrapper for \mbox{\hyperlink{class_s_s_b_o}{S\+S\+BO}} buffer (shader storage buffer object) T is the type of the data (struct and has to satisfy allignment conditions, see ssbo doc.)  
+
+
+
+
+{\ttfamily \#include $<$S\+S\+B\+O.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_s_s_b_o_afb9a8159d1a56fbe8ab2e7fa732aa735}{S\+S\+BO}} ()
+\item 
+\mbox{\hyperlink{class_s_s_b_o_a16eace3a6222a1d7d52473177e0b021d}{S\+S\+BO}} (unsigned int size)
+\item 
+unsigned int \mbox{\hyperlink{class_s_s_b_o_aaf7637fa7d155a10f0ae3ffa0921e770}{get\+Capacity}} ()
+\item 
+void \mbox{\hyperlink{class_s_s_b_o_ac2321b5116f5765cff5c0c19a6f05ed4}{upload\+Data}} (const std\+::vector$<$ T $>$ \&data)
+\item 
+void \mbox{\hyperlink{class_s_s_b_o_a5cd3bcb7229aaadf919bedf0d9e0ae73}{bind\+To\+Target}} (unsigned int target)
+\item 
+void \mbox{\hyperlink{class_s_s_b_o_af82e409e9d2d40913bed3dfb903d1b14}{release}} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class T$>$\newline
+class S\+S\+B\+O$<$ T $>$}
+
+Wrapper for \mbox{\hyperlink{class_s_s_b_o}{S\+S\+BO}} buffer (shader storage buffer object) T is the type of the data (struct and has to satisfy allignment conditions, see ssbo doc.) 
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_s_s_b_o_afb9a8159d1a56fbe8ab2e7fa732aa735}\label{class_s_s_b_o_afb9a8159d1a56fbe8ab2e7fa732aa735}} 
+\index{SSBO$<$ T $>$@{SSBO$<$ T $>$}!SSBO@{SSBO}}
+\index{SSBO@{SSBO}!SSBO$<$ T $>$@{SSBO$<$ T $>$}}
+\subsubsection{\texorpdfstring{SSBO()}{SSBO()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+\mbox{\hyperlink{class_s_s_b_o}{S\+S\+BO}}$<$ T $>$\+::\mbox{\hyperlink{class_s_s_b_o}{S\+S\+BO}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Empty constructor, does nothing. \mbox{\Hypertarget{class_s_s_b_o_a16eace3a6222a1d7d52473177e0b021d}\label{class_s_s_b_o_a16eace3a6222a1d7d52473177e0b021d}} 
+\index{SSBO$<$ T $>$@{SSBO$<$ T $>$}!SSBO@{SSBO}}
+\index{SSBO@{SSBO}!SSBO$<$ T $>$@{SSBO$<$ T $>$}}
+\subsubsection{\texorpdfstring{SSBO()}{SSBO()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+\mbox{\hyperlink{class_s_s_b_o}{S\+S\+BO}}$<$ T $>$\+::\mbox{\hyperlink{class_s_s_b_o}{S\+S\+BO}} (\begin{DoxyParamCaption}\item[{unsigned int}]{size }\end{DoxyParamCaption})}
+
+Creates \mbox{\hyperlink{class_s_s_b_o}{S\+S\+BO}} with given capacity.
+
+
+\begin{DoxyParams}{Parameters}
+{\em size} & The number of elements of type T that can be saved in this \mbox{\hyperlink{class_s_s_b_o}{S\+S\+BO}}. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_s_s_b_o_a5cd3bcb7229aaadf919bedf0d9e0ae73}\label{class_s_s_b_o_a5cd3bcb7229aaadf919bedf0d9e0ae73}} 
+\index{SSBO$<$ T $>$@{SSBO$<$ T $>$}!bindToTarget@{bindToTarget}}
+\index{bindToTarget@{bindToTarget}!SSBO$<$ T $>$@{SSBO$<$ T $>$}}
+\subsubsection{\texorpdfstring{bindToTarget()}{bindToTarget()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \mbox{\hyperlink{class_s_s_b_o}{S\+S\+BO}}$<$ T $>$\+::bind\+To\+Target (\begin{DoxyParamCaption}\item[{unsigned int}]{target }\end{DoxyParamCaption})}
+
+Binds buffer to indexed buffer target (number in shader layout(..,target)) \mbox{\Hypertarget{class_s_s_b_o_aaf7637fa7d155a10f0ae3ffa0921e770}\label{class_s_s_b_o_aaf7637fa7d155a10f0ae3ffa0921e770}} 
+\index{SSBO$<$ T $>$@{SSBO$<$ T $>$}!getCapacity@{getCapacity}}
+\index{getCapacity@{getCapacity}!SSBO$<$ T $>$@{SSBO$<$ T $>$}}
+\subsubsection{\texorpdfstring{getCapacity()}{getCapacity()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+unsigned int \mbox{\hyperlink{class_s_s_b_o}{S\+S\+BO}}$<$ T $>$\+::get\+Capacity (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+returns capacity of buffer \mbox{\Hypertarget{class_s_s_b_o_af82e409e9d2d40913bed3dfb903d1b14}\label{class_s_s_b_o_af82e409e9d2d40913bed3dfb903d1b14}} 
+\index{SSBO$<$ T $>$@{SSBO$<$ T $>$}!release@{release}}
+\index{release@{release}!SSBO$<$ T $>$@{SSBO$<$ T $>$}}
+\subsubsection{\texorpdfstring{release()}{release()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \mbox{\hyperlink{class_s_s_b_o}{S\+S\+BO}}$<$ T $>$\+::release (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Deletes the buffer \mbox{\Hypertarget{class_s_s_b_o_ac2321b5116f5765cff5c0c19a6f05ed4}\label{class_s_s_b_o_ac2321b5116f5765cff5c0c19a6f05ed4}} 
+\index{SSBO$<$ T $>$@{SSBO$<$ T $>$}!uploadData@{uploadData}}
+\index{uploadData@{uploadData}!SSBO$<$ T $>$@{SSBO$<$ T $>$}}
+\subsubsection{\texorpdfstring{uploadData()}{uploadData()}}
+{\footnotesize\ttfamily template$<$class T$>$ \\
+void \mbox{\hyperlink{class_s_s_b_o}{S\+S\+BO}}$<$ T $>$\+::upload\+Data (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{data }\end{DoxyParamCaption})}
+
+Uploads data to Buffer. data.\+size()) has to be less than capacity 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Shader/S\+S\+B\+O.\+h\end{DoxyCompactItemize}

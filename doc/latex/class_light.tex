@@ -1,0 +1,75 @@
+\hypertarget{class_light}{}\section{Light Class Reference}
+\label{class_light}\index{Light@{Light}}
+
+
+Base class for lights.  
+
+
+
+
+{\ttfamily \#include $<$Light.\+h$>$}
+
+Inheritance diagram for Light\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_light}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{class_light_ab1ee3d3938cbd1a29914ae1635155c17}{set\+Uniforms}} (const std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_shader}{Shader}} $>$$>$ \&shaders, int index) final
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{class_light_a05d202e42ffec4c8bece9c18b4d4541e}{set\+Uniform}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_shader}{Shader}} $>$ \&shader, int index)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Base class for lights. 
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_light_a05d202e42ffec4c8bece9c18b4d4541e}\label{class_light_a05d202e42ffec4c8bece9c18b4d4541e}} 
+\index{Light@{Light}!setUniform@{setUniform}}
+\index{setUniform@{setUniform}!Light@{Light}}
+\subsubsection{\texorpdfstring{setUniform()}{setUniform()}}
+{\footnotesize\ttfamily void Light\+::set\+Uniform (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_shader}{Shader}} $>$ \&}]{shader,  }\item[{int}]{index }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+Uniforms to update for a particular light and shader. Has to be overwritten.
+
+
+\begin{DoxyParams}{Parameters}
+{\em shader} & shader to be updated. \\
+\hline
+{\em index} & index index of the light among lights of the same type (used in shader to index light) \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \mbox{\hyperlink{class_spot_light_a7712847acb6f2d61b4c20968cd8ff461}{Spot\+Light}}, \mbox{\hyperlink{class_directional_light_a81d638a84a99683bf260efd871fdf1e2}{Directional\+Light}}, and \mbox{\hyperlink{class_point_light_a846794e557d5820c316f3ace8d2b5003}{Point\+Light}}.
+
+\mbox{\Hypertarget{class_light_ab1ee3d3938cbd1a29914ae1635155c17}\label{class_light_ab1ee3d3938cbd1a29914ae1635155c17}} 
+\index{Light@{Light}!setUniforms@{setUniforms}}
+\index{setUniforms@{setUniforms}!Light@{Light}}
+\subsubsection{\texorpdfstring{setUniforms()}{setUniforms()}}
+{\footnotesize\ttfamily void Light\+::set\+Uniforms (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_shader}{Shader}} $>$$>$ \&}]{shaders,  }\item[{int}]{index }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [final]}, {\ttfamily [virtual]}}
+
+Updates all light related uniform for all shaders in shaders-\/vector for this light. Internally calls void \mbox{\hyperlink{class_light_a05d202e42ffec4c8bece9c18b4d4541e}{set\+Uniform(std\+::shared\+\_\+ptr$<$\+Shader$>$\& shadeer, int index)}};
+
+
+\begin{DoxyParams}{Parameters}
+{\em shaders} & Vectors of all shaders to be uodated. \\
+\hline
+{\em index} & index of the light among lights of the same type (used in shader to index light) \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Light/Light.\+h\item 
+Light/Light.\+cpp\end{DoxyCompactItemize}

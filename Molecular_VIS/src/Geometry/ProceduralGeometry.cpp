@@ -70,7 +70,7 @@ void ProceduralGeometry::draw(glm::mat4 matrix)
 	glm::mat4 totalMatrix = matrix * modelMatrix;
 	std::shared_ptr<Shader> shader = material->getShader();
 	//set Model Uniforms
-	material->setUniforms(0);
+	material->setUniforms();
 	shader->use();
 	shader->setUniform("modelMatrix", totalMatrix);
 	shader->setUniform("normalMatrix", glm::mat3(glm::inverse(glm::transpose(totalMatrix))));

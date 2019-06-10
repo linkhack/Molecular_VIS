@@ -2,11 +2,12 @@
 #include <GL/glew.h>
 #include <vector>
 
-/**
-* Wrapper for SSBO buffer (shader storage buffer object)
-* T is the type of the data (struct and has to satisfy 
-* allignment conditions, see ssbo doc.
-**/
+/*!
+ * \brief Wrapper for SSBO buffer (shader storage buffer object)
+ * T is the type of the data (struct and has to satisfy
+ * allignment conditions, see ssbo doc.)
+ * 
+ */
 template<class T>
 class SSBO
 {
@@ -16,7 +17,16 @@ private:
 	unsigned int target;
 	bool isInit = false;
 public:
+	/*!
+	 * Empty constructor, does nothing.
+	 * 
+	 */
 	SSBO();
+	/*!
+	 * Creates SSBO with given capacity.
+	 * 
+	 * \param size The number of elements of type T that can be saved in this SSBO.
+	 */
 	SSBO(unsigned int size);
 	~SSBO();
 
@@ -27,7 +37,7 @@ public:
 
 	/**
 	* Uploads data to Buffer.
-	* data.size()*sizeof(T) has to be less than capacity
+	* data.size()) has to be less than capacity
 	**/
 	void uploadData(const std::vector<T>& data);
 

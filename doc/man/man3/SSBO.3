@@ -1,0 +1,50 @@
+.TH "SSBO< T >" 3 "Mon Jun 3 2019" "Molecular Vis" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+SSBO< T >
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <SSBO\&.h>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBSSBO\fP (unsigned int size)"
+.br
+.ti -1c
+.RI "unsigned int \fBgetCapacity\fP ()"
+.br
+.ti -1c
+.RI "void \fBuploadData\fP (const std::vector< T > &data)"
+.br
+.ti -1c
+.RI "void \fBbindToTarget\fP (unsigned int target)"
+.br
+.ti -1c
+.RI "void \fBrelease\fP ()"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.SS "template<class T>
+.br
+class SSBO< T >"
+Wrapper for \fBSSBO\fP buffer (shader storage buffer object) T is the type of the data (struct and has to satisfy allignment conditions, see ssbo doc\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "template<class T > void \fBSSBO\fP< T >::bindToTarget (unsigned int target)"
+Binds buffer to indexed buffer target (number in shader layout(\&.\&.,target)) 
+.SS "template<class T > unsigned int \fBSSBO\fP< T >::getCapacity ()"
+returns capacity of buffer 
+.SS "template<class T > void \fBSSBO\fP< T >::release ()"
+Deletes the buffer 
+.SS "template<class T> void \fBSSBO\fP< T >::uploadData (const std::vector< T > & data)"
+Uploads data to Buffer\&. data\&.size()) has to be less than capacity 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Molecular Vis from the source code\&.

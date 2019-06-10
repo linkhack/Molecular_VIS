@@ -1,0 +1,31 @@
+.TH "VolumetricTexture" 3 "Mon Jun 3 2019" "Molecular Vis" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+VolumetricTexture
+.SH SYNOPSIS
+.br
+.PP
+.PP
+Inherits \fBTexture\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBVolumetricTexture\fP (int width, int height, int depth, GLenum internalFormat, GLenum format, GLenum type)"
+.br
+.ti -1c
+.RI "virtual void \fBbindAsTexture\fP (int unit)"
+.br
+.ti -1c
+.RI "virtual void \fBbindAsImage\fP (int unit)"
+.br
+.in -1c
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "VolumetricTexture::VolumetricTexture (int width, int height, int depth, GLenum internalFormat, GLenum format, GLenum type)"
+Creates 3d texture with dimension (width,height,depth) and fills it with 0 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Molecular Vis from the source code\&.

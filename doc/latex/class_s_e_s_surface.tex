@@ -1,0 +1,89 @@
+\hypertarget{class_s_e_s_surface}{}\section{S\+E\+S\+Surface Class Reference}
+\label{class_s_e_s_surface}\index{SESSurface@{SESSurface}}
+
+
+Class for the surface representation of a \mbox{\hyperlink{struct_molecule}{Molecule}}.  
+
+
+
+
+{\ttfamily \#include $<$S\+E\+S\+Surface.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_s_e_s_surface_aed99335bed2c0a10c3addfd4fa06a312}{S\+E\+S\+Surface}} (const \mbox{\hyperlink{struct_molecule}{Molecule}} \&molecule, float probe\+Radius)
+\item 
+void \mbox{\hyperlink{class_s_e_s_surface_af5a7ed60365486cd63a9ad09b0d7ef8a}{bind\+To\+Unit}} (int unit)
+\item 
+glm\+::vec3 \mbox{\hyperlink{class_s_e_s_surface_ae287cb897484575889d57674814b9d21}{get\+Tex\+Min}} ()
+\item 
+glm\+::vec3 \mbox{\hyperlink{class_s_e_s_surface_aa133f4b102219bb8de92e4eb7d8e4660}{get\+Tex\+Max}} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for the surface representation of a \mbox{\hyperlink{struct_molecule}{Molecule}}. 
+
+The surface is defined as the solvent excluded surface (S\+ES) and is represented by a signed distance field. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_s_e_s_surface_aed99335bed2c0a10c3addfd4fa06a312}\label{class_s_e_s_surface_aed99335bed2c0a10c3addfd4fa06a312}} 
+\index{SESSurface@{SESSurface}!SESSurface@{SESSurface}}
+\index{SESSurface@{SESSurface}!SESSurface@{SESSurface}}
+\subsubsection{\texorpdfstring{SESSurface()}{SESSurface()}}
+{\footnotesize\ttfamily S\+E\+S\+Surface\+::\+S\+E\+S\+Surface (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{struct_molecule}{Molecule}} \&}]{molecule,  }\item[{float}]{probe\+Radius }\end{DoxyParamCaption})}
+
+Constructs S\+ES of a given molecule and probe radius.
+
+
+\begin{DoxyParams}{Parameters}
+{\em molecule} & Data of molecule. \\
+\hline
+{\em probe\+Radius} & probe radius used to define the S\+ES. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_s_e_s_surface_af5a7ed60365486cd63a9ad09b0d7ef8a}\label{class_s_e_s_surface_af5a7ed60365486cd63a9ad09b0d7ef8a}} 
+\index{SESSurface@{SESSurface}!bindToUnit@{bindToUnit}}
+\index{bindToUnit@{bindToUnit}!SESSurface@{SESSurface}}
+\subsubsection{\texorpdfstring{bindToUnit()}{bindToUnit()}}
+{\footnotesize\ttfamily void S\+E\+S\+Surface\+::bind\+To\+Unit (\begin{DoxyParamCaption}\item[{int}]{unit }\end{DoxyParamCaption})}
+
+Binds the signed distance field as a texture to the given texture-\/unit at target G\+L\+\_\+\+T\+E\+X\+T\+U\+R\+E\+\_\+3D.
+
+
+\begin{DoxyParams}{Parameters}
+{\em unit} & Texture-\/unit to bind to. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_s_e_s_surface_aa133f4b102219bb8de92e4eb7d8e4660}\label{class_s_e_s_surface_aa133f4b102219bb8de92e4eb7d8e4660}} 
+\index{SESSurface@{SESSurface}!getTexMax@{getTexMax}}
+\index{getTexMax@{getTexMax}!SESSurface@{SESSurface}}
+\subsubsection{\texorpdfstring{getTexMax()}{getTexMax()}}
+{\footnotesize\ttfamily glm\+::vec3 S\+E\+S\+Surface\+::get\+Tex\+Max (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Gets maximal bounding box corner.
+
+\begin{DoxyReturn}{Returns}
+maximal bounding box corner. All atoms of molecule have all components smaller then this value. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_s_e_s_surface_ae287cb897484575889d57674814b9d21}\label{class_s_e_s_surface_ae287cb897484575889d57674814b9d21}} 
+\index{SESSurface@{SESSurface}!getTexMin@{getTexMin}}
+\index{getTexMin@{getTexMin}!SESSurface@{SESSurface}}
+\subsubsection{\texorpdfstring{getTexMin()}{getTexMin()}}
+{\footnotesize\ttfamily glm\+::vec3 S\+E\+S\+Surface\+::get\+Tex\+Min (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Gets minimal bounding box corner.
+
+\begin{DoxyReturn}{Returns}
+minimal bounding box corner. All atoms of molecule have all components larger then this value. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Molecule/S\+E\+S\+Surface.\+h\item 
+Molecule/S\+E\+S\+Surface.\+cpp\end{DoxyCompactItemize}
