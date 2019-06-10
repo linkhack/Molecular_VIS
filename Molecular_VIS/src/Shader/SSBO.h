@@ -50,6 +50,11 @@ public:
 	* Deletes the buffer
 	**/
 	void release();
+
+	/*!
+	* clears the Buffer
+	*/
+	void clear();
 };
 
 
@@ -110,4 +115,10 @@ template<class T>
 void SSBO<T>::release()
 {
 	glDeleteBuffers(1, &handle);
+}
+
+template<class T>
+void SSBO<T>::clear()
+{
+	glBufferData(GL_SHADER_STORAGE_BUFFER, size * sizeof(T), NULL, GL_DYNAMIC_DRAW);
 }

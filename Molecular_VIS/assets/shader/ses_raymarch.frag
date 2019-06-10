@@ -4,7 +4,7 @@
 #define EPSILON_GRAD 0.000001
 #define BLACK vec4(0.0f,0.0f,0.0f,1.0f);
 #define WHITE vec4(1.0f,1.0f,1.0f,1.0f);
-#define MAX_STEPS 300
+#define MAX_STEPS 256
 #define KERNEL_SIZE 5
 
 #define PI 3.1415926
@@ -97,7 +97,7 @@ uniform mat4 viewProjectionMatrix;
 const vec2 texOffset = 1.0/textureSize(AtomTexture,0);
 
 //Matrial constant
-const Material mat = {vec3(0.0f,0.0f,1.f),vec3(0.1f),vec3(0.8f),vec3(0.1f),15.0f, 0.1f};
+const Material mat = {vec3(0.0f,0.0f,1.f),vec3(0.1f),vec3(0.8f),vec3(0.1f),15.0f, 0.15f};
 
 vec3 scale_unit(vec3 pos)
 {
@@ -148,7 +148,7 @@ Hit rayMarching(vec3 start, vec3 direction){
 		depth += dist;
 		if(depth > far){
 			result.distance = far + EPSILON;
-			result.depth = far+EPSILON;
+			result.depth = far + EPSILON;
 			result.steps = i;
 			return result;
 		}
@@ -201,7 +201,7 @@ void main() {
 	{
 		Ray reflection;
 		reflection.origin = closestHit.position;
-		reflection.direction = reflect(ray.direction, closestHit.normal);
+		reflection.direction = reflect(-rayDirection, closestHit.normal);
 		Hit reflectionHit = rayMarching(reflection.origin, reflection.direction);
 		reflectionColor = calculateShading(reflectionHit);
 	}
@@ -210,9 +210,10 @@ void main() {
 	// add atoms
 
 	// Calculate refraction offset
-	float depthDifference = linearizeDepth(texture(AtomDepth,TexCoords).x)-closestHit.depth;
-	vec2 center;
 	float maxDepth = dmax*subsurfaceDepth;
+	float depthDifference = min(linearizeDepth(texture(AtomDepth,TexCoords).x)-closestHit.depth,1.f);
+	vec2 center;
+	
 	if(refractionOn)
 	{
 		vec3 R = refract(closestHit.viewDirection, closestHit.normal, 1.f/refraction);

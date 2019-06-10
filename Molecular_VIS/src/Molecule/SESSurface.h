@@ -53,9 +53,15 @@ private:
 	glm::uvec3 nrCells;
 	SSBO<GridCell>* atomGrid;
 
+	// Molecule stats:
+	glm::vec3 minPos;
+	glm::vec3 maxPos;
+	float maxRadius;
+	int nrOfAtoms;
+
 	float calculateIdealResolution(const Molecule& molecule);
 	void setupGrids(const Molecule& molecule);
-
+	void recalculateGrid();
 	
 public:
 	/*!
@@ -87,4 +93,10 @@ public:
 	 * \return maximal bounding box corner. All atoms of molecule have all components smaller then this value.
 	 */
 	glm::vec3 getTexMax();
+
+	/*!
+	* Updates the surface to a new probe radius
+	*
+	*/
+	void updateRadius(float probeRadius);
 };

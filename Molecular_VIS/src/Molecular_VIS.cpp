@@ -64,6 +64,7 @@ float _slice = 0.5f;
 float subsurfaceDepth = 5.0f;
 float dmax = 2.0f;
 float refraction = 1.7f;
+float probeRadius = 1.7f;
 bool reflectionOn = true;
 bool refractionOn = true;
 bool translucencyOn = true;
@@ -203,6 +204,8 @@ int main(int argc, char** argv)
 		double startTime = glfwGetTime();
 		oldFrameTime = startTime;
 		unsigned long framecounter = 0;
+
+		bool radiusUpdated = false;
 		while (!glfwWindowShouldClose(window)) {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -219,6 +222,13 @@ int main(int argc, char** argv)
 			camera->update(mouseX, mouseY, _zoom, _dragging, _strafing);
 			//update uniforms
 			lightManager->setUniforms(shaders);
+
+			// Update Surface
+			if (radiusUpdated)
+			{
+				surfaceRepresentation->updateRadius(probeRadius);
+				radiusUpdated = false;
+			}
 
 			atomFbo.setActive();
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -293,6 +303,7 @@ int main(int argc, char** argv)
 			ImGui::SliderFloat("Refraction", &refraction, 1.00f, 2.0f);
 			
 			ImGui::Checkbox("Translucency On", &translucencyOn);
+			radiusUpdated = ImGui::SliderFloat("Probe Radius", &probeRadius, 1.00f, 5.0f);
 			if (ImGui::Button("Open"))
 			{
 				char const* lFilterPatterns[1] = { "*.cif" };
@@ -349,7 +360,6 @@ std::unique_ptr<SESSurface> loadModel(const char* path)
 	atomModel = std::make_unique<MoleculeModel>(glm::mat4(1.0f), material, molecule);
 
 	//SES calculations
-	float probeRadius = 1.7f;
 	auto surfaceRepresentation = std::make_unique<SESSurface>(molecule, probeRadius);
 
 	return std::move(surfaceRepresentation);
