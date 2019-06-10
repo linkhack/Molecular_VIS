@@ -19,6 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="external\include\third_party\imgui\imgui.cpp" />
+    <ClCompile Include="external\include\third_party\imgui\imgui_draw.cpp" />
+    <ClCompile Include="external\include\third_party\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="external\include\third_party\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="external\include\third_party\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="external\include\third_party\tinyfiledialogs.c" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="src\Molecule\SESSurface.cpp" />
     <ClCompile Include="src\Geometry\MoleculeModel.cpp" />
@@ -79,6 +85,7 @@
     <None Include="assets\shader\sdf_functions.func" />
     <None Include="assets\shader\sdf_sphere.frag" />
     <None Include="assets\shader\ses_raymarch.frag" />
+    <None Include="assets\shader\translucency.frag" />
     <None Include="assets\shader\volTexInspector.frag" />
     <None Include="data\1jjj.cif" />
     <None Include="data\1k4r.cif" />

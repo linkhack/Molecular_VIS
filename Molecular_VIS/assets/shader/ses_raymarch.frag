@@ -100,7 +100,7 @@ float sceneSDF(vec3 pos)
 }
 
 vec3 calculateNormal(vec3 pos, float value){
-	const float eps=0.3;
+	const float eps=1.3;
 	const vec2 k = vec2(1,-1);
 
     return normalize( k.xyy * (sceneSDF( pos + k.xyy*eps ).x -value)+

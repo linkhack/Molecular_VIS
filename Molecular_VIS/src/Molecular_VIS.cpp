@@ -8,8 +8,7 @@
 #include <algorithm>
 
 
-#include "GL/glew.h"
-#include "GLFW/glfw3.h"
+
 
 #include "Shader/Shader.h"
 #include "Geometry/Geometry.h"
@@ -27,8 +26,12 @@
 #include "Renderer/FBO.h"
 
 #include "imgui/imgui.h"
-#include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
+#include "imgui/imgui_impl_glfw.h"
+
+#include "GLFW/glfw3.h"
+#include "GL/glew.h"
+
 #include "tinyfiledialogs.h"
 
 #define EXIT_WITH_ERROR(err) \
@@ -59,6 +62,8 @@ bool _wireframe = false;
 bool _backFaceCulling = true;
 float _slice = 0.5f;
 float subsurfaceDepth = 1.0f;
+float dmax = 15.0f;
+float refraction = 1.7f;
 bool reflectionOn = true;
 bool refractionOn = true;
 bool translucencyOn = true;
@@ -173,8 +178,10 @@ int main(int argc, char** argv)
 		shaders.push_back(mainShader);
 		std::shared_ptr<Geometry> fullScreenQuad;
 		std::shared_ptr<Shader> texVis = std::make_shared<Shader>("fullScreenQuad.vert", "volTexInspector.frag");
+		std::shared_ptr<Shader> tex = std::make_shared<Shader>("base.vert", "translucency.frag");
 		GeometryData quadGeom = ProceduralGeometry::createFullScreenQuad();
 		Geometry* quad = new ProceduralGeometry(glm::mat4(1.0f), quadGeom, mainShader);
+		Geometry* translucencyQuad = new ProceduralGeometry(glm::mat4(1.0f), quadGeom, tex);
 
 		//Camera
 		Camera* camera = new Camera(fov, float(window_width) / float(window_height), nearZ, farZ);
@@ -210,6 +217,7 @@ int main(int argc, char** argv)
 			//update camera
 			camera->update(mouseX, mouseY, _zoom, _dragging, _strafing);
 			//update uniforms
+			lightManager->setUniforms(shaders);
 
 			atomFbo.setActive();
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -225,15 +233,14 @@ int main(int argc, char** argv)
 			mainShader->use();
 			mainShader->setUniform("inversePVMatrix", camera->getInverseProjectionViewMatrix());
 			mainShader->setUniform("cameraPosition", camera->getPosition());
-			mainShader->setUniform("grid_min", surfaceRepresentation.getTexMin());
-			mainShader->setUniform("grid_max", surfaceRepresentation.getTexMax());
+			mainShader->setUniform("grid_min", surfaceRepresentation->getTexMin());
+			mainShader->setUniform("grid_max", surfaceRepresentation->getTexMax());
 			mainShader->setUniform("dmax", dmax);
 			mainShader->setUniform("subsurfaceDepth", subsurfaceDepth);
 			mainShader->setUniform("refraction", refraction);
 			mainShader->setUniform("reflectionOn", reflectionOn);
 			mainShader->setUniform("refractionOn", refractionOn);
-			surfaceRepresentation.bindToUnit(0);
-			mainShader->setUniform("SESTexture", 0);
+			surfaceRepresentation->bindToUnit(0);
 			mainShader->setUniform("SESTexture", 0);
 			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, atomFbo.getColorTexture(0));
@@ -244,7 +251,7 @@ int main(int argc, char** argv)
 			quad->draw();
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			
-			//lightManager->setUniforms(shaders);
+			
 
 			
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -354,7 +361,7 @@ std::shared_ptr<SESSurface> loadModel(const char* path)
 	std::shared_ptr<LambertMaterial> material = std::make_shared<LambertMaterial>(shader);
 	material->setColor(glm::vec3(1.0f, 0.0f, 0.0f));
 	std::unique_ptr<Geometry> ballGeometry = std::make_unique<ProceduralGeometry>(glm::mat4(1.0f), ball, material);
-	atomModel = std::make_unique<MoleculeModel>(glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f)), material, molecule);
+	atomModel = std::make_unique<MoleculeModel>(glm::mat4(1.0f), material, molecule);
 	shaders.push_back(shader);
 
 	//SES calculations
