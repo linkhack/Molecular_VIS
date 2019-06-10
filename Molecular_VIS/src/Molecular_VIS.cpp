@@ -49,7 +49,7 @@ static void mouseKeyCallback(GLFWwindow* window, int button, int action, int mod
 static void APIENTRY DebugCallbackDefault(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const GLvoid* userParam);
 static std::string FormatDebugOutput(GLenum source, GLenum type, GLuint id, GLenum severity, const char* msg);
 static std::string FormatDebugOutput(GLenum source, GLenum type, GLuint id, GLenum severity, const char* msg);
-static std::shared_ptr<SESSurface> loadModel(const char* path);
+static std::unique_ptr<SESSurface> loadModel(const char* path);
 // static void perFrameUniforms(std::vector<std::shared_ptr<Shader>>& shaders, Camera& camera);
 
 /* --------------------------------------------- */
@@ -61,8 +61,8 @@ bool _strafing = false;
 bool _wireframe = false;
 bool _backFaceCulling = true;
 float _slice = 0.5f;
-float subsurfaceDepth = 1.0f;
-float dmax = 15.0f;
+float subsurfaceDepth = 5.0f;
+float dmax = 2.0f;
 float refraction = 1.7f;
 bool reflectionOn = true;
 bool refractionOn = true;
@@ -150,7 +150,7 @@ int main(int argc, char** argv)
 	glfwSetMouseButtonCallback(window, mouseKeyCallback);
 
 	//Set up IMGUI
-	const char* glsl_version = "#version 130";
+	const char* glsl_version = "#version 430";
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -159,7 +159,7 @@ int main(int argc, char** argv)
 	ImGui_ImplOpenGL3_Init(glsl_version);
 	
 	//Set GL defaults (color etc.)
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 	// Depth Test
 	glEnable(GL_DEPTH_TEST);
@@ -176,6 +176,7 @@ int main(int argc, char** argv)
 		shader = std::make_shared<Shader>("Phong.vert", "Phong.frag");
 		std::shared_ptr<Shader> mainShader = std::make_shared<Shader>("base.vert","ses_raymarch.frag");
 		shaders.push_back(mainShader);
+		shaders.push_back(shader);
 		std::shared_ptr<Geometry> fullScreenQuad;
 		std::shared_ptr<Shader> texVis = std::make_shared<Shader>("fullScreenQuad.vert", "volTexInspector.frag");
 		std::shared_ptr<Shader> tex = std::make_shared<Shader>("base.vert", "translucency.frag");
@@ -191,7 +192,7 @@ int main(int argc, char** argv)
 		lightManager->createPointLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.8f*glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.1f, 0.4f, 1.0f));
 		lightManager->createDirectionalLight(glm::vec3(1.8f), glm::vec3(0.0f, -1.0f, -1.0f));
 		
-		std::shared_ptr<SESSurface> surfaceRepresentation = loadModel("data/1jjj.cif");		
+		std::unique_ptr<SESSurface> surfaceRepresentation = loadModel("data/1af6.cif");		
 		
 		FBO atomFbo((unsigned int)1, true, false, window_width, window_height);
 		FBO SESFbo((unsigned int)3, false, false, window_width, window_height);		
@@ -225,21 +226,27 @@ int main(int argc, char** argv)
 			shader->setUniform("cameraPosition", camera->getPosition());
 			shader->setUniform("viewProjectionMatrix", camera->getProjectionViewMatrix());
 			atomModel->draw();
-			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			
 	
 			//lightManager->setUniforms(shaders);
-			SESFbo.setActive();
+			//SESFbo.setActive();
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			mainShader->use();
 			mainShader->setUniform("inversePVMatrix", camera->getInverseProjectionViewMatrix());
+			mainShader->setUniform("viewProjectionMatrix", camera->getProjectionViewMatrix());
 			mainShader->setUniform("cameraPosition", camera->getPosition());
+			mainShader->setUniform("cameraDirection", camera->getDirection());
 			mainShader->setUniform("grid_min", surfaceRepresentation->getTexMin());
 			mainShader->setUniform("grid_max", surfaceRepresentation->getTexMax());
 			mainShader->setUniform("dmax", dmax);
 			mainShader->setUniform("subsurfaceDepth", subsurfaceDepth);
 			mainShader->setUniform("refraction", refraction);
-			mainShader->setUniform("reflectionOn", reflectionOn);
 			mainShader->setUniform("refractionOn", refractionOn);
+			mainShader->setUniform("reflectionOn", reflectionOn);
+			mainShader->setUniform("translucencyOn", translucencyOn);
+			mainShader->setUniform("near", nearZ);
+			mainShader->setUniform("far", farZ);
 			surfaceRepresentation->bindToUnit(0);
 			mainShader->setUniform("SESTexture", 0);
 			glActiveTexture(GL_TEXTURE1);
@@ -248,26 +255,12 @@ int main(int argc, char** argv)
 			glActiveTexture(GL_TEXTURE2);
 			glBindTexture(GL_TEXTURE_2D, atomFbo.getDepthTexture());
 			mainShader->setUniform("AtomDepth", 2);
+			
 			quad->draw();
-			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			
 			
 
 			
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			tex->use();
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D,SESFbo.getColorTexture(0));
-			tex->setUniform("SEStexture", 0);
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, SESFbo.getColorTexture(1));
-			tex->setUniform("fc", 1);
-			glActiveTexture(GL_TEXTURE2);
-			glBindTexture(GL_TEXTURE_2D, SESFbo.getColorTexture(2));
-			tex->setUniform("offset", 2);
-			tex->setUniform("refractionOn", refractionOn);
-			tex->setUniform("translucencyOn", translucencyOn);
-			translucencyQuad->draw();
 
 			//shader->use();
 			//shader->setUniform("cameraPosition", camera->getPosition());
@@ -293,11 +286,12 @@ int main(int argc, char** argv)
 			ImGui::NewFrame();
 			ImGui::Begin("Options");
 
-			ImGui::SliderFloat("Dmax", &dmax, 0.00f, 12.0f);
-			ImGui::SliderFloat("Subsurface Depth", &subsurfaceDepth, 0.00f, 1.0f);
+			ImGui::SliderFloat("Dmax", &dmax, 0.00f, 5.0f);
+			ImGui::SliderFloat("Subsurface Depth", &subsurfaceDepth, 0.50f, 15.0f);
 			ImGui::Checkbox("Reflection On",&reflectionOn);
 			ImGui::Checkbox("Refraction On", &refractionOn);
 			ImGui::SliderFloat("Refraction", &refraction, 1.00f, 2.0f);
+			
 			ImGui::Checkbox("Translucency On", &translucencyOn);
 			if (ImGui::Button("Open"))
 			{
@@ -344,33 +338,21 @@ int main(int argc, char** argv)
 	return EXIT_SUCCESS;
 }
 
-std::shared_ptr<SESSurface> loadModel(const char* path)
+std::unique_ptr<SESSurface> loadModel(const char* path)
 {
-	double loadTime = glfwGetTime();
 	PDBLoader test(path);
-	//std::vector<std::unique_ptr<Geometry>> atoms = test.doStuff();
-	loadTime = glfwGetTime() - loadTime;
-	std::cout << "time to load: " << loadTime << '\n';
-	loadTime = glfwGetTime();
 	Molecule molecule = test.getMolecule();
-	loadTime = glfwGetTime() - loadTime;
 	std::cout << "Nr of Atoms: " << molecule.atoms.size() << '\n';
-	std::cout << "time to do stuff: " << loadTime << '\n';
-	GeometryData ball = ProceduralGeometry::createSphereGeometry(1.1f, 16u, 8u);
 
 	std::shared_ptr<LambertMaterial> material = std::make_shared<LambertMaterial>(shader);
 	material->setColor(glm::vec3(1.0f, 0.0f, 0.0f));
-	std::unique_ptr<Geometry> ballGeometry = std::make_unique<ProceduralGeometry>(glm::mat4(1.0f), ball, material);
 	atomModel = std::make_unique<MoleculeModel>(glm::mat4(1.0f), material, molecule);
-	shaders.push_back(shader);
 
 	//SES calculations
-	float probeRadius = 1.5f;
-	loadTime = glfwGetTime();
-	auto surfaceRepresentation = std::make_shared<SESSurface>(molecule, probeRadius);
-	loadTime = glfwGetTime() - loadTime;
-	std::cout << "Compute shader time: " << loadTime << '\n';
-	return surfaceRepresentation;
+	float probeRadius = 1.7f;
+	auto surfaceRepresentation = std::make_unique<SESSurface>(molecule, probeRadius);
+
+	return std::move(surfaceRepresentation);
 }
 
 

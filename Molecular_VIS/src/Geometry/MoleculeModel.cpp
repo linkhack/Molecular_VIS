@@ -59,7 +59,11 @@ MoleculeModel::MoleculeModel(glm::mat4 modelMatrix, std::shared_ptr<Material> ma
 
 MoleculeModel::~MoleculeModel()
 {
-
+	glDeleteBuffers(1, &vboIndices);
+	glDeleteBuffers(1, &vboUV);
+	glDeleteBuffers(1, &vboPositions);
+	glDeleteBuffers(1, &vboIndices);
+	glDeleteVertexArrays(1, &vao);
 }
 
 void MoleculeModel::draw(glm::mat4 matrix)

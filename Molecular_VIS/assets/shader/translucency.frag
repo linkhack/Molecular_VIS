@@ -11,7 +11,7 @@ uniform bool refractionOn;
 uniform bool translucencyOn;
 uniform int kernelSize = 2;
 vec2 offsetCoords; 
-vec2 texOffset;
+const vec2 texOffset = 1.0/textureSize(SESTexture,0);
 
 float weight(int i,int j)
 {
@@ -21,7 +21,6 @@ float weight(int i,int j)
 
 void main()
 {
-	texOffset = 1.0/textureSize(SESTexture,0);
 	float totalWeight=0;
 	vec3 result;
 	if(refractionOn)

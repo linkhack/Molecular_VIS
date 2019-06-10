@@ -1,5 +1,6 @@
 #include "VolumetricTexture.h"
 #include <glm/glm.hpp>
+#include <iostream>
 
 
 VolumetricTexture::VolumetricTexture(int width, int height, int depth, GLenum internalFormat, GLenum format, GLenum type)
@@ -20,20 +21,22 @@ VolumetricTexture::VolumetricTexture(int width, int height, int depth, GLenum in
 }
 VolumetricTexture::~VolumetricTexture()
 {
+	glBindTexture(GL_TEXTURE_3D, 0);
+	glDeleteTextures(1, &handle);
 }
 
 void VolumetricTexture::bindAsTexture(int unit)
 {
-	
-	glBindTexture(GL_TEXTURE_3D, handle);
 	glActiveTexture(GL_TEXTURE0 + unit);
-	//glBindTexture(GL_TEXTURE_3D, 0);
+	glBindTexture(GL_TEXTURE_3D, handle);
+	
 }
 
 void VolumetricTexture::bindAsImage(int unit)
 {
 	glBindTexture(GL_TEXTURE_3D, handle);
 	glBindImageTexture(unit, handle, 0, GL_TRUE, 0, GL_READ_WRITE, internalFormat);
+	glBindTexture(GL_TEXTURE_3D, 0);
 }
 
 
