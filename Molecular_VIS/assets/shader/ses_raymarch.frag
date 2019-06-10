@@ -145,26 +145,23 @@ vec4 calculateShading(Hit hit){
 	//
 	vec3 color;
 	float ao = 0.0;
-	const int nbIte = 4;
-	const float maxDist = 16.f;
-	float distance = 1.0f;
+	const int nbIte = 8;
+	const float maxDist = 4.f;
+	const float start = 0.05;
+	const float step = (maxDist-start)/nbIte;
 	float falloff=1.0;
     for( int i=0; i<nbIte; i++ )
     {
-        
+        float distance = start + step*i;
         vec3 rd = hit.normal*distance;
-		distance *= 2.1f;
-        ao += (distance - max(sceneSDF( hit.position + rd ),0.f))/maxDist*falloff;
-		falloff*=0.95;
+        ao += (distance - max(sceneSDF( hit.position + rd ),0.f))/maxDist;
     }
 
-	float light =1.0f-0.2f*ao;
-	//float light = 0.5f;
+	float light =1.0f-ao/nbIte;
 	//Subsurface
 	vec3 innerPosition = hit.position + subsurfaceDepth*hit.viewDirection;
 	float innerSDF = sceneSDF(innerPosition);
 	float scalingFactor = (subsurfaceDepth - innerSDF)/(2*subsurfaceDepth);
-	//scalingFactor = 1.0f;
 	color =light*( mat.color*mat.diffuse + vec3(1-scalingFactor));
 
 	//Texture Mix
