@@ -55,10 +55,13 @@ struct Material {
 };
 
 out vec4 FragColor;
+out vec4 fcout;
+out vec4 offset;
 
 in vec2 TexCoords;
 in vec3 viewDirection;
 in Ray ray;
+in float distance;
 
 //Lights
 uniform PointLight pointLights[_POINT_LIGHTS_COUNT];
@@ -69,21 +72,22 @@ uniform int nrDirLight;
 uniform int nrSpotLight;
 
 uniform vec3 cameraPosition;
-uniform vec3 cameraDirection;
 
 uniform sampler3D SESTexture;
+uniform sampler2D AtomTexture;
+uniform sampler2D AtomDepth;
 uniform vec3 grid_min;
 uniform vec3 grid_max;
 uniform float subsurfaceDepth;
-
-uniform sampler2D balls_texture;
-uniform sampler2D balls_depth;
-
-uniform float far;
-uniform float near;
+uniform float dmax;
+uniform float MAX_DISTANCE = 250.0f;
+uniform float refraction;
+uniform bool reflectionOn;
+uniform bool refractionOn;
+vec2 texOffset;
 
 //Matrial constant
-const Material mat = {vec3(0.0f,0.0f,1.f),vec3(0.1f),vec3(0.5f),vec3(0.1f),15.0f};
+const Material mat = {vec3(0.0f,0.0f,1.f),vec3(0.1f),vec3(0.8f),vec3(0.1f),15.0f};
 
 vec3 scale_unit(vec3 pos)
 {
@@ -95,15 +99,7 @@ float sceneSDF(vec3 pos)
 	return texture(SESTexture,scale_unit(pos)).r;
 }
 
-
-float linearize_depth(float d,float zNear,float zFar)
-{
-    float z_n = 2.0 * d - 1.0f;
-    return 2.0 * zNear * zFar / (zFar + zNear - z_n * (zFar - zNear));
-}
-
-vec3 calculateNormal(vec3 pos, float value)
-{
+vec3 calculateNormal(vec3 pos, float value){
 	const float eps=0.3;
 	const vec2 k = vec2(1,-1);
 
@@ -121,7 +117,7 @@ Hit rayMarching(vec3 start, vec3 direction){
 	for(int i = 0; i<MAX_STEPS; ++i){
 		float dist = sceneSDF(start+depth*direction);
 		if(dist < EPSILON){
-			result.distance = dot(depth*direction,cameraDirection);
+			result.distance = depth;
 			result.position = start+depth*direction;
 			result.normal = calculateNormal(result.position, dist);
 			result.viewDirection = direction;
@@ -129,13 +125,13 @@ Hit rayMarching(vec3 start, vec3 direction){
 			return result;
 		}
 		depth += dist;
-		if(depth > far-EPSILON){
-			result.distance = far;
+		if(depth > MAX_DISTANCE){
+			result.distance = MAX_DISTANCE + EPSILON;
 			result.steps = i;
 			return result;
 		}
 	}
-	result.distance = far;
+	result.distance = MAX_DISTANCE + EPSILON;
 	result.steps = MAX_STEPS;
 	return result;
 }
@@ -145,46 +141,63 @@ vec4 calculateShading(Hit hit){
 	//
 	vec3 color;
 	float ao = 0.0;
-	const int nbIte = 8;
-	const float maxDist = 4.f;
-	const float start = 0.05;
-	const float step = (maxDist-start)/nbIte;
+	const int nbIte = 4;
+	const float maxDist = 16.f;
+	float distance = 1.0f;
 	float falloff=1.0;
     for( int i=0; i<nbIte; i++ )
     {
-        float distance = start + step*i;
         vec3 rd = hit.normal*distance;
-        ao += (distance - max(sceneSDF( hit.position + rd ),0.f))/maxDist;
+		distance *= 2.1f;
+        ao += (distance - max(sceneSDF( hit.position + rd ),0.f))/maxDist*falloff;
+		falloff*=0.95;
     }
 
-	float light =1.0f-ao/nbIte;
+	float light =1.0f-0.15f*ao;
+	//float light = 0.5f;
 	//Subsurface
 	vec3 innerPosition = hit.position + subsurfaceDepth*hit.viewDirection;
 	float innerSDF = sceneSDF(innerPosition);
 	float scalingFactor = (subsurfaceDepth - innerSDF)/(2*subsurfaceDepth);
-	color =light*( mat.color*mat.diffuse + vec3(1-scalingFactor));
-
-	//Texture Mix
-	vec4 ballColor = texture(balls_texture,TexCoords);
-	float max_depth = 1.2f*subsurfaceDepth; // TODO: move factor to Uniform
-	float ball_depth = linearize_depth(texture(balls_depth,TexCoords).r,near,far);
-	float sigma = min((ball_depth-hit.distance)/max_depth,1.f);
-	float factor =  clamp(exp(-5.f*sigma),0.f,1.0f);
-
-	color = (1.0f-factor)*color +(factor)*ballColor.xyz;
+	//scalingFactor = 1.0f;
+	color = mat.color*mat.diffuse*light + .25f*vec3(1-scalingFactor);
 	return vec4(vec3(color),1.f);
-
 }
 
 void main() {
+	texOffset = 1.0/textureSize(AtomTexture,0);
 	vec3 rayDirection = normalize(ray.direction);
 	Hit closestHit = rayMarching(ray.origin, rayDirection);
-	if(closestHit.distance > far-EPSILON){
+	if(closestHit.distance > MAX_DISTANCE){
 		FragColor = WHITE;
 		return;
-	}else{
-		FragColor = calculateShading(closestHit);
-		//FragColor = vec4(closestHit.normal,1.0f);
+	}
+	else{
+		float sigma = min(((texture(AtomDepth,TexCoords).x)-(closestHit.distance/MAX_DISTANCE))/dmax,1);
+		float fc = exp(-5*sigma);
+		fcout = vec4(fc);
+		if(refractionOn)
+		{
+			vec3 R = refract(closestHit.viewDirection, closestHit.normal, 1/refraction);
+			vec3 t = closestHit.viewDirection - R;
+			offset = vec4(t,0.0f);
+		}
+		if(reflectionOn)
+		{
+			Ray reflection;
+			reflection.origin = closestHit.position;
+			reflection.direction = rayDirection-2*(dot(rayDirection,normalize(closestHit.normal)))*normalize(closestHit.normal);
+			Hit reflectionHit = rayMarching(reflection.origin, reflection.direction);
+			//FragColor = calculateShading(reflectionHit)*(fc)+vec4(texture(AtomTexture,TexCoords))*(1-fc);
+			if(reflectionHit.distance < MAX_DISTANCE)
+			{
+				FragColor = calculateShading(reflectionHit)*(1-fc)+vec4(texture(AtomTexture,TexCoords))*(fc);
+			}else{
+				FragColor = calculateShading(closestHit)*(1-fc)+vec4(texture(AtomTexture,TexCoords))*(fc);
+			}
+			return;
+		}
+		FragColor = calculateShading(closestHit)*(1-fc)+vec4(texture(AtomTexture,TexCoords))*(fc);
 		return;
 	}
 }
